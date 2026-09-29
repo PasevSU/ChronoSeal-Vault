@@ -1,62 +1,160 @@
 [CmdletBinding()]
 param(
-  [string]$Branch = 'main',
-  [int]$DebounceSeconds = 8
+    [string]$Branch = 'main',
+    [int]$DebounceSeconds = 8
 )
+
 $ErrorActionPreference = 'Stop'
-$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
-$State = Join-Path $PSScriptRoot '.watcher-state'
-New-Item -ItemType Directory -Force -Path $State | Out-Null
-$Log = Join-Path $State 'watcher.log'
-$Lock = Join-Path $State 'sync.lock'
-function Log([string]$s) { $line="$(Get-Date -Format o) $s"; Add-Content -LiteralPath $Log -Value $line; Write-Host $line }
-function Ignored([string]$p) {
-  if (-not $p.StartsWith($Root, [StringComparison]::OrdinalIgnoreCase)) { return $true }
-  $rel = $p.Substring($Root.Length).TrimStart('\','/') -replace '\\','/'
-  return ($rel -match '(^|/)\.git(/|$)' -or
-          $rel -match '^tools/git-sync/\.watcher-state/' -or
-          $rel -match '(^|/)(node_modules|evidence|staging|import|export|ots_generator)(/|$)' -or
-          $rel -match '\.(tmp|temp|log|swp|p12|pfx|key|pem|gpg|pgp|ots|tsr|tsq)$')
+
+function Native-Path([string]$Path) {
+    $prefix = 'Microsoft.PowerShell.Core\FileSystem::'
+    if ($Path.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)) {
+        return $Path.Substring($prefix.Length)
+    }
+    return $Path
 }
-$watcher = New-Object System.IO.FileSystemWatcher
-$watcher.Path = $Root
-$watcher.IncludeSubdirectories = $true
-$watcher.NotifyFilter = [IO.NotifyFilters]'FileName, DirectoryName, LastWrite, Size'
-$watcher.EnableRaisingEvents = $true
-$sourceId='ChronoSealVaultWatcher'
-$subs=@()
-$subs += Register-ObjectEvent -InputObject $watcher -EventName Changed -SourceIdentifier "$sourceId.Changed"
-$subs += Register-ObjectEvent -InputObject $watcher -EventName Created -SourceIdentifier "$sourceId.Created"
-$subs += Register-ObjectEvent -InputObject $watcher -EventName Deleted -SourceIdentifier "$sourceId.Deleted"
-$subs += Register-ObjectEvent -InputObject $watcher -EventName Renamed -SourceIdentifier "$sourceId.Renamed"
-$dirtyAt=$null
-Log "Watcher started: $Root -> origin/$Branch; debounce=${DebounceSeconds}s"
+
+$Root = Native-Path (
+    [System.IO.Path]::GetFullPath(
+        (Join-Path $PSScriptRoot '..\..')
+    )
+)
+
+$State = Join-Path $env:LOCALAPPDATA 'ChronoSeal-Vault\git-watcher'
+New-Item -ItemType Directory -Force -Path $State | Out-Null
+
+$Log  = Join-Path $State 'watcher.log'
+$Lock = Join-Path $State 'sync.lock'
+
+function Write-WatcherLog([string]$Text) {
+    $Line = "$(Get-Date -Format o) $Text"
+    Add-Content -LiteralPath $Log -Value $Line -Encoding UTF8
+    Write-Host $Line
+}
+
+function Test-Ignored([string]$Path) {
+    if ([string]::IsNullOrWhiteSpace($Path)) {
+        return $true
+    }
+
+    if (-not $Path.StartsWith(
+        $Root,
+        [StringComparison]::OrdinalIgnoreCase
+    )) {
+        return $true
+    }
+
+    $Relative = $Path.Substring($Root.Length).
+        TrimStart('\','/') -replace '\\','/'
+
+    return (
+        $Relative -match '(^|/)\.git(/|$)' -or
+        $Relative -match '(^|/)(node_modules|evidence|staging|import|export|ots_generator)(/|$)' -or
+        $Relative -match '\.(tmp|temp|log|swp|p12|pfx|key|pem|gpg|pgp|ots|tsr|tsq)$'
+    )
+}
+
+$Watcher = [System.IO.FileSystemWatcher]::new()
+$Watcher.Path = $Root
+$Watcher.IncludeSubdirectories = $true
+$Watcher.NotifyFilter = (
+    [IO.NotifyFilters]::FileName -bor
+    [IO.NotifyFilters]::DirectoryName -bor
+    [IO.NotifyFilters]::LastWrite -bor
+    [IO.NotifyFilters]::Size
+)
+
+$SourceId = "ChronoSealVaultWatcher.$PID"
+
+$Subscriptions = @(
+    Register-ObjectEvent $Watcher Changed -SourceIdentifier "$SourceId.Changed"
+    Register-ObjectEvent $Watcher Created -SourceIdentifier "$SourceId.Created"
+    Register-ObjectEvent $Watcher Deleted -SourceIdentifier "$SourceId.Deleted"
+    Register-ObjectEvent $Watcher Renamed -SourceIdentifier "$SourceId.Renamed"
+)
+
+$Watcher.EnableRaisingEvents = $true
+$DirtyAt = $null
+
+Write-WatcherLog "START root=$Root branch=$Branch debounce=${DebounceSeconds}s"
+
 try {
-  while ($true) {
-    $evt=Wait-Event -Timeout 2
-    if ($evt) {
-      $events=@($evt) + @(Get-Event | Where-Object SourceIdentifier -like "$sourceId.*")
-      foreach($e in $events | Sort-Object EventIdentifier -Unique) {
-        $p=$e.SourceEventArgs.FullPath
-        if ($p -and -not (Ignored $p)) { $dirtyAt=Get-Date }
-        Remove-Event -EventIdentifier $e.EventIdentifier -ErrorAction SilentlyContinue
-      }
+    while ($true) {
+        $Event = Wait-Event -Timeout 2
+
+        if ($Event) {
+            $Events = @($Event) + @(
+                Get-Event |
+                    Where-Object SourceIdentifier -Like "$SourceId.*"
+            )
+
+            foreach (
+                $Current in
+                ($Events | Sort-Object EventIdentifier -Unique)
+            ) {
+                $Path = $Current.SourceEventArgs.FullPath
+
+                if (-not (Test-Ignored $Path)) {
+                    $DirtyAt = Get-Date
+                    Write-WatcherLog "CHANGE $Path"
+                }
+
+                Remove-Event `
+                    -EventIdentifier $Current.EventIdentifier `
+                    -ErrorAction SilentlyContinue
+            }
+        }
+
+        if (
+            $DirtyAt -and
+            ((Get-Date) - $DirtyAt).TotalSeconds -ge $DebounceSeconds
+        ) {
+            $DirtyAt = $null
+
+            if (Test-Path -LiteralPath $Lock) {
+                Write-WatcherLog 'LOCKED another sync is active'
+                $DirtyAt = Get-Date
+                continue
+            }
+
+            New-Item -ItemType File -Path $Lock -Force | Out-Null
+
+            try {
+                Write-WatcherLog 'SYNC_BEGIN'
+
+                & (Join-Path $PSScriptRoot 'Sync-ChronoSealRepo.ps1') `
+                    -Branch $Branch
+
+                if ($LASTEXITCODE -ne 0) {
+                    Write-WatcherLog "SYNC_FAIL exit=$LASTEXITCODE"
+                }
+                else {
+                    Write-WatcherLog 'SYNC_PASS'
+                }
+            }
+            catch {
+                Write-WatcherLog "SYNC_BLOCKED $($_.Exception.Message)"
+            }
+            finally {
+                Remove-Item `
+                    -LiteralPath $Lock `
+                    -Force `
+                    -ErrorAction SilentlyContinue
+            }
+        }
     }
-    if ($dirtyAt -and ((Get-Date)-$dirtyAt).TotalSeconds -ge $DebounceSeconds) {
-      $dirtyAt=$null
-      if (Test-Path $Lock) { Log 'Sync already active; deferring.'; $dirtyAt=Get-Date; continue }
-      New-Item -ItemType File -Force -Path $Lock | Out-Null
-      try {
-        Log 'Source change batch detected; validating and syncing.'
-        & (Join-Path $PSScriptRoot 'Sync-ChronoSealRepo.ps1') -Branch $Branch
-        if ($LASTEXITCODE -ne 0) { Log "Sync failed with exit $LASTEXITCODE" } else { Log 'Sync completed.' }
-      } catch { Log "Sync blocked/failed: $($_.Exception.Message)" }
-      finally { Remove-Item $Lock -Force -ErrorAction SilentlyContinue }
+}
+finally {
+    foreach ($Subscription in $Subscriptions) {
+        Unregister-Event `
+            -SubscriptionId $Subscription.Id `
+            -ErrorAction SilentlyContinue
     }
-  }
-} finally {
-  foreach($s in $subs) { Unregister-Event -SubscriptionId $s.Id -ErrorAction SilentlyContinue }
-  Get-Event | Where-Object SourceIdentifier -like "$sourceId.*" | Remove-Event -ErrorAction SilentlyContinue
-  $watcher.Dispose()
-  Log 'Watcher stopped.'
+
+    Get-Event |
+        Where-Object SourceIdentifier -Like "$SourceId.*" |
+        Remove-Event -ErrorAction SilentlyContinue
+
+    $Watcher.Dispose()
+    Write-WatcherLog 'STOP'
 }
