@@ -79,3 +79,9 @@
 - Dead `.ots` import UI removed.
 - PKI chain verification anchored to the exact pinned root certificate and CRL freshness checked at TSA genTime.
 - Runtime self-test v2 adds OpenPGP cryptographic roundtrip and local OTS proof-info execution.
+
+## 3.3.0-alpha3
+- Added verified Git provenance engine with PRE_COMMIT_MANIFEST and POST_COMMIT_ATTESTATION.
+- Added resumable fail-closed sequential Chain Orchestrator with hash-linked records.
+- Added Cryptographic Identity Card UI/module: signed canonical manifest, embedded public key, primary and subkey identifiers, verification and JSON/HTML/public-key export.
+- Preserved existing ChronoSeal visual design and navigation.

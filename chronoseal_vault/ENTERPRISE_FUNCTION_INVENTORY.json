@@ -1,0 +1,38 @@
+{
+  "schema": "pasevsu-chronoseal-enterprise-inventory/v1",
+  "release": "3.3.0-enterprise-alpha2",
+  "designPolicy": "preserve-current-ChronoSeal-visual-design",
+  "requiredPrinciples": [
+    "fail-closed",
+    "no-simulated-success",
+    "runtime-artifact-verification",
+    "context-help-and-examples",
+    "bg-en-de-i18n"
+  ],
+  "implementedThisBuild": [
+    "BG/EN/DE web UI i18n foundation",
+    "contextual hover help with examples",
+    "Text Hash & Timestamp visible UI restored",
+    "text digest verify SHA-256/SHA-512",
+    "e-mail recipient local Vault lookup and fingerprint confirmation",
+    "manual recipient key inspection",
+    "enterprise profile information cards",
+    "legacy advanced modules retained as donor sources",
+    "exact e-mail User ID matching",
+    "Sign + Encrypt recipient path",
+    "multi-recipient encryption from active Vault keys",
+    "decrypt signature policy wiring",
+    "enterprise profile application for implemented profiles",
+    "runtime-configurable backend root/port for integration testing",
+    "generated-key algorithm metadata inspection"
+  ],
+  "notClaimedComplete": [
+    "true RFC9580 v6 key generation",
+    "true primary+subkey Universal MAX construction",
+    "WKD network discovery in HA backend",
+    "real revocation certificate workflow",
+    "full Fortress integration",
+    "full report engine integration",
+    "real Home Assistant Supervisor image build/install test"
+  ]
+}

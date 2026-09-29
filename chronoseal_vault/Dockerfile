@@ -1,6 +1,6 @@
 ARG BUILD_ARCH=amd64
 FROM ghcr.io/home-assistant/${BUILD_ARCH}-base:3.21
-ARG BUILD_VERSION=3.2.0-alpha10
+ARG BUILD_VERSION=3.3.0-alpha3
 ARG BUILD_ARCH
 LABEL io.hass.version="${BUILD_VERSION}" io.hass.type="app" io.hass.arch="${BUILD_ARCH}"
 
@@ -26,7 +26,7 @@ RUN mkdir -p /tmp/crypto_import /opt/pasevsu/_crypto && \
 
 COPY tools/generate_crypto_manifest.js tools/verify_crypto_manifest.js tools/runtime_selftest.js /opt/pasevsu/
 RUN node /opt/pasevsu/generate_crypto_manifest.js /opt/pasevsu/_crypto && node /opt/pasevsu/verify_crypto_manifest.js /opt/pasevsu/_crypto
-COPY server.js tsa-engine.js pki-engine.js /opt/pasevsu/
+COPY server.js tsa-engine.js pki-engine.js git-provenance.js chain-orchestrator.js /opt/pasevsu/
 RUN node /opt/pasevsu/runtime_selftest.js /opt/pasevsu > /opt/pasevsu/RUNTIME_SELFTEST.json
 COPY rootfs /
 RUN chmod a+x /etc/services.d/pasevsu/run

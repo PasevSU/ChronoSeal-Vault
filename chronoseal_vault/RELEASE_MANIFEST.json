@@ -1,6 +1,6 @@
 {
   "schema": "pasevsu-release-manifest/v2",
-  "version": "3.2.0-alpha10",
+  "version": "3.3.0-alpha3",
   "repository": "https://github.com/PasevSU/ChronoSeal-Vault",
   "files": [
     {
@@ -20,13 +20,28 @@
     },
     {
       "path": "app/index.html",
-      "bytes": 9777,
-      "sha256": "e8f3582cb05a4665fb782e77593a8f18d665ba70b9040e54f6211eb1b4243200"
+      "bytes": 18340,
+      "sha256": "8491bd25c24aaa710615413542f0796793133f53eebfaa632416c3d1edfc56de"
     },
     {
       "path": "app/scripts/app.js",
-      "bytes": 26280,
-      "sha256": "de3a4b2ac8627fcde36ce5700e68fd4e1bd95258dffafa9f919459f7c9a2ecb6"
+      "bytes": 28524,
+      "sha256": "054be3a9b4b49c54f9d6e0a14597757d2e8feefc22ad57439a9c50bcc4afafb3"
+    },
+    {
+      "path": "app/scripts/enterprise-ui.js",
+      "bytes": 10690,
+      "sha256": "4e400f6b68b7d4bb5f688525c9bafa97edb1168d1a3700a749c0b82c371b618d"
+    },
+    {
+      "path": "app/scripts/i18n-enterprise.js",
+      "bytes": 3210,
+      "sha256": "113779c6a475d30ded029f9d6e389f6b08345c539dabc4f5d77d648b05bb168c"
+    },
+    {
+      "path": "app/scripts/identity-card.js",
+      "bytes": 5522,
+      "sha256": "5a6fc3be5b0553924d94ebd0fe59e29861dfd606309e4bfd9be8ed08f3388fc3"
     },
     {
       "path": "app/scripts/identity-max.js",
@@ -34,9 +49,39 @@
       "sha256": "1d05f164d9670077e56a3479f6e13f0babc5f74e2def5316568d0cf596899dfe"
     },
     {
+      "path": "app/scripts/legacy-enterprise-donor/advanced-core.js",
+      "bytes": 22343,
+      "sha256": "82da347be6bbcdf113c6a6568f90cbcb633ae6a564a5b171275259cdb1a7c8c1"
+    },
+    {
+      "path": "app/scripts/legacy-enterprise-donor/i18n.js",
+      "bytes": 141171,
+      "sha256": "dc0f183b0801a7b00365a5c2979a826fb2abd9a1f63cff5b3ecdf976dd967f58"
+    },
+    {
+      "path": "app/scripts/legacy-enterprise-donor/policy-engine.js",
+      "bytes": 9561,
+      "sha256": "5a6fa4ca7338f039f257a0dfac07736586d8ec208a6a4740aedfd74f243ae9e1"
+    },
+    {
+      "path": "app/scripts/legacy-enterprise-donor/report-engine.js",
+      "bytes": 11645,
+      "sha256": "bd45dca9815c594fce8bb64f4b5adc00a47491fbe8469469631d477067390020"
+    },
+    {
+      "path": "app/scripts/legacy-enterprise-donor/runtime-capabilities.js",
+      "bytes": 8791,
+      "sha256": "e6e20f2a89bcb45b93dd7bf6aa061a018d23436574f7723b5dc8f0ca815d33c1"
+    },
+    {
       "path": "app/style/app.css",
       "bytes": 5880,
       "sha256": "14d4167f8c4ba0d693c2dec42cddc25dc3de5dab54b0993bb6784075698b348e"
+    },
+    {
+      "path": "app/style/enterprise.css",
+      "bytes": 1806,
+      "sha256": "f2d360963160e698fa6ec27ddc15c6a1c679dfff86b7cbf11eaf311a907f9a05"
     },
     {
       "path": "app/style/identity-max.css",
@@ -49,19 +94,24 @@
       "sha256": "e1a483f666d410c511944e116b5ac98e59503a273e6a5207cda315b264bbaced"
     },
     {
+      "path": "chain-orchestrator.js",
+      "bytes": 1714,
+      "sha256": "2368205784a3b34087f3656ac0d6d03a46d7b1aefaaeb1a4ae2a34abe6469bcc"
+    },
+    {
       "path": "CHANGELOG.md",
-      "bytes": 5398,
-      "sha256": "21f335b859c9af22c749a6cc20e33ce1c64774b2514efa7ddf1c7c047ccbd1b4"
+      "bytes": 5829,
+      "sha256": "46a9749c217528932b6e39078123de400bbb6d0610db0684b5ea87b4eb8794b6"
     },
     {
       "path": "config.yaml",
-      "bytes": 1029,
-      "sha256": "82a2c94dc6cfe8a0e8866205f614ead4161053c6e19e8e27648d6dcfb08b3ff6"
+      "bytes": 1028,
+      "sha256": "0a388f895464cba593ce2f7330cc6ec0224bd4d4ba9f6fdc7f754128032bcdcf"
     },
     {
       "path": "Dockerfile",
-      "bytes": 1755,
-      "sha256": "3942932bc838b153de40e99b83b8c4ca766889400d5fb4b5ddba4a2c9022446f"
+      "bytes": 1794,
+      "sha256": "676ba85d951a794ffa04bf10c8832a6bbd1546abc57a13442a8c5fee48776ea6"
     },
     {
       "path": "DOCS.md",
@@ -69,9 +119,34 @@
       "sha256": "b4c267e68d0f6060145c9b631da3f4015a04b893a9c1a4d130bdc1beda621902"
     },
     {
+      "path": "ENTERPRISE_ALPHA3_TEST_RESULTS.md",
+      "bytes": 1306,
+      "sha256": "114505cd0c358aa4149b6bb23e461080c853ff7f8a80b2b1e24854e0d966b247"
+    },
+    {
+      "path": "ENTERPRISE_FUNCTION_INVENTORY.json",
+      "bytes": 1446,
+      "sha256": "23ef358cef43cd429381a159ee4dfdf55f26df552419b6bdac77c68b53d92f40"
+    },
+    {
+      "path": "ENTERPRISE_NOTES.md",
+      "bytes": 284,
+      "sha256": "24df15e6f98d406f96f07bbf5297018ce30ba9b50c786ea553fffc3c363d3837"
+    },
+    {
+      "path": "ENTERPRISE_TEST_RESULTS.md",
+      "bytes": 2904,
+      "sha256": "6c6a04a962498d0ede85fcc186f8ad97996d959b960766c1e67376a08cc86147"
+    },
+    {
+      "path": "git-provenance.js",
+      "bytes": 4981,
+      "sha256": "e112738e9000cb7bca78372b440e3e1e744a9ae2157e67e1c904b683c01661be"
+    },
+    {
       "path": "package.json",
-      "bytes": 167,
-      "sha256": "6c9d8869357be3759e7751f89803b96a839765c5d97e5567dd40c10eb19ae1ea"
+      "bytes": 166,
+      "sha256": "0d6e4e1ce109f4ab4e1908bc812c1a77b8918ae7f72d7b8928e46fabced16ea3"
     },
     {
       "path": "pki-engine.js",
@@ -90,8 +165,8 @@
     },
     {
       "path": "server.js",
-      "bytes": 52717,
-      "sha256": "db576e1ea66ed200dbdce98487177a0e45d314a762c59cf63a8d657480436ea0"
+      "bytes": 52799,
+      "sha256": "f45bfa4612c25547fa5100a5f34c5d486f8444d3f491ef453af06bd08095abcf"
     },
     {
       "path": "TEST_RESULTS.md",

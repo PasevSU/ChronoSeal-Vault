@@ -1,7 +1,7 @@
 'use strict';
 const http=require('http'),fs=require('fs'),path=require('path'),crypto=require('crypto'),cp=require('child_process'),https=require('https');
 const TSA=require('./tsa-engine');
-const ROOT='/opt/pasevsu/app', PORT=8099;
+const ROOT=process.env.CHRONOSEAL_APP_ROOT||'/opt/pasevsu/app', PORT=Math.max(1,Number(process.env.CHRONOSEAL_PORT||8099));
 const APP_VERSION=(()=>{try{return require('./package.json').version}catch{return 'UNKNOWN'}})();
 const CASE_ROOT=process.env.CHRONOSEAL_EVIDENCE_ROOT||process.env.PASEVSU_OTS_ROOT||'/config/chronoseal/evidence';
 const IMPORT_ROOT=process.env.CHRONOSEAL_IMPORT_ROOT||'/share/chronoseal/import';
