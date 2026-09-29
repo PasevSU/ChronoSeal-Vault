@@ -1,0 +1,28 @@
+* text=auto
+
+*.sh        text eol=lf
+Dockerfile  text eol=lf
+**/Dockerfile text eol=lf
+
+*.js        text eol=lf
+*.json      text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf
+*.html      text eol=lf
+*.css       text eol=lf
+*.md        text eol=lf
+
+*.ps1       text eol=crlf
+*.bat       text eol=crlf
+
+*.7z        binary
+*.zip       binary
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.pdf       binary
+*.p12       binary
+*.pfx       binary
+*.der       binary
+*.crt       binary
