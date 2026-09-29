@@ -1,4 +1,38 @@
 [CmdletBinding()]
+param()
+
+$ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
+
+$RepoRoot = [System.IO.Path]::GetFullPath(
+    (Join-Path $PSScriptRoot '..\..')
+)
+
+$Watcher = Join-Path $PSScriptRoot 'Watch-ChronoSealRepo.ps1'
+
+if (-not (Test-Path -LiteralPath $Watcher -PathType Leaf)) {
+    throw "Watcher not found: $Watcher"
+}
+
+$Backup = "$Watcher.backup-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+
+Write-Host ""
+Write-Host "ChronoSeal Watcher Repair"
+Write-Host "========================="
+Write-Host "Repository : $RepoRoot"
+Write-Host "Watcher    : $Watcher"
+Write-Host "Backup     : $Backup"
+Write-Host ""
+
+Copy-Item `
+    -LiteralPath $Watcher `
+    -Destination $Backup `
+    -Force
+
+Write-Host '[PASS] Backup created.'
+
+$NewWatcher = @'
+[CmdletBinding()]
 param(
     [string]$Branch = 'main',
 
@@ -73,8 +107,11 @@ function Write-WatcherLog {
 # ------------------------------------------------------------------
 #
 
-$CurrentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
-Write-WatcherLog "BOOTSTRAP pid=$PID user=$CurrentUser"
+Write-WatcherLog (
+    "BOOTSTRAP pid=$PID user=$(" +
+    [System.Security.Principal.WindowsIdentity]::GetCurrent().Name +
+    ")"
+)
 
 Write-WatcherLog (
     "BOOTSTRAP powershell=$($PSVersionTable.PSVersion)"
@@ -203,9 +240,9 @@ function Get-RepositoryFingerprint {
 
     try {
 
-        $HashBytes = $SHA.ComputeHash($Bytes)
-
-        return ([BitConverter]::ToString($HashBytes)).Replace('-', '')
+        return [Convert]::ToHexString(
+            $SHA.ComputeHash($Bytes)
+        )
     }
     finally {
         $SHA.Dispose()
@@ -474,5 +511,82 @@ finally {
 
     Write-WatcherLog 'STOP'
 }
+'@
 
+#
+# Write repaired watcher
+#
 
+Set-Content `
+    -LiteralPath $Watcher `
+    -Value $NewWatcher `
+    -Encoding UTF8
+
+Write-Host '[PASS] Repaired watcher written.'
+
+#
+# Syntax verification using ParseInput.
+# ParseFile is intentionally avoided because repository is UNC.
+#
+
+$Source = Get-Content `
+    -LiteralPath $Watcher `
+    -Raw `
+    -ErrorAction Stop
+
+$Tokens = $null
+$Errors = $null
+
+[System.Management.Automation.Language.Parser]::ParseInput(
+    $Source,
+    [ref]$Tokens,
+    [ref]$Errors
+) | Out-Null
+
+if ($Errors.Count -gt 0) {
+
+    Write-Host '[FAIL] PowerShell syntax validation'
+
+    $Errors |
+        Format-List `
+            ErrorId,
+            Message,
+            Extent
+
+    Write-Host '[ROLLBACK] Restoring backup...'
+
+    Copy-Item `
+        -LiteralPath $Backup `
+        -Destination $Watcher `
+        -Force
+
+    throw 'WATCHER_REPAIR_SYNTAX_FAILED'
+}
+
+Write-Host '[PASS] PowerShell syntax validation.'
+
+#
+# Check required companion script.
+#
+
+$SyncScript = Join-Path `
+    $PSScriptRoot `
+    'Sync-ChronoSealRepo.ps1'
+
+if (-not (
+    Test-Path `
+        -LiteralPath $SyncScript `
+        -PathType Leaf
+)) {
+    throw "Missing sync script: $SyncScript"
+}
+
+Write-Host '[PASS] Sync script present.'
+
+Write-Host ""
+Write-Host '========================================'
+Write-Host ' ChronoSeal Watcher Repair: PASS'
+Write-Host '========================================'
+Write-Host "Watcher : $Watcher"
+Write-Host "Backup  : $Backup"
+Write-Host '========================================'
