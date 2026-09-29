@@ -1,0 +1,41 @@
+name: PasevSU ChronoSeal Vault
+version: "3.2.0-alpha10"
+slug: pasevsu_chronoseal_vault
+description: Fail-closed OpenPGP, OpenTimestamps, RFC3161 and forensic evidence vault for Home Assistant
+url: "https://github.com/PasevSU/ChronoSeal-Vault"
+arch:
+  - amd64
+  - aarch64
+startup: application
+boot: auto
+ingress: true
+ingress_port: 8099
+panel_icon: mdi:shield-lock-outline
+panel_title: ChronoSeal Vault
+ports: {}
+ports_description: {}
+host_network: false
+homeassistant_api: false
+hassio_api: false
+init: false
+map:
+  - addon_config:rw
+  - share:rw
+options:
+  evidence_root: /config/chronoseal/evidence
+  import_root: /share/chronoseal/import
+  export_root: /share/chronoseal/export
+  staging_root: /config/chronoseal/staging
+  auto_export_copy: true
+  copy_original_to_export: true
+  import_recursive: true
+  max_upload_mib: 1024
+schema:
+  evidence_root: str
+  import_root: str
+  export_root: str
+  staging_root: str
+  auto_export_copy: bool
+  copy_original_to_export: bool
+  import_recursive: bool
+  max_upload_mib: int(1,16384)

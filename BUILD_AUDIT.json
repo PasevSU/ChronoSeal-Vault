@@ -1,0 +1,24 @@
+{
+  "schema": "chronoseal-build-audit/v2",
+  "product": "PasevSU ChronoSeal Vault",
+  "version": "3.2.0-alpha10",
+  "result": "RC_READY_FOR_HOME_ASSISTANT_BUILD",
+  "checks": {
+    "repositoryGate": "PASS",
+    "releaseManifest": "PASS",
+    "javascriptSyntax": "PASS",
+    "yamlJsonParse": "PASS",
+    "packageCompleteness": "PASS",
+    "configuredStorageWiring": "PASS",
+    "configuredStagingActuallyUsed": "PASS",
+    "verifiedImportPipeline": "PASS",
+    "importTraversalRejected": "PASS",
+    "importSymlinkEscapeRejected": "PASS",
+    "sourceRuntimeSelftest": "FAIL_EXPECTED_PRE_BUILD"
+  },
+  "limitations": [
+    "Docker/Home Assistant Supervisor build not executable in this environment",
+    "Live OpenPGP browser bundle, OTS runtime and external TSA/Bitcoin verification remain build/runtime gates and are not marked PASS here"
+  ],
+  "principle": "Any required runtime component that cannot execute and verify its result is FAIL, never assumed PASS."
+}

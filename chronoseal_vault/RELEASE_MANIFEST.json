@@ -1,0 +1,162 @@
+{
+  "schema": "pasevsu-release-manifest/v2",
+  "version": "3.2.0-alpha10",
+  "repository": "https://github.com/PasevSU/ChronoSeal-Vault",
+  "files": [
+    {
+      "path": "_crypto/README.md",
+      "bytes": 237,
+      "sha256": "a3e83d1d14c80e1dbbb6738e520a2fc3a83c11f0a744376d274cf4bb84fe64f7"
+    },
+    {
+      "path": "_crypto/trust/README.md",
+      "bytes": 439,
+      "sha256": "9030b114c2af2001601e57165716a746603bb3939ece3f49f124d10838e58d15"
+    },
+    {
+      "path": "_crypto.7z",
+      "bytes": 52146174,
+      "sha256": "d200d6369db93acbf9334f9b6f5869538aaef713b3062c6b53b2aada8908eb13"
+    },
+    {
+      "path": "app/index.html",
+      "bytes": 9777,
+      "sha256": "e8f3582cb05a4665fb782e77593a8f18d665ba70b9040e54f6211eb1b4243200"
+    },
+    {
+      "path": "app/scripts/app.js",
+      "bytes": 26280,
+      "sha256": "de3a4b2ac8627fcde36ce5700e68fd4e1bd95258dffafa9f919459f7c9a2ecb6"
+    },
+    {
+      "path": "app/scripts/identity-max.js",
+      "bytes": 16309,
+      "sha256": "1d05f164d9670077e56a3479f6e13f0babc5f74e2def5316568d0cf596899dfe"
+    },
+    {
+      "path": "app/style/app.css",
+      "bytes": 5880,
+      "sha256": "14d4167f8c4ba0d693c2dec42cddc25dc3de5dab54b0993bb6784075698b348e"
+    },
+    {
+      "path": "app/style/identity-max.css",
+      "bytes": 838,
+      "sha256": "8b6248330f418653ed2f8866ccadd2cc541c857ea6dfac5da242fb1a65cfba18"
+    },
+    {
+      "path": "app/vendor/README.md",
+      "bytes": 108,
+      "sha256": "e1a483f666d410c511944e116b5ac98e59503a273e6a5207cda315b264bbaced"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 5398,
+      "sha256": "21f335b859c9af22c749a6cc20e33ce1c64774b2514efa7ddf1c7c047ccbd1b4"
+    },
+    {
+      "path": "config.yaml",
+      "bytes": 1029,
+      "sha256": "82a2c94dc6cfe8a0e8866205f614ead4161053c6e19e8e27648d6dcfb08b3ff6"
+    },
+    {
+      "path": "Dockerfile",
+      "bytes": 1755,
+      "sha256": "3942932bc838b153de40e99b83b8c4ca766889400d5fb4b5ddba4a2c9022446f"
+    },
+    {
+      "path": "DOCS.md",
+      "bytes": 837,
+      "sha256": "b4c267e68d0f6060145c9b631da3f4015a04b893a9c1a4d130bdc1beda621902"
+    },
+    {
+      "path": "package.json",
+      "bytes": 167,
+      "sha256": "6c9d8869357be3759e7751f89803b96a839765c5d97e5567dd40c10eb19ae1ea"
+    },
+    {
+      "path": "pki-engine.js",
+      "bytes": 10417,
+      "sha256": "57456677140d1ebe36cb88944b966f7e6203241c48865f141c12b657479b6c18"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3746,
+      "sha256": "bba59de1dc92dc16371a8d1c187dde5f6b24ff3eda8ca742e0fc5e4a81c08abf"
+    },
+    {
+      "path": "rootfs/etc/services.d/pasevsu/run",
+      "bytes": 1023,
+      "sha256": "7ffc7bb254f09059e01a6df73e916120ae4263f7f2f965a2b5d9f03383561670"
+    },
+    {
+      "path": "server.js",
+      "bytes": 52717,
+      "sha256": "db576e1ea66ed200dbdce98487177a0e45d314a762c59cf63a8d657480436ea0"
+    },
+    {
+      "path": "TEST_RESULTS.md",
+      "bytes": 1772,
+      "sha256": "803cf7629ca582b81958045806eaba0792820a619735e414f39d31018fc43a8b"
+    },
+    {
+      "path": "TEXT_EVIDENCE.md",
+      "bytes": 712,
+      "sha256": "3e5e18ccc60f183b2e0b534624623be5185917eccc9c1bc3a65454172682a5c7"
+    },
+    {
+      "path": "tools/generate_crypto_manifest.js",
+      "bytes": 796,
+      "sha256": "e759a37ac587a1999b372daadc1b7b71a7b33b9f354aa950d0eecee776c2011d"
+    },
+    {
+      "path": "tools/Import-Crypto.ps1",
+      "bytes": 1233,
+      "sha256": "467b439f1ad2a06d3fcfe4092d828abfca14e0f82af62bcf7b5363fc4426fa7d"
+    },
+    {
+      "path": "tools/package_completeness.js",
+      "bytes": 2579,
+      "sha256": "fe13787ddb0cc04223aa3411b597d37d1584f19a88e9eca67efed0d79e284a7c"
+    },
+    {
+      "path": "tools/Prepare-Local-Crypto.bat",
+      "bytes": 265,
+      "sha256": "617222380f64076a4f6f2b8dd7a74cddf7c40239498ec3d06fd4a9d4759c5917"
+    },
+    {
+      "path": "tools/release_gate.py",
+      "bytes": 5764,
+      "sha256": "516e40281f1dddb02e3449a81b71da7f40f64dd187913118c44da0c6e69033a7"
+    },
+    {
+      "path": "tools/runtime_selftest.js",
+      "bytes": 4186,
+      "sha256": "68f35e265489cdaaf5b2d56eb86385062174c2d77cde192f36a3ee85c6d0f2d4"
+    },
+    {
+      "path": "tools/Verify-Crypto.ps1",
+      "bytes": 696,
+      "sha256": "9d08754c90fd61c26e5451543d6f398064ff6805bc609449875a2e27041537a9"
+    },
+    {
+      "path": "tools/verify_crypto_manifest.js",
+      "bytes": 818,
+      "sha256": "e3e4ff96f81003cdb5014b8038d6c3c853651e0f24481570751285288d96d715"
+    },
+    {
+      "path": "translations/bg.yaml",
+      "bytes": 1680,
+      "sha256": "b8c7e7b3d664d3b651c44bc4ba5556731d1d9bdd1e222cb5ad2f5d9cf84eb203"
+    },
+    {
+      "path": "translations/en.yaml",
+      "bytes": 1132,
+      "sha256": "681d80b1f825846298faeb425df237423ac80d4b13d3a6640f2e1652d2da2a02"
+    },
+    {
+      "path": "tsa-engine.js",
+      "bytes": 6663,
+      "sha256": "d5f9306ff13be9b866534777aee998d0d1d58b63ff38b5f87d2fb98844e0f3af"
+    }
+  ]
+}

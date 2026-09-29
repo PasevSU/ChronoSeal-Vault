@@ -1,0 +1,25 @@
+configuration:
+  evidence_root:
+    name: Evidence directory
+    description: Primary directory for forensic evidence cases. Must be under /config or /share.
+  import_root:
+    name: Import directory
+    description: Directory for files prepared for import into ChronoSeal Vault.
+  export_root:
+    name: Export/copy directory
+    description: Destination for independently hash-verified copies of sealed cases.
+  staging_root:
+    name: Staging directory
+    description: Temporary directory used during streaming and atomic file ingestion.
+  auto_export_copy:
+    name: Automatically export sealed cases
+    description: After a seal passes physical verification, create a verified copy in the export directory.
+  copy_original_to_export:
+    name: Include original in export
+    description: Include the immutable original evidence file in the verified export copy.
+  import_recursive:
+    name: Recursive import scan
+    description: Scan subdirectories below the configured import directory.
+  max_upload_mib:
+    name: Maximum evidence size (MiB)
+    description: Reject uploads and configured imports larger than this limit.

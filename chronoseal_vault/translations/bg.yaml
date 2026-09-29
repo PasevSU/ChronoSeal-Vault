@@ -1,0 +1,25 @@
+configuration:
+  evidence_root:
+    name: Папка за доказателствени кейсове
+    description: Основна папка за forensic evidence кейсовете. Трябва да е под /config или /share.
+  import_root:
+    name: Папка за вход/импорт
+    description: Папка за файлове, подготвени за импорт в ChronoSeal Vault.
+  export_root:
+    name: Папка за копия/експорт
+    description: Дестинация за независимо хеш-проверени копия на запечатаните кейсове.
+  staging_root:
+    name: Временна staging папка
+    description: Временна папка за streaming и атомарно приемане на файлове.
+  auto_export_copy:
+    name: Автоматично копиране след запечатване
+    description: След успешна физическа проверка на seal-а създава проверено копие в export папката.
+  copy_original_to_export:
+    name: Копирай и оригинала
+    description: Включва immutable оригиналния файл в провереното export копие.
+  import_recursive:
+    name: Рекурсивно сканиране при импорт
+    description: Сканира и подпапките на зададената директория за импорт.
+  max_upload_mib:
+    name: Максимален размер на доказателство (MiB)
+    description: Отказва качвания и импорти над зададения лимит.

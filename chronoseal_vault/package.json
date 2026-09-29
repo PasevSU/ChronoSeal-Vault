@@ -1,0 +1,9 @@
+{
+  "name": "pasevsu-pgp-ha-runtime",
+  "private": true,
+  "version": "3.2.0-alpha10",
+  "dependencies": {
+    "openpgp": "6.3.1",
+    "opentimestamps": "0.4.6"
+  }
+}

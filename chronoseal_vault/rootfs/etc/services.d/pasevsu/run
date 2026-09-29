@@ -1,0 +1,16 @@
+#!/usr/bin/with-contenv bashio
+set -euo pipefail
+export CHRONOSEAL_EVIDENCE_ROOT="$(bashio::config 'evidence_root')"
+export CHRONOSEAL_IMPORT_ROOT="$(bashio::config 'import_root')"
+export CHRONOSEAL_EXPORT_ROOT="$(bashio::config 'export_root')"
+export CHRONOSEAL_STAGING_ROOT="$(bashio::config 'staging_root')"
+export CHRONOSEAL_AUTO_EXPORT="$(bashio::config 'auto_export_copy')"
+export CHRONOSEAL_COPY_ORIGINAL="$(bashio::config 'copy_original_to_export')"
+export CHRONOSEAL_IMPORT_RECURSIVE="$(bashio::config 'import_recursive')"
+export CHRONOSEAL_MAX_UPLOAD_MIB="$(bashio::config 'max_upload_mib')"
+for d in "$CHRONOSEAL_EVIDENCE_ROOT" "$CHRONOSEAL_IMPORT_ROOT" "$CHRONOSEAL_EXPORT_ROOT" "$CHRONOSEAL_STAGING_ROOT"; do
+  case "$d" in /config/*|/share/*) ;; *) bashio::log.fatal "Unsafe storage path: $d (must be under /config or /share)"; exit 64;; esac
+  mkdir -p "$d"
+  test -d "$d" && test -r "$d" && test -w "$d" || { bashio::log.fatal "Storage path not usable: $d"; exit 73; }
+done
+exec node /opt/pasevsu/server.js

@@ -1,0 +1,39 @@
+# ChronoSeal Vault - source repository only
+# Never commit runtime evidence, secrets or local build state.
+
+# Git/editor/OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.tmp
+*.temp
+*.log
+
+# Node/build
+node_modules/
+chronoseal_vault/app/vendor/openpgp.min.js
+chronoseal_vault/CRYPTO_MANIFEST.json
+
+# Runtime evidence/storage - must never be source controlled
+evidence/
+staging/
+import/
+export/
+ots_generator/
+chronoseal/
+*.ots
+*.tsr
+*.tsq
+*.p12
+*.pfx
+*.key
+*.pem
+*.asc
+*.gpg
+*.pgp
+
+# Local sync state
+tools/git-sync/.watcher-state/
+*.pid

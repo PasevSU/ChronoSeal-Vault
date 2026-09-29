@@ -1,0 +1,63 @@
+{
+  "schema": "pasevsu-runtime-selftest/v2",
+  "ok": false,
+  "checks": [
+    {
+      "name": "openssl.binary",
+      "ok": true
+    },
+    {
+      "name": "openssl.exec",
+      "ok": true
+    },
+    {
+      "name": "openpgp.browser.bundle",
+      "ok": false,
+      "path": "app/vendor/openpgp.min.js",
+      "bytes": 0
+    },
+    {
+      "name": "openpgp.node.package",
+      "ok": false,
+      "error": "Cannot find module 'openpgp/package.json'\nRequire stack:\n- /mnt/data/chronoseal10/chronoseal_vault/tools/runtime_selftest.js"
+    },
+    {
+      "name": "openpgp.crypto.roundtrip",
+      "ok": false,
+      "error": "Cannot find module 'openpgp/package.json'\nRequire stack:\n- /mnt/data/chronoseal10/chronoseal_vault/tools/runtime_selftest.js"
+    },
+    {
+      "name": "ots.executable.engine",
+      "ok": false,
+      "candidates": [
+        {
+          "path": "_crypto/javascript-opentimestamps/ots-cli.js",
+          "exists": false
+        },
+        {
+          "path": "node_modules/opentimestamps/ots-cli.js",
+          "exists": false
+        }
+      ]
+    },
+    {
+      "name": "ots.local.proof.info",
+      "ok": false,
+      "proof": "_crypto/javascript-opentimestamps/examples/hello-world.txt.ots",
+      "exists": false
+    },
+    {
+      "name": "crypto.manifest",
+      "ok": false,
+      "path": "_crypto/CRYPTO_MANIFEST.json"
+    }
+  ],
+  "failures": [
+    "openpgp.browser.bundle",
+    "openpgp.node.package",
+    "openpgp.crypto.roundtrip",
+    "ots.executable.engine",
+    "ots.local.proof.info",
+    "crypto.manifest"
+  ]
+}
