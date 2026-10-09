@@ -1,0 +1,16 @@
+{
+  "schema": "pasevsu-crypto-manifest/v1",
+  "generatedAt": "2026-09-30T19:11:18.134Z",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 237,
+      "sha256": "a3e83d1d14c80e1dbbb6738e520a2fc3a83c11f0a744376d274cf4bb84fe64f7"
+    },
+    {
+      "path": "trust/README.md",
+      "bytes": 439,
+      "sha256": "9030b114c2af2001601e57165716a746603bb3939ece3f49f124d10838e58d15"
+    }
+  ]
+}

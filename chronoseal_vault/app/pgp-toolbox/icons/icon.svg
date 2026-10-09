@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="t d">
+<title id="t">PasevSU PGP Toolbox</title><desc id="d">PasevSU lock symbol for a local OpenPGP toolbox.</desc>
+<rect width="512" height="512" rx="96" fill="#0f172a"/>
+<rect x="116" y="222" width="280" height="194" rx="36" fill="#e2e8f0"/>
+<path d="M172 222v-48c0-47 38-86 84-86s84 39 84 86v48h-44v-48c0-23-18-42-40-42s-40 19-40 42v48z" fill="#60a5fa"/>
+<circle cx="256" cy="310" r="34" fill="#0f172a"/>
+<path d="M248 334h16v44h-16z" fill="#0f172a"/>
+</svg>

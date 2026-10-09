@@ -2,20 +2,29 @@
 
 Home Assistant repository for **PasevSU ChronoSeal Vault** — a fail-closed forensic cryptographic vault combining OpenPGP, OpenTimestamps, RFC 3161/PKI validation, evidence cases, cryptographic audit chains and sealed/exported evidence packages.
 
-Add this Git repository URL to the Home Assistant App Store repositories. The app exposes no host port and is intended to be accessed through authenticated Home Assistant Ingress.
+## Home Assistant architecture
 
-Storage is configurable from the app Configuration page:
-- `/config/chronoseal/evidence` — primary evidence cases (inside the app-specific `addon_config` mapping)
-- `/share/chronoseal/import` — import/source exchange directory
-- `/share/chronoseal/export` — verified sealed-case copies
-- `/config/chronoseal/staging` — temporary atomic-ingest staging
+ChronoSeal is packaged as a Home Assistant **App** with a single authenticated Ingress web service. It is intentionally not implemented as a large `custom_components` integration because the main workload is a self-contained web/crypto/evidence application rather than native HA entities/devices.
 
-Paths outside `/config` and `/share` are rejected at startup.
+No host port is exposed. The main UI, OpenPGP Expert workspace, Admin/Preflight console and backend APIs share the same Ingress service on port 8099.
 
+## Storage
 
-## v3.2 storage options
-Configure evidence, import, export and staging directories from the Home Assistant app configuration. Import files are copied through staging and verified with SHA-256/SHA-512 before becoming immutable originals. `max_upload_mib` bounds uploads/imports and `import_recursive` controls import scanning.
+Default runtime paths:
+- `/data/evidence` — private persistent evidence cases;
+- `/data/staging` — private atomic-ingest staging;
+- `/share/chronoseal/import` — deliberate import/source exchange;
+- `/share/chronoseal/export` — verified sealed-case copies;
+- `/share/chronoseal/runtime/OtsCli.jar` — optional independent Java OpenTimestamps verifier.
 
-## GitHub source synchronization
+Runtime paths outside `/data` and `/share` are rejected at startup.
 
-Windows helper scripts are included under `tools/git-sync/`. They validate the Home Assistant repository and app source before every automatic commit/push and block runtime evidence/key material from source control. See `tools/git-sync/README.md`.
+## Crypto runtime authority
+
+The deployable HA App does **not** contain the full `_crypto.7z` development/source archive. OpenPGP.js and OpenTimestamps are exact-version npm runtime dependencies. The source archive is audited separately in `SOURCE_ARCHIVE_AUDIT.json`.
+
+An external `OtsCli.jar` is optional. It is never executed unless `java_ots_sha256` is configured and exactly matches the physical JAR. A matching hash is still not enough: the JAR must also pass its executable runtime probe.
+
+## Release rule
+
+Static/package/integration gates are not sufficient for FINAL status. The Home Assistant/Supervisor image must build successfully and the in-image runtime self-test must PASS the pinned OpenPGP and OpenTimestamps operations before a release can be marked final.

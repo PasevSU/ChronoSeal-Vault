@@ -37,3 +37,8 @@ chronoseal/
 # Local sync state
 tools/git-sync/.watcher-state/
 *.pid
+
+# Local release drop zone - archives must never be committed
+_release_inbox/*
+!_release_inbox/README.txt
+*.release-backup.zip

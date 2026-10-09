@@ -1,8 +1,83 @@
 {
   "schema": "pasevsu-release-manifest/v2",
-  "version": "3.3.0-alpha3",
+  "version": "3.4.0-alpha6",
   "repository": "https://github.com/PasevSU/ChronoSeal-Vault",
   "files": [
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 8116,
+      "sha256": "5e7bbed6bd2e411aa75ebefac51e62463b6d7a01c40036aee7f8d6b60453e966"
+    },
+    {
+      "path": "DOCS.md",
+      "bytes": 837,
+      "sha256": "b4c267e68d0f6060145c9b631da3f4015a04b893a9c1a4d130bdc1beda621902"
+    },
+    {
+      "path": "Dockerfile",
+      "bytes": 1910,
+      "sha256": "bf2c259d5af13d967758f6c9eccd5ff6ff7f4f4d6e510679d4c2e6e66d93a4df"
+    },
+    {
+      "path": "ENTERPRISE_ALPHA3_TEST_RESULTS.md",
+      "bytes": 1306,
+      "sha256": "114505cd0c358aa4149b6bb23e461080c853ff7f8a80b2b1e24854e0d966b247"
+    },
+    {
+      "path": "ENTERPRISE_ALPHA4_CRITICAL_AUDIT.md",
+      "bytes": 4775,
+      "sha256": "baff2d8efee20cbd6bccedb66c0964c7e9e119d62b0f6e1c3100c75b0c50f178"
+    },
+    {
+      "path": "ENTERPRISE_FUNCTION_INVENTORY.json",
+      "bytes": 1446,
+      "sha256": "23ef358cef43cd429381a159ee4dfdf55f26df552419b6bdac77c68b53d92f40"
+    },
+    {
+      "path": "ENTERPRISE_NOTES.md",
+      "bytes": 284,
+      "sha256": "24df15e6f98d406f96f07bbf5297018ce30ba9b50c786ea553fffc3c363d3837"
+    },
+    {
+      "path": "ENTERPRISE_TEST_RESULTS.md",
+      "bytes": 2904,
+      "sha256": "6c6a04a962498d0ede85fcc186f8ad97996d959b960766c1e67376a08cc86147"
+    },
+    {
+      "path": "MASTER_FUNCTION_INVENTORY.json",
+      "bytes": 6063,
+      "sha256": "4476dc05327e909f889884f30b8e8508d54f3fe8e60f8a5939b8759667d0f452"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4012,
+      "sha256": "acadb96397e54c0b929367de6816106c4953bc15f1a84eea6dc904b38d73bae6"
+    },
+    {
+      "path": "TEST_RESULTS.md",
+      "bytes": 1772,
+      "sha256": "803cf7629ca582b81958045806eaba0792820a619735e414f39d31018fc43a8b"
+    },
+    {
+      "path": "TEXT_EVIDENCE.md",
+      "bytes": 712,
+      "sha256": "3e5e18ccc60f183b2e0b534624623be5185917eccc9c1bc3a65454172682a5c7"
+    },
+    {
+      "path": "Update_ChronoSeal.cmd",
+      "bytes": 79,
+      "sha256": "9a229879a2482e2b54b668fe323302f9a90d9affa40da492ef2c7051763cfaca"
+    },
+    {
+      "path": "Update_ChronoSeal.ps1",
+      "bytes": 119,
+      "sha256": "6f2301af1d255672c7b999876ef519905a96b0e8b72056fad2e2b39745111ddb"
+    },
+    {
+      "path": "_crypto/CRYPTO_MANIFEST.json",
+      "bytes": 398,
+      "sha256": "3456bdfc8810073b9df3ee90daae1e0a12b8a0fd7c1dfdab8eb158e12498d180"
+    },
     {
       "path": "_crypto/README.md",
       "bytes": 237,
@@ -14,14 +89,369 @@
       "sha256": "9030b114c2af2001601e57165716a746603bb3939ece3f49f124d10838e58d15"
     },
     {
-      "path": "_crypto.7z",
-      "bytes": 52146174,
-      "sha256": "d200d6369db93acbf9334f9b6f5869538aaef713b3062c6b53b2aada8908eb13"
+      "path": "app/index.html",
+      "bytes": 21967,
+      "sha256": "be5358641025c19f26d855cf16f2fd963864c2e3b32cf9f7ea34dcbf805a787b"
     },
     {
-      "path": "app/index.html",
-      "bytes": 18340,
-      "sha256": "8491bd25c24aaa710615413542f0796793133f53eebfaa632416c3d1edfc56de"
+      "path": "app/pgp-toolbox/.gitignore",
+      "bytes": 351,
+      "sha256": "74d8791f48a0a0e20253b490b22d08ad10809f7659baba18cdf2224adecf4103"
+    },
+    {
+      "path": "app/pgp-toolbox/CHANGELOG.md",
+      "bytes": 17211,
+      "sha256": "c4ca9f58de07264f7c757f0ac5d1788c7aa3c40ce26071d458549b2c0d580d8e"
+    },
+    {
+      "path": "app/pgp-toolbox/PGPBox.vbs",
+      "bytes": 452,
+      "sha256": "82e2d34dc5b05bf3e1162295cc431c2055d113a0a92a15fbbfc692472cca4bd7"
+    },
+    {
+      "path": "app/pgp-toolbox/PGPBox_Stop.vbs",
+      "bytes": 381,
+      "sha256": "73431d16270ce9e63fed079aec5d520ceba58a442266fcd9e3a0faec98f6a3e0"
+    },
+    {
+      "path": "app/pgp-toolbox/PROJECT_MANIFEST.json",
+      "bytes": 12308,
+      "sha256": "18c2ecad7aef6b04a027dc27a3f151cae5230fd9555d0a9f9081f740cc373f9e"
+    },
+    {
+      "path": "app/pgp-toolbox/PasevSU_PGP_Toolbox.vbs",
+      "bytes": 452,
+      "sha256": "82e2d34dc5b05bf3e1162295cc431c2055d113a0a92a15fbbfc692472cca4bd7"
+    },
+    {
+      "path": "app/pgp-toolbox/PasevSU_PGP_Toolbox_Stop.vbs",
+      "bytes": 381,
+      "sha256": "73431d16270ce9e63fed079aec5d520ceba58a442266fcd9e3a0faec98f6a3e0"
+    },
+    {
+      "path": "app/pgp-toolbox/README.md",
+      "bytes": 6096,
+      "sha256": "cde89d0589eeceb6b7f29a6027658078aa8437696b19d18855bb926b395a843e"
+    },
+    {
+      "path": "app/pgp-toolbox/README_BG.md",
+      "bytes": 1630,
+      "sha256": "bac94860b0df37ed3883d5ccae8b002eead732698c440df9ea30d486deb08c33"
+    },
+    {
+      "path": "app/pgp-toolbox/_crypto.lnk",
+      "bytes": 1956,
+      "sha256": "09af37f00e567fe1a3b878c40902a30eaffd8d13b970a1e5e35c0f63dac9253a"
+    },
+    {
+      "path": "app/pgp-toolbox/docs/ADVANCED_OPENPGP_CORE.md",
+      "bytes": 6617,
+      "sha256": "c087ff712f730556b3fd100f72045d74ec88350ca9dd398f2ab4f53a1d4be974"
+    },
+    {
+      "path": "app/pgp-toolbox/docs/ARCHITECTURE.md",
+      "bytes": 1872,
+      "sha256": "5bd369a5aa36737cfd6a9d61118a8bd00f5c2d0882605ac99a9b1941a257e6f3"
+    },
+    {
+      "path": "app/pgp-toolbox/docs/CRYPTO_RUNTIME_V21.md",
+      "bytes": 1173,
+      "sha256": "4b0bae508fbb2031d03817acc681bb4e3f4345c75f0d598bcfc1f9c5418a89b4"
+    },
+    {
+      "path": "app/pgp-toolbox/docs/FINAL_AUDIT_V211.md",
+      "bytes": 2204,
+      "sha256": "ab8b017952f5284f5de92ce490db37c727738cb18dae77e418180be654d969d1"
+    },
+    {
+      "path": "app/pgp-toolbox/docs/FORTRESS_STREAMING_V3.md",
+      "bytes": 1859,
+      "sha256": "0d955a5042c5fde32e596b1f2b6bacf02e25c2734f01184bb2e71bb36e314b2b"
+    },
+    {
+      "path": "app/pgp-toolbox/docs/PROVIDER_POLICY_V21.md",
+      "bytes": 877,
+      "sha256": "bc58769129d26b71fd766c2bf7ff8c463a2b7f7a7fd6f84bdd69dda9d4a8dcdd"
+    },
+    {
+      "path": "app/pgp-toolbox/docs/REPORT_ENGINE_V21.md",
+      "bytes": 1709,
+      "sha256": "900e914e83578b7a2e38f2bbabd5100fb8614d261553782165cb14c5a4a1207d"
+    },
+    {
+      "path": "app/pgp-toolbox/docs/SECURITY_HARDENING_V21.md",
+      "bytes": 3750,
+      "sha256": "0e441ea5af9fd96635bbf88a63196cc7acca5f5d3ca4b32a0a016e3b116c6f87"
+    },
+    {
+      "path": "app/pgp-toolbox/docs/SOURCE_NOTES.md",
+      "bytes": 964,
+      "sha256": "aa4428258ea586781fd2aa770f4b2658f5bdf384d1749335b0a521f7825db71c"
+    },
+    {
+      "path": "app/pgp-toolbox/docs/TEST_REPORT.md",
+      "bytes": 5237,
+      "sha256": "e7592856586786d76adb981f59cd3f5176873dfd64d8447b97bc57dbfd64ca24"
+    },
+    {
+      "path": "app/pgp-toolbox/icons/icon.svg",
+      "bytes": 552,
+      "sha256": "6903701e5c250e9fbb7f109faf1ba853b09e4e26c99ce6ff33141bfa87ff1d7b"
+    },
+    {
+      "path": "app/pgp-toolbox/index.html",
+      "bytes": 88682,
+      "sha256": "4706a75576808f1e564dbd40e7da14668558e631d89dd1dbbacb9b32b77986f8"
+    },
+    {
+      "path": "app/pgp-toolbox/logs/instance.id",
+      "bytes": 34,
+      "sha256": "00d1fdd92937a23afde74d52d03ebdef309913dc52423ac2e40c9930257086ae"
+    },
+    {
+      "path": "app/pgp-toolbox/logs/server.pid",
+      "bytes": 6,
+      "sha256": "78bd79c1375344e4c148bcbcdc69aed9697ae9186c1aa380673f8007975dc9c2"
+    },
+    {
+      "path": "app/pgp-toolbox/manifest.webmanifest",
+      "bytes": 465,
+      "sha256": "f06a69d699bd5bd43958edfc262c2a12024fb9f56a364355ffa1d588957d22ba"
+    },
+    {
+      "path": "app/pgp-toolbox/scripts/advanced-core.js",
+      "bytes": 22343,
+      "sha256": "82da347be6bbcdf113c6a6568f90cbcb633ae6a564a5b171275259cdb1a7c8c1"
+    },
+    {
+      "path": "app/pgp-toolbox/scripts/app.js",
+      "bytes": 182437,
+      "sha256": "c56cba4642590722725a416823ca046b01e1522f0fa25dbbc10152c5a2cdb479"
+    },
+    {
+      "path": "app/pgp-toolbox/scripts/bootstrap.js",
+      "bytes": 325,
+      "sha256": "1afb964d5d982c00a298141e45579a4493c17728101142986ea6f0b2d5e35e66"
+    },
+    {
+      "path": "app/pgp-toolbox/scripts/i18n.js",
+      "bytes": 141171,
+      "sha256": "dc0f183b0801a7b00365a5c2979a826fb2abd9a1f63cff5b3ecdf976dd967f58"
+    },
+    {
+      "path": "app/pgp-toolbox/scripts/policy-engine.js",
+      "bytes": 9561,
+      "sha256": "5a6fa4ca7338f039f257a0dfac07736586d8ec208a6a4740aedfd74f243ae9e1"
+    },
+    {
+      "path": "app/pgp-toolbox/scripts/qrcode.min.js",
+      "bytes": 20387,
+      "sha256": "164fc2c1c9eaf0a03aa8dfdb855e82e41a5c6922fbad8bb3238116207e26bef7"
+    },
+    {
+      "path": "app/pgp-toolbox/scripts/qrcode.min.js.sha256",
+      "bytes": 65,
+      "sha256": "a4d1390ed44893aec676370c2a8fec1da2284fecba08529ac14b52fa1f61cb8d"
+    },
+    {
+      "path": "app/pgp-toolbox/scripts/qrcode.provider",
+      "bytes": 42,
+      "sha256": "8366b4ce06134d63d3f4a7a49c9e37578c0250caf6bc5b8df6915bd471abc8d8"
+    },
+    {
+      "path": "app/pgp-toolbox/scripts/report-engine.js",
+      "bytes": 11645,
+      "sha256": "bd45dca9815c594fce8bb64f4b5adc00a47491fbe8469469631d477067390020"
+    },
+    {
+      "path": "app/pgp-toolbox/scripts/runtime-capabilities.js",
+      "bytes": 8795,
+      "sha256": "56bab446134f6ab2457793cd440e35269d6ec211d9b59740ffb6dfa9e3ff5623"
+    },
+    {
+      "path": "app/pgp-toolbox/server/README.md",
+      "bytes": 1014,
+      "sha256": "3641126893a4261bbd43e80fde68a79a91acc34c2fe82cd1ca043802df306d94"
+    },
+    {
+      "path": "app/pgp-toolbox/server/package-lock.json",
+      "bytes": 31351,
+      "sha256": "6a733de0439db3beee8f79f65696290e6683eb33c91a37e4e46134d7801da307"
+    },
+    {
+      "path": "app/pgp-toolbox/server/package.json",
+      "bytes": 407,
+      "sha256": "c360f798c7f4b4e48dd723bbe5011b1f4f933fbe0a9f0e6e926cde939229e916"
+    },
+    {
+      "path": "app/pgp-toolbox/server/server.js",
+      "bytes": 25049,
+      "sha256": "5c760e27ffdf657ef84b44539d86fccc3c541471f1541c3ed768f9f69bf3a9e3"
+    },
+    {
+      "path": "app/pgp-toolbox/server/wkd-utils.js",
+      "bytes": 1410,
+      "sha256": "d76c59d98e7031bbf7dd92132a6ef4703a916952a8c63e62d5304321f4c05997"
+    },
+    {
+      "path": "app/pgp-toolbox/service-worker.js",
+      "bytes": 572,
+      "sha256": "8762abb49dfb026e6fa721638111973894a4800ed661bd894f95ad7ec7ef123c"
+    },
+    {
+      "path": "app/pgp-toolbox/setup_vendor.ps1",
+      "bytes": 9214,
+      "sha256": "df6d71e7040579ad3d75b452d41a574accac077e7552629c33516024e98283f2"
+    },
+    {
+      "path": "app/pgp-toolbox/setup_vendor.sh",
+      "bytes": 5469,
+      "sha256": "b44e5ef613f156158f359481f39b819ef016779b2d1e7f5680cefbb88214966a"
+    },
+    {
+      "path": "app/pgp-toolbox/start.bat",
+      "bytes": 569,
+      "sha256": "5c42be059ba7253f6dafc81de35f89a8535d561a6bb96806be98940e57f61163"
+    },
+    {
+      "path": "app/pgp-toolbox/start.js",
+      "bytes": 11850,
+      "sha256": "284370baf0b85786983f666991f36bb5bf500abbbca56503d3c0a9eefb2aa914"
+    },
+    {
+      "path": "app/pgp-toolbox/start.ps1",
+      "bytes": 1562,
+      "sha256": "fe4c291df0a0a2461402111c61e4676360d1faf413175ca7ef76b84bf8998ea2"
+    },
+    {
+      "path": "app/pgp-toolbox/start_frontend_only.ps1",
+      "bytes": 355,
+      "sha256": "897ae279f1c56d91d76c04fbb0c7120b219f9aa445ce42b5acc4033b0077db75"
+    },
+    {
+      "path": "app/pgp-toolbox/stop.ps1",
+      "bytes": 1499,
+      "sha256": "0763e4ac545576c626f1feb6d3b391ce97419a703fd69f67d4a3662dd5bcffe5"
+    },
+    {
+      "path": "app/pgp-toolbox/style/app.css",
+      "bytes": 17354,
+      "sha256": "4f678c4d41d012f178500049f3e999e6517051187d6d7080875f726775d11019"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/Test-VendorResolver.ps1",
+      "bytes": 1418,
+      "sha256": "1521c145869193abf40bb2c7d4dc7d3550d494e385c310e1e502b77bac64e62d"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/runtime_openpgp_v21.html",
+      "bytes": 670,
+      "sha256": "f6fac4151512bd16057cfc79780fe4b324172437f3c71494b66aaba5890dc4ca"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/runtime_openpgp_v21.js",
+      "bytes": 6095,
+      "sha256": "a7a8ece73df4a370d64fd0c08e2e7903869c3edbd4417b06a773c37d7716338f"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/runtime_report_v21.html",
+      "bytes": 356,
+      "sha256": "ffd653b118177fb2e8b45d22665eed7e227602aa54770e59ac78bfe01f378adb"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/runtime_report_v21.js",
+      "bytes": 787,
+      "sha256": "de01fb6a55b3cac8f16fdd76fa8058f28dc62b08676955a3ea76ca5ae81ebeda"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_advanced_core_static.mjs",
+      "bytes": 1923,
+      "sha256": "4f2e72a60ac88028ec31547b05ab08981e96ab6446381e07d8c85a70e81405e8"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_bootstrap_static.mjs",
+      "bytes": 406,
+      "sha256": "b41f6308e14152bfb3aef6176d83796694ed03c5ee6dc3b9d13bcff4fb25c471"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_fortress_v2_static.mjs",
+      "bytes": 796,
+      "sha256": "1359f120f2b13e4086e1b2977297433979bd4dd19d2d098ad65c644f7e079d86"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_fortress_v3.mjs",
+      "bytes": 2399,
+      "sha256": "a291758a19abd42982f792d5e6cb44177110f0dc298163ef8383ff7387e09689"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_policy_engine_static.mjs",
+      "bytes": 884,
+      "sha256": "fd67c22dcf1cb764cd82cd733f7e6db49996d07f872650b7c3bd2983adcc54f1"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_report_engine_static.mjs",
+      "bytes": 717,
+      "sha256": "f1af96576d776759fcc3d678389ba2da8e294d902a5ee3afe1188a0902161bba"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_report_runtime.mjs",
+      "bytes": 1694,
+      "sha256": "5f49feb2c2fd77ecf36c1ea3d23b980f66699aa21c0f2631eff9a0c945bf30fc"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_runtime_capabilities_static.mjs",
+      "bytes": 753,
+      "sha256": "881fc3cef674f8a98f5e589920f9a0b701b598b50f5b03e1089967efa05ab677"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_security_hardening.mjs",
+      "bytes": 2540,
+      "sha256": "4dd4ec1a078cbede66e6b45723fd56796a079b9f02bd4c9df32842c2a47bd75b"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_server_runtime.mjs",
+      "bytes": 2749,
+      "sha256": "b24a0a99d46064055cad564397d2e55adb75eae451f04da6f93659d1c7513b3b"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_server_vendor_integrity.mjs",
+      "bytes": 2613,
+      "sha256": "2c0ca9b41ff271d17497404094583844f8113d78c88c77bfa27a94884c156cdc"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_stream_chain.mjs",
+      "bytes": 2112,
+      "sha256": "6bf69d45cb762612ce2cc880fcafdbdc1d446e41d0bcd54aa7a145caeb8ba806"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_vendor_resolver_runtime.mjs",
+      "bytes": 2280,
+      "sha256": "9e2c58c93def1bdcccf98daace88e915a142a45027abc51298497a207544411c"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_vendor_resolver_static.mjs",
+      "bytes": 699,
+      "sha256": "bc86e84e3b37661be46b0f5dd3537b581dd6384df31a20cc62037088efe04124"
+    },
+    {
+      "path": "app/pgp-toolbox/tests/test_wkd_utils.mjs",
+      "bytes": 694,
+      "sha256": "fce4dd928dc1e0b76f07812b4cb36c83e2e5c0a51ec23778951136cb187ee790"
+    },
+    {
+      "path": "app/pgp-toolbox/vendor_resolver.ps1",
+      "bytes": 3994,
+      "sha256": "05b0ae2b50965745e156f4b93c1a9cefa48c19025e3c44ac765958bfc2276c3c"
+    },
+    {
+      "path": "app/pgp-toolbox/verify_project.py",
+      "bytes": 10238,
+      "sha256": "5cf9d632df2ac3be4242c1f3867c8d507c600b63ce7432814ef856056488ad0a"
+    },
+    {
+      "path": "app/scripts/admin-integration.js",
+      "bytes": 7539,
+      "sha256": "b91e888e6a7876fea9a9a4da768244dedfeb02cd5b7fe0858c59b0bac437e212"
     },
     {
       "path": "app/scripts/app.js",
@@ -49,31 +479,6 @@
       "sha256": "1d05f164d9670077e56a3479f6e13f0babc5f74e2def5316568d0cf596899dfe"
     },
     {
-      "path": "app/scripts/legacy-enterprise-donor/advanced-core.js",
-      "bytes": 22343,
-      "sha256": "82da347be6bbcdf113c6a6568f90cbcb633ae6a564a5b171275259cdb1a7c8c1"
-    },
-    {
-      "path": "app/scripts/legacy-enterprise-donor/i18n.js",
-      "bytes": 141171,
-      "sha256": "dc0f183b0801a7b00365a5c2979a826fb2abd9a1f63cff5b3ecdf976dd967f58"
-    },
-    {
-      "path": "app/scripts/legacy-enterprise-donor/policy-engine.js",
-      "bytes": 9561,
-      "sha256": "5a6fa4ca7338f039f257a0dfac07736586d8ec208a6a4740aedfd74f243ae9e1"
-    },
-    {
-      "path": "app/scripts/legacy-enterprise-donor/report-engine.js",
-      "bytes": 11645,
-      "sha256": "bd45dca9815c594fce8bb64f4b5adc00a47491fbe8469469631d477067390020"
-    },
-    {
-      "path": "app/scripts/legacy-enterprise-donor/runtime-capabilities.js",
-      "bytes": 8791,
-      "sha256": "e6e20f2a89bcb45b93dd7bf6aa061a018d23436574f7723b5dc8f0ca815d33c1"
-    },
-    {
       "path": "app/style/app.css",
       "bytes": 5880,
       "sha256": "14d4167f8c4ba0d693c2dec42cddc25dc3de5dab54b0993bb6784075698b348e"
@@ -94,59 +499,64 @@
       "sha256": "e1a483f666d410c511944e116b5ac98e59503a273e6a5207cda315b264bbaced"
     },
     {
-      "path": "chain-orchestrator.js",
-      "bytes": 1714,
-      "sha256": "2368205784a3b34087f3656ac0d6d03a46d7b1aefaaeb1a4ae2a34abe6469bcc"
+      "path": "app/vendor/fonts/Roboto-Bold.ttf",
+      "bytes": 170348,
+      "sha256": "c9cc991deb5d27f267830a19f2301eb164d9e61ec08669c1a1a291c5620ff40a"
     },
     {
-      "path": "CHANGELOG.md",
-      "bytes": 5829,
-      "sha256": "46a9749c217528932b6e39078123de400bbb6d0610db0684b5ea87b4eb8794b6"
+      "path": "app/vendor/fonts/Roboto-Regular.ttf",
+      "bytes": 171272,
+      "sha256": "017c0be9aaa6d0359737e1fa762ad304c0e0107927faff5a6c1f415c7f5244ed"
+    },
+    {
+      "path": "app/vendor/jspdf.provider",
+      "bytes": 36,
+      "sha256": "35bda1e17c02d56bbc7dc5b0e3d8d08c967be304dddc7b214428813f0f5a0ba5"
+    },
+    {
+      "path": "app/vendor/jspdf.umd.min.js",
+      "bytes": 420538,
+      "sha256": "822d41ab6f0924bd26b76abd6d77fb99df6dd9cec24859773a6926063f8eb330"
+    },
+    {
+      "path": "app/vendor/jspdf.umd.min.js.sha256",
+      "bytes": 65,
+      "sha256": "9313b353b451c2f4fc3708b8adfb411f8743184cb6610593a3194aba6e25b276"
+    },
+    {
+      "path": "app/vendor/jspdf.version",
+      "bytes": 6,
+      "sha256": "e5d77a995a7d89c4b24498cb8947c3b40e53f4d2c0ba2380796cdb059d237848"
+    },
+    {
+      "path": "app/vendor/openpgp.version",
+      "bytes": 6,
+      "sha256": "7cdda63521056eb3356e4e847a611d1e4df4afef8547ac846b98cd91fc8dec47"
+    },
+    {
+      "path": "chain-orchestrator.js",
+      "bytes": 1870,
+      "sha256": "1c335861c07c0cee7665c30aacdb86c8ea1c0008a3bd33c5f6dd8ad7a5443326"
     },
     {
       "path": "config.yaml",
-      "bytes": 1028,
-      "sha256": "0a388f895464cba593ce2f7330cc6ec0224bd4d4ba9f6fdc7f754128032bcdcf"
-    },
-    {
-      "path": "Dockerfile",
-      "bytes": 1794,
-      "sha256": "676ba85d951a794ffa04bf10c8832a6bbd1546abc57a13442a8c5fee48776ea6"
-    },
-    {
-      "path": "DOCS.md",
-      "bytes": 837,
-      "sha256": "b4c267e68d0f6060145c9b631da3f4015a04b893a9c1a4d130bdc1beda621902"
-    },
-    {
-      "path": "ENTERPRISE_ALPHA3_TEST_RESULTS.md",
-      "bytes": 1306,
-      "sha256": "114505cd0c358aa4149b6bb23e461080c853ff7f8a80b2b1e24854e0d966b247"
-    },
-    {
-      "path": "ENTERPRISE_FUNCTION_INVENTORY.json",
-      "bytes": 1446,
-      "sha256": "23ef358cef43cd429381a159ee4dfdf55f26df552419b6bdac77c68b53d92f40"
-    },
-    {
-      "path": "ENTERPRISE_NOTES.md",
-      "bytes": 284,
-      "sha256": "24df15e6f98d406f96f07bbf5297018ce30ba9b50c786ea553fffc3c363d3837"
-    },
-    {
-      "path": "ENTERPRISE_TEST_RESULTS.md",
-      "bytes": 2904,
-      "sha256": "6c6a04a962498d0ede85fcc186f8ad97996d959b960766c1e67376a08cc86147"
+      "bytes": 1176,
+      "sha256": "d11213ea2396ff91239896c46151e449f51108250a46079afcc62c42128c7884"
     },
     {
       "path": "git-provenance.js",
-      "bytes": 4981,
-      "sha256": "e112738e9000cb7bca78372b440e3e1e744a9ae2157e67e1c904b683c01661be"
+      "bytes": 5876,
+      "sha256": "471fa04b2d45dde24485f4020f1548888e64ae58ba36402e3cf0674619327455"
     },
     {
       "path": "package.json",
       "bytes": 166,
-      "sha256": "0d6e4e1ce109f4ab4e1908bc812c1a77b8918ae7f72d7b8928e46fabced16ea3"
+      "sha256": "96a26081ae45d7fec3b16428f91fd09c27c7b08633ee4678a7ad9c1441979362"
+    },
+    {
+      "path": "pgp-network-api.js",
+      "bytes": 13006,
+      "sha256": "36adf429b2268847d3db1f067f5f7ce94ba6eea228444a413ec69814ba132c93"
     },
     {
       "path": "pki-engine.js",
@@ -154,34 +564,29 @@
       "sha256": "57456677140d1ebe36cb88944b966f7e6203241c48865f141c12b657479b6c18"
     },
     {
-      "path": "README.md",
-      "bytes": 3746,
-      "sha256": "bba59de1dc92dc16371a8d1c187dde5f6b24ff3eda8ca742e0fc5e4a81c08abf"
+      "path": "qualification/integration_gate.js",
+      "bytes": 3164,
+      "sha256": "6a706014899a37c5a89cfc6643ed3a49b0055ae321f19e986414b7aff3215ed0"
+    },
+    {
+      "path": "qualification/runtime_security_gate.js",
+      "bytes": 3940,
+      "sha256": "cef11b56097780b5145438c8c7e3d844da3b8372e63759da6c4e7d1403c61ac9"
+    },
+    {
+      "path": "qualification_donor_assets.sha256",
+      "bytes": 295,
+      "sha256": "5f288afc3f3d9155ad414051408693536cea5bab36e4e888e7a0db87c7bc5728"
     },
     {
       "path": "rootfs/etc/services.d/pasevsu/run",
-      "bytes": 1023,
-      "sha256": "7ffc7bb254f09059e01a6df73e916120ae4263f7f2f965a2b5d9f03383561670"
+      "bytes": 1560,
+      "sha256": "e580ba90c5a4346732d9ed85cc0dae39f4a97e2a792d444131b2c1be3795a964"
     },
     {
       "path": "server.js",
-      "bytes": 52799,
-      "sha256": "f45bfa4612c25547fa5100a5f34c5d486f8444d3f491ef453af06bd08095abcf"
-    },
-    {
-      "path": "TEST_RESULTS.md",
-      "bytes": 1772,
-      "sha256": "803cf7629ca582b81958045806eaba0792820a619735e414f39d31018fc43a8b"
-    },
-    {
-      "path": "TEXT_EVIDENCE.md",
-      "bytes": 712,
-      "sha256": "3e5e18ccc60f183b2e0b534624623be5185917eccc9c1bc3a65454172682a5c7"
-    },
-    {
-      "path": "tools/generate_crypto_manifest.js",
-      "bytes": 796,
-      "sha256": "e759a37ac587a1999b372daadc1b7b71a7b33b9f354aa950d0eecee776c2011d"
+      "bytes": 56950,
+      "sha256": "9a943ea90acff573aba28fa30caeb2d83fc43814fabff2b9d80b22d46d580ddb"
     },
     {
       "path": "tools/Import-Crypto.ps1",
@@ -189,29 +594,44 @@
       "sha256": "467b439f1ad2a06d3fcfe4092d828abfca14e0f82af62bcf7b5363fc4426fa7d"
     },
     {
-      "path": "tools/package_completeness.js",
-      "bytes": 2579,
-      "sha256": "fe13787ddb0cc04223aa3411b597d37d1584f19a88e9eca67efed0d79e284a7c"
-    },
-    {
       "path": "tools/Prepare-Local-Crypto.bat",
       "bytes": 265,
       "sha256": "617222380f64076a4f6f2b8dd7a74cddf7c40239498ec3d06fd4a9d4759c5917"
     },
     {
-      "path": "tools/release_gate.py",
-      "bytes": 5764,
-      "sha256": "516e40281f1dddb02e3449a81b71da7f40f64dd187913118c44da0c6e69033a7"
-    },
-    {
-      "path": "tools/runtime_selftest.js",
-      "bytes": 4186,
-      "sha256": "68f35e265489cdaaf5b2d56eb86385062174c2d77cde192f36a3ee85c6d0f2d4"
+      "path": "tools/RUNTIME_CONTRACT.json",
+      "bytes": 796,
+      "sha256": "f7d5e9ac8fa00adfee5d9442d409f3688bf1a89ee62f4b47dd68d343f39e9220"
     },
     {
       "path": "tools/Verify-Crypto.ps1",
       "bytes": 696,
       "sha256": "9d08754c90fd61c26e5451543d6f398064ff6805bc609449875a2e27041537a9"
+    },
+    {
+      "path": "tools/fixtures/hello-world.txt.ots",
+      "bytes": 688,
+      "sha256": "be61ecb940db2e4a6f89fbed59c8d4f7f74fa756cbc1fad1ad7aabcb2bf59c30"
+    },
+    {
+      "path": "tools/generate_crypto_manifest.js",
+      "bytes": 796,
+      "sha256": "e759a37ac587a1999b372daadc1b7b71a7b33b9f354aa950d0eecee776c2011d"
+    },
+    {
+      "path": "tools/package_completeness.js",
+      "bytes": 4370,
+      "sha256": "bcb43d040a12ab92c346a64989f7ed9ced8721b7e70e112bef6a9e69f2bc0e1c"
+    },
+    {
+      "path": "tools/release_gate.py",
+      "bytes": 9117,
+      "sha256": "5fabdaa63dee66e972928ee9e5f5c48092f84a30a6af3dfd85b8687621a829f9"
+    },
+    {
+      "path": "tools/runtime_selftest.js",
+      "bytes": 7708,
+      "sha256": "b20323d9e9cbf3ed42c3723008c62bbef72fbed4823e3a50eb408bb34cb0235c"
     },
     {
       "path": "tools/verify_crypto_manifest.js",
@@ -220,18 +640,28 @@
     },
     {
       "path": "translations/bg.yaml",
-      "bytes": 1680,
-      "sha256": "b8c7e7b3d664d3b651c44bc4ba5556731d1d9bdd1e222cb5ad2f5d9cf84eb203"
+      "bytes": 2157,
+      "sha256": "bb8a0e9f379582a95b8fc31a72f350e33fd0d8b0364c018084dca1fe30e022d9"
     },
     {
       "path": "translations/en.yaml",
-      "bytes": 1132,
-      "sha256": "681d80b1f825846298faeb425df237423ac80d4b13d3a6640f2e1652d2da2a02"
+      "bytes": 1483,
+      "sha256": "08fe2dced48ee7ad5b261c3dc94af54d7dfc2bf681d12fabadf038d867a319fe"
     },
     {
       "path": "tsa-engine.js",
       "bytes": 6663,
       "sha256": "d5f9306ff13be9b866534777aee998d0d1d58b63ff38b5f87d2fb98844e0f3af"
+    },
+    {
+      "path": "update_chronoseal.sh",
+      "bytes": 107,
+      "sha256": "e17549a5c83b83663e3c4b12e236d35b629fbc335b5aea710c0c34f67ca34cfb"
+    },
+    {
+      "path": "updater.js",
+      "bytes": 1763,
+      "sha256": "26ab5228c10f220ea85c3172f7161c2a98fbd160822a351531dc9be068cce932"
     }
   ]
 }

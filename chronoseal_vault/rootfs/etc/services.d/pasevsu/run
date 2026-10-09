@@ -8,9 +8,15 @@ export CHRONOSEAL_AUTO_EXPORT="$(bashio::config 'auto_export_copy')"
 export CHRONOSEAL_COPY_ORIGINAL="$(bashio::config 'copy_original_to_export')"
 export CHRONOSEAL_IMPORT_RECURSIVE="$(bashio::config 'import_recursive')"
 export CHRONOSEAL_MAX_UPLOAD_MIB="$(bashio::config 'max_upload_mib')"
+export CHRONOSEAL_JAVA_OTS_JAR="$(bashio::config 'java_ots_jar')"
+export CHRONOSEAL_JAVA_OTS_SHA256="$(bashio::config 'java_ots_sha256')"
 for d in "$CHRONOSEAL_EVIDENCE_ROOT" "$CHRONOSEAL_IMPORT_ROOT" "$CHRONOSEAL_EXPORT_ROOT" "$CHRONOSEAL_STAGING_ROOT"; do
-  case "$d" in /config/*|/share/*) ;; *) bashio::log.fatal "Unsafe storage path: $d (must be under /config or /share)"; exit 64;; esac
+  case "$d" in /data/*|/share/*) ;; *) bashio::log.fatal "Unsafe storage path: $d (must be under /data or /share)"; exit 64;; esac
   mkdir -p "$d"
   test -d "$d" && test -r "$d" && test -w "$d" || { bashio::log.fatal "Storage path not usable: $d"; exit 73; }
 done
+case "$CHRONOSEAL_JAVA_OTS_JAR" in /share/*|/data/*) ;; *) bashio::log.fatal "Unsafe java_ots_jar path: $CHRONOSEAL_JAVA_OTS_JAR (must be under /data or /share)"; exit 64;; esac
+if [ -n "$CHRONOSEAL_JAVA_OTS_SHA256" ] && ! printf "%s" "$CHRONOSEAL_JAVA_OTS_SHA256" | grep -Eq "^[0-9A-Fa-f]{64}$"; then
+  bashio::log.fatal "java_ots_sha256 must be empty or exactly 64 hexadecimal characters"; exit 64
+fi
 exec node /opt/pasevsu/server.js

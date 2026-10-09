@@ -1,0 +1,390 @@
+{
+  "project": "PasevSU PGP Toolbox",
+  "version": "2.1.1",
+  "brand": "PasevSU",
+  "generated": "2026-09-28T15:53:23.595886+00:00",
+  "source_audit": {
+    "artifact": "PasevSU_PGP_Toolbox_FULL_v2.1.0.zip",
+    "sha256": "8816224bee034e5cbe609f2039a796a57867a32515922d7c0600dbc9b7faeb3e"
+  },
+  "languages": [
+    "bg",
+    "de"
+  ],
+  "top_level_tools": 21,
+  "bound_dom_controls": 196,
+  "canonical_origin": "http://127.0.0.1:3000/",
+  "server": {
+    "runtime": "Node.js >=18",
+    "dependencies": 0,
+    "host": "127.0.0.1",
+    "csp": true,
+    "origin_guard": true,
+    "decoded_static_allowlist": true,
+    "vendor_sha256_serve_gate": true,
+    "project_instance_binding": true
+  },
+  "openpgp_runtime": {
+    "pinned_version": "6.3.1",
+    "source_preference": "PROJECT/_crypto/openpgpjs",
+    "runtime_sha256_sidecar_required": true,
+    "server_enforces_sidecar": true,
+    "network_bootstrap_default": false
+  },
+  "reports": {
+    "provider": "jsPDF",
+    "pinned_version": "4.2.1",
+    "language": "de",
+    "canonical_sha256": true,
+    "canonical_sha512": true,
+    "derived_page_id_hex_chars": 128,
+    "derived_page_id_formula": "SHA-512(canonical report SHA-512 + page ordinal)",
+    "stable_pdf_json_snapshot": true,
+    "private_material": false
+  },
+  "fortress": {
+    "memory_v2": true,
+    "legacy_memory_v1_decrypt": true,
+    "memory_v2_metadata_binding": "encrypted-inner-copy-v1",
+    "streaming_v3": true,
+    "legacy_stream_v2_read_with_warning": true,
+    "stream_v3_metadata_binding": "encrypted-inner-manifest-v1",
+    "content_digest": "SHA-512-CHAIN-V1"
+  },
+  "policy": {
+    "enforced_on": [
+      "message-encrypt",
+      "batch-file-encrypt",
+      "batch-file-encrypt-sign"
+    ],
+    "profiles": [
+      "modern-compatible",
+      "rfc9580-strict",
+      "legacy-interop",
+      "forensic-readonly",
+      "rfc9980-pqt"
+    ],
+    "no_silent_downgrade": true
+  },
+  "security_hardening": {
+    "untrusted_html_escaped": true,
+    "public_manifest_private_material": false,
+    "atomic_indexeddb_replace": true,
+    "unprotected_private_import_blocked": true,
+    "persistent_passphrase_removal": false,
+    "generated_passphrase_min_chars": 16,
+    "backup_v2": "OpenPGP Argon2id + AES-256 + AEAD GCM",
+    "async_expiration_handling": true,
+    "keyserver_refresh_merges_private_container": true,
+    "wot_edges_cryptographically_verified": true,
+    "pgp_mime_claim_removed": true,
+    "non_pgp_crypto_capabilities_exposed": false
+  },
+  "tests": {
+    "static_release": "PASS",
+    "node_server_runtime": "PASS",
+    "server_vendor_integrity_runtime": "PASS",
+    "vendor_resolver_runtime_simulation": "PASS",
+    "fortress_memory_v2_contract": "PASS_STATIC",
+    "fortress_v3_binding": "PASS",
+    "stream_chain": "PASS",
+    "report_runtime": "PASS",
+    "responsive_layout_v211": "NOT_CLAIMED_CONTAINER_CHROMIUM_STALLED",
+    "target_openpgp_browser": "PENDING_REAL_VENDOR_ON_WINDOWS",
+    "target_jspdf_browser": "PENDING_REAL_VENDOR_ON_WINDOWS",
+    "windows_vbs_powershell": "STATIC_AUDIT_ONLY",
+    "loopback_chromium": "BLOCKED_OR_UNRELIABLE_IN_BUILD_ENV"
+  },
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 351,
+      "sha256": "74d8791f48a0a0e20253b490b22d08ad10809f7659baba18cdf2224adecf4103"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 17211,
+      "sha256": "c4ca9f58de07264f7c757f0ac5d1788c7aa3c40ce26071d458549b2c0d580d8e"
+    },
+    {
+      "path": "PasevSU_PGP_Toolbox.vbs",
+      "bytes": 452,
+      "sha256": "82e2d34dc5b05bf3e1162295cc431c2055d113a0a92a15fbbfc692472cca4bd7"
+    },
+    {
+      "path": "PasevSU_PGP_Toolbox_Stop.vbs",
+      "bytes": 381,
+      "sha256": "73431d16270ce9e63fed079aec5d520ceba58a442266fcd9e3a0faec98f6a3e0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6096,
+      "sha256": "cde89d0589eeceb6b7f29a6027658078aa8437696b19d18855bb926b395a843e"
+    },
+    {
+      "path": "docs/ADVANCED_OPENPGP_CORE.md",
+      "bytes": 6617,
+      "sha256": "c087ff712f730556b3fd100f72045d74ec88350ca9dd398f2ab4f53a1d4be974"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "bytes": 1872,
+      "sha256": "5bd369a5aa36737cfd6a9d61118a8bd00f5c2d0882605ac99a9b1941a257e6f3"
+    },
+    {
+      "path": "docs/CRYPTO_RUNTIME_V21.md",
+      "bytes": 1173,
+      "sha256": "4b0bae508fbb2031d03817acc681bb4e3f4345c75f0d598bcfc1f9c5418a89b4"
+    },
+    {
+      "path": "docs/FINAL_AUDIT_V211.md",
+      "bytes": 2204,
+      "sha256": "ab8b017952f5284f5de92ce490db37c727738cb18dae77e418180be654d969d1"
+    },
+    {
+      "path": "docs/FORTRESS_STREAMING_V3.md",
+      "bytes": 1859,
+      "sha256": "0d955a5042c5fde32e596b1f2b6bacf02e25c2734f01184bb2e71bb36e314b2b"
+    },
+    {
+      "path": "docs/PROVIDER_POLICY_V21.md",
+      "bytes": 877,
+      "sha256": "bc58769129d26b71fd766c2bf7ff8c463a2b7f7a7fd6f84bdd69dda9d4a8dcdd"
+    },
+    {
+      "path": "docs/REPORT_ENGINE_V21.md",
+      "bytes": 1709,
+      "sha256": "900e914e83578b7a2e38f2bbabd5100fb8614d261553782165cb14c5a4a1207d"
+    },
+    {
+      "path": "docs/SECURITY_HARDENING_V21.md",
+      "bytes": 3750,
+      "sha256": "0e441ea5af9fd96635bbf88a63196cc7acca5f5d3ca4b32a0a016e3b116c6f87"
+    },
+    {
+      "path": "docs/SOURCE_NOTES.md",
+      "bytes": 964,
+      "sha256": "aa4428258ea586781fd2aa770f4b2658f5bdf384d1749335b0a521f7825db71c"
+    },
+    {
+      "path": "docs/TEST_REPORT.md",
+      "bytes": 5237,
+      "sha256": "e7592856586786d76adb981f59cd3f5176873dfd64d8447b97bc57dbfd64ca24"
+    },
+    {
+      "path": "icons/icon.svg",
+      "bytes": 552,
+      "sha256": "6903701e5c250e9fbb7f109faf1ba853b09e4e26c99ce6ff33141bfa87ff1d7b"
+    },
+    {
+      "path": "index.html",
+      "bytes": 88678,
+      "sha256": "0bea2658fe43b4cb8763450dfba1db1134e5405485f19e2187a70c8eda15d2a7"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 465,
+      "sha256": "f06a69d699bd5bd43958edfc262c2a12024fb9f56a364355ffa1d588957d22ba"
+    },
+    {
+      "path": "scripts/advanced-core.js",
+      "bytes": 22343,
+      "sha256": "82da347be6bbcdf113c6a6568f90cbcb633ae6a564a5b171275259cdb1a7c8c1"
+    },
+    {
+      "path": "scripts/app.js",
+      "bytes": 182461,
+      "sha256": "f1d5f2c1fc0e6b56e86596f047c357a7671501347f1f2d7a50d7cb85ff26b26f"
+    },
+    {
+      "path": "scripts/bootstrap.js",
+      "bytes": 513,
+      "sha256": "444d2625d712ef47f32d154e9045960611f9920039e32b4e8100a5aaac3451ad"
+    },
+    {
+      "path": "scripts/i18n.js",
+      "bytes": 141171,
+      "sha256": "dc0f183b0801a7b00365a5c2979a826fb2abd9a1f63cff5b3ecdf976dd967f58"
+    },
+    {
+      "path": "scripts/policy-engine.js",
+      "bytes": 9561,
+      "sha256": "5a6fa4ca7338f039f257a0dfac07736586d8ec208a6a4740aedfd74f243ae9e1"
+    },
+    {
+      "path": "scripts/report-engine.js",
+      "bytes": 11645,
+      "sha256": "bd45dca9815c594fce8bb64f4b5adc00a47491fbe8469469631d477067390020"
+    },
+    {
+      "path": "scripts/runtime-capabilities.js",
+      "bytes": 8791,
+      "sha256": "e6e20f2a89bcb45b93dd7bf6aa061a018d23436574f7723b5dc8f0ca815d33c1"
+    },
+    {
+      "path": "server/README.md",
+      "bytes": 1014,
+      "sha256": "3641126893a4261bbd43e80fde68a79a91acc34c2fe82cd1ca043802df306d94"
+    },
+    {
+      "path": "server/package.json",
+      "bytes": 407,
+      "sha256": "c360f798c7f4b4e48dd723bbe5011b1f4f933fbe0a9f0e6e926cde939229e916"
+    },
+    {
+      "path": "server/server.js",
+      "bytes": 25049,
+      "sha256": "5c760e27ffdf657ef84b44539d86fccc3c541471f1541c3ed768f9f69bf3a9e3"
+    },
+    {
+      "path": "server/wkd-utils.js",
+      "bytes": 1410,
+      "sha256": "d76c59d98e7031bbf7dd92132a6ef4703a916952a8c63e62d5304321f4c05997"
+    },
+    {
+      "path": "service-worker.js",
+      "bytes": 572,
+      "sha256": "8762abb49dfb026e6fa721638111973894a4800ed661bd894f95ad7ec7ef123c"
+    },
+    {
+      "path": "setup_vendor.ps1",
+      "bytes": 9214,
+      "sha256": "df6d71e7040579ad3d75b452d41a574accac077e7552629c33516024e98283f2"
+    },
+    {
+      "path": "setup_vendor.sh",
+      "bytes": 5469,
+      "sha256": "b44e5ef613f156158f359481f39b819ef016779b2d1e7f5680cefbb88214966a"
+    },
+    {
+      "path": "start.bat",
+      "bytes": 496,
+      "sha256": "15f9ffe20520dd42631cfd172639655d09e541928ec3d4f331d5b0e974c94c91"
+    },
+    {
+      "path": "start.ps1",
+      "bytes": 8575,
+      "sha256": "27064f1564337fbcc027b5f67bca57edc30a9e89609405d05fca821da6985a48"
+    },
+    {
+      "path": "stop.ps1",
+      "bytes": 1499,
+      "sha256": "0763e4ac545576c626f1feb6d3b391ce97419a703fd69f67d4a3662dd5bcffe5"
+    },
+    {
+      "path": "style/app.css",
+      "bytes": 17354,
+      "sha256": "4f678c4d41d012f178500049f3e999e6517051187d6d7080875f726775d11019"
+    },
+    {
+      "path": "tests/Test-VendorResolver.ps1",
+      "bytes": 1418,
+      "sha256": "1521c145869193abf40bb2c7d4dc7d3550d494e385c310e1e502b77bac64e62d"
+    },
+    {
+      "path": "tests/runtime_openpgp_v21.html",
+      "bytes": 668,
+      "sha256": "06ffdaafea43f5220bbd9f29534f79e4027746400a6decadd0f84908a0bfd749"
+    },
+    {
+      "path": "tests/runtime_openpgp_v21.js",
+      "bytes": 6095,
+      "sha256": "a7a8ece73df4a370d64fd0c08e2e7903869c3edbd4417b06a773c37d7716338f"
+    },
+    {
+      "path": "tests/runtime_report_v21.html",
+      "bytes": 354,
+      "sha256": "5f1d81ae60da5742f0f4c4f2f7d031c5306dde2e4ae271ddef6994de487f63c8"
+    },
+    {
+      "path": "tests/runtime_report_v21.js",
+      "bytes": 787,
+      "sha256": "de01fb6a55b3cac8f16fdd76fa8058f28dc62b08676955a3ea76ca5ae81ebeda"
+    },
+    {
+      "path": "tests/test_advanced_core_static.mjs",
+      "bytes": 1923,
+      "sha256": "4f2e72a60ac88028ec31547b05ab08981e96ab6446381e07d8c85a70e81405e8"
+    },
+    {
+      "path": "tests/test_bootstrap_static.mjs",
+      "bytes": 1121,
+      "sha256": "c7ca0cc8082438787dc41521e050b4d1193741d3a236ee09a191e51406d09fe0"
+    },
+    {
+      "path": "tests/test_fortress_v2_static.mjs",
+      "bytes": 796,
+      "sha256": "1359f120f2b13e4086e1b2977297433979bd4dd19d2d098ad65c644f7e079d86"
+    },
+    {
+      "path": "tests/test_fortress_v3.mjs",
+      "bytes": 2399,
+      "sha256": "a291758a19abd42982f792d5e6cb44177110f0dc298163ef8383ff7387e09689"
+    },
+    {
+      "path": "tests/test_policy_engine_static.mjs",
+      "bytes": 884,
+      "sha256": "fd67c22dcf1cb764cd82cd733f7e6db49996d07f872650b7c3bd2983adcc54f1"
+    },
+    {
+      "path": "tests/test_report_engine_static.mjs",
+      "bytes": 717,
+      "sha256": "f1af96576d776759fcc3d678389ba2da8e294d902a5ee3afe1188a0902161bba"
+    },
+    {
+      "path": "tests/test_report_runtime.mjs",
+      "bytes": 1694,
+      "sha256": "5f49feb2c2fd77ecf36c1ea3d23b980f66699aa21c0f2631eff9a0c945bf30fc"
+    },
+    {
+      "path": "tests/test_runtime_capabilities_static.mjs",
+      "bytes": 753,
+      "sha256": "881fc3cef674f8a98f5e589920f9a0b701b598b50f5b03e1089967efa05ab677"
+    },
+    {
+      "path": "tests/test_security_hardening.mjs",
+      "bytes": 2540,
+      "sha256": "4dd4ec1a078cbede66e6b45723fd56796a079b9f02bd4c9df32842c2a47bd75b"
+    },
+    {
+      "path": "tests/test_server_runtime.mjs",
+      "bytes": 2749,
+      "sha256": "b24a0a99d46064055cad564397d2e55adb75eae451f04da6f93659d1c7513b3b"
+    },
+    {
+      "path": "tests/test_server_vendor_integrity.mjs",
+      "bytes": 2613,
+      "sha256": "2c0ca9b41ff271d17497404094583844f8113d78c88c77bfa27a94884c156cdc"
+    },
+    {
+      "path": "tests/test_stream_chain.mjs",
+      "bytes": 2112,
+      "sha256": "6bf69d45cb762612ce2cc880fcafdbdc1d446e41d0bcd54aa7a145caeb8ba806"
+    },
+    {
+      "path": "tests/test_vendor_resolver_runtime.mjs",
+      "bytes": 2280,
+      "sha256": "9e2c58c93def1bdcccf98daace88e915a142a45027abc51298497a207544411c"
+    },
+    {
+      "path": "tests/test_vendor_resolver_static.mjs",
+      "bytes": 699,
+      "sha256": "bc86e84e3b37661be46b0f5dd3537b581dd6384df31a20cc62037088efe04124"
+    },
+    {
+      "path": "tests/test_wkd_utils.mjs",
+      "bytes": 694,
+      "sha256": "fce4dd928dc1e0b76f07812b4cb36c83e2e5c0a51ec23778951136cb187ee790"
+    },
+    {
+      "path": "vendor_resolver.ps1",
+      "bytes": 3994,
+      "sha256": "05b0ae2b50965745e156f4b93c1a9cefa48c19025e3c44ac765958bfc2276c3c"
+    },
+    {
+      "path": "verify_project.py",
+      "bytes": 10238,
+      "sha256": "5cf9d632df2ac3be4242c1f3867c8d507c600b63ce7432814ef856056488ad0a"
+    }
+  ]
+}

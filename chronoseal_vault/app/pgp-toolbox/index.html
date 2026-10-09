@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="bg" class="theme--auto">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>PasevSU PGP Toolbox</title>
+
+      <!-- PasevSU canonical-origin guard: external script so strict CSP can remain script-src self. -->
+      <script src="scripts/bootstrap.js"></script>
+
+      <meta name="theme-color" content="#60a5fa" />
+      <link rel="manifest" href="manifest.webmanifest" />
+      <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+
+      <script defer src="../vendor/openpgp.min.js"></script>
+      <script defer src="scripts/qrcode.min.js"></script>
+      <script defer src="../vendor/jspdf.umd.min.js"></script>
+      <script defer src="scripts/i18n.js"></script>
+      <script defer src="scripts/app.js"></script>
+      <script defer src="scripts/advanced-core.js"></script>
+      <script defer src="scripts/runtime-capabilities.js"></script>
+      <script defer src="scripts/policy-engine.js"></script>
+      <script defer src="scripts/report-engine.js"></script>
+
+      <link rel="stylesheet" href="style/app.css" />
+    </head>
+    <body class="min-h-screen">
+      <div class="mx-auto max-w-5xl px-4 md:px-6 py-6">
+          <header class="app-header mb-8">
+            <div class="brand-block">
+              <div class="brand-mark" aria-hidden="true">PSU</div>
+              <div class="brand-copy">
+                <div class="brand-title-row"><h1 class="app-title">PasevSU PGP Toolbox</h1><span class="version-badge">v2.1.1</span></div>
+                <p class="app-subtitle" data-brand-subtitle>Локална OpenPGP работна среда · PasevSU</p>
+              </div>
+            </div>
+            <div class="header-controls">
+              <div class="language-switch" role="group" aria-label="Language / Език / Sprache">
+                <button class="lang-btn" type="button" data-language="bg" aria-pressed="true">BG</button>
+                <button class="lang-btn" type="button" data-language="de" aria-pressed="false">DE</button>
+              </div>
+              <button id="theme-toggle" class="btn theme-btn" type="button"
+                      aria-label="Toggle color theme" aria-pressed="false">
+                <span id="theme-icon" aria-hidden="true"> </span>
+                <span class="hidden sm:inline text-[0.9rem]">Theme</span>
+              </button>
+            </div>
+          </header>
+
+          <div id="status" class="sr-status" role="status" aria-live="polite"></div>
+          <div id="alert" class="sr-status" role="alert" aria-live="assertive"></div>
+
+          <main class="space-y-5">
+
+            <!-- ============================================================ -->
+            <!-- 1. GENERATE KEYS                                             -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="gen-summary">
+                  <div class="summary-title">Generate PGP Key Pair</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Create a new public–private key pair.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 row row-2" role="region" aria-labelledby="gen-summary">
+                  <div>
+                      <label for="keyType">Key Algorithm &amp; Strength</label>
+                      <select id="keyType" class="select">
+                        <optgroup label="PasevSU — universal multi-role suite">
+                          <option value="PASEVSU-UNIVERSAL-MAX" selected>PasevSU Universal MAX (multi-role / long-term)</option>
+                        </optgroup>
+                        <optgroup label="RSA — maximum compatibility">
+                          <option value="RSA-2048">RSA-2048 (Legacy / compatibility)</option>
+                          <option value="RSA-3072">RSA-3072 (Strong)</option>
+                          <option value="RSA-4096">RSA-4096 (High)</option>
+                          <option value="RSA-8192">RSA-8192 (Very High / heavy cases)</option>
+                          <option value="RSA-16384">RSA-16384 (Extreme / expert)</option>
+                        </optgroup>
+                        <optgroup label="ECC — high strength with smaller keys">
+                          <option value="ECC-p256">ECC P-256 (Modern / efficient)</option>
+                          <option value="ECC-p384">ECC P-384 (Very High)</option>
+                          <option value="ECC-p521">ECC P-521 (Extreme)</option>
+                          <option value="ECC-brainpoolP512r1">Brainpool P-512 (Extreme / alternative)</option>
+                        </optgroup>
+                      </select>
+                      <div id="keyStrengthInfo" class="security-profile" role="status" aria-live="polite"></div>
+                  </div>
+                  <div id="universalSuitePlan" class="md:col-span-2 security-profile" hidden>
+                      <strong>PasevSU Universal MAX</strong>
+                      <div id="universalSuitePlanText"></div>
+                  </div>
+                  <div>
+                      <label for="keyPassword">Passphrase (required, minimum 16 characters)</label>
+                      <input id="keyPassword" type="password" class="input"
+                             autocomplete="new-password" minlength="16" placeholder="Strong passphrase · minimum 16 characters" />
+                  </div>
+                  <div>
+                      <label for="keyComment">User Comment</label>
+                      <input id="keyComment" type="text" class="input" placeholder="e.g., Personal Key" />
+                  </div>
+                  <div>
+                      <label for="keyEmail">Associated Email</label>
+                      <input id="keyEmail" type="email" class="input"
+                             placeholder="user@example.com" autocomplete="email" />
+                  </div>
+                  <div class="md:col-span-2">
+                      <label for="keyExpiration">Expiration Date (optional)</label>
+                      <input id="keyExpiration" type="date" class="input" min="" />
+                  </div>
+                  <div class="md:col-span-2">
+                      <button id="generateKeysButton" class="btn btn-primary w-full md:w-auto" type="button">
+                        Generate key pair
+                      </button>
+                  </div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 2. MANAGE STORED KEYS                                        -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="manage-summary">
+                  <div class="summary-title">Manage Stored Keys</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">View, import, search, or remove PGP keys.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-5" role="region" aria-labelledby="manage-summary">
+
+                  <div class="row row-2">
+                      <div>
+                        <label for="keySearchInput">Search keys</label>
+                        <input id="keySearchInput" type="search" class="input"
+                               placeholder="Name, email, comment, fingerprint..." />
+                      </div>
+                      <div>
+                        <label for="keyFilterSelect">Filter</label>
+                        <select id="keyFilterSelect" class="select">
+                            <option value="all">All keys</option>
+                            <option value="private">Only with private material</option>
+                            <option value="public">Only public</option>
+                            <option value="revoked">Only revoked</option>
+                            <option value="expired">Only expired</option>
+                            <option value="expiring">Expiring within 90 days</option>
+                        </select>
+                      </div>
+                  </div>
+
+                  <div class="overflow-x-auto">
+                      <table class="card">
+                        <thead>
+                            <tr>
+                              <th style="width:2.5rem;"></th>
+                              <th>Fingerprint</th>
+                              <th>Email</th>
+                              <th>User ID</th>
+                              <th>Expiration</th>
+                              <th>Comment</th>
+                              <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="keysList"></tbody>
+                      </table>
+                  </div>
+
+                  <div class="flex flex-wrap gap-2">
+                      <button id="exportSelectedButton" class="btn btn-muted" type="button">
+                        Export selected (armored)
+                      </button>
+                      <button id="deleteSelectedButton" class="btn btn-danger" type="button">
+                        Delete selected
+                      </button>
+                      <button id="lookupKeyButton" class="btn btn-muted" type="button">
+                        Lookup from keyserver
+                      </button>
+                      <button id="refreshAllKeysButton" class="btn btn-muted" type="button">
+                        Refresh all from keyservers
+                      </button>
+                      <button id="showQrButton" class="btn btn-muted" type="button">
+                        Show QR
+                      </button>
+                      <button id="showAttributesButton" class="btn btn-muted" type="button">
+                        Show user attributes / photo
+                      </button>
+                      <button id="showNotationsButton" class="btn btn-muted" type="button">
+                        Show notations
+                      </button>
+                      <button id="showPreferencesButton" class="btn btn-muted" type="button">
+                        Show key preferences
+                      </button>
+                      <span id="selectionInfo" class="text-[0.85rem] text-slate-500 self-center"></span>
+                  </div>
+
+                  <div>
+                      <label for="key">Import PGP Key (public or private)</label>
+                      <textarea id="key" class="textarea"
+                                placeholder="Paste armored PGP key here"></textarea>
+                      <div class="flex flex-wrap gap-2 mt-3">
+                        <button id="storeKeysButton" class="btn btn-primary" type="button">Import key</button>
+                        <button id="reloadKeysButton" class="btn" type="button">Refresh list</button>
+                      </div>
+                  </div>
+
+                  <div>
+                      <label for="mergeKeyInput">Merge / update from pasted key</label>
+                      <textarea id="mergeKeyInput" class="textarea" spellcheck="false"
+                                placeholder="Paste a newer version of a key you already have..."
+                                style="min-height:5rem;"></textarea>
+                      <div class="flex flex-wrap gap-2 mt-2">
+                        <button id="mergeKeyButton" class="btn btn-muted" type="button">
+                          Merge / update
+                        </button>
+                      </div>
+                      <div id="mergeResult" class="mt-2 text-[0.9rem]"></div>
+                  </div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 3. ENCRYPT MESSAGE                                           -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="enc-summary">
+                  <div class="summary-title">Encrypt Message</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Secure a message with one or more recipient public keys.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="enc-summary">
+                  <div>
+                      <label for="messageToEncrypt">Plaintext Message</label>
+                      <textarea id="messageToEncrypt" class="textarea"
+                                placeholder="Enter message to encrypt"></textarea>
+                  </div>
+                  <div>
+                      <label for="encryptRecipientMode">Recipient selection</label>
+                      <select id="encryptRecipientMode" class="select">
+                        <option value="email" selected>Exact email address — discover and verify public key</option>
+                        <option value="stored">Stored public keys — one or multiple recipients</option>
+                      </select>
+                  </div>
+
+                  <div id="emailRecipientPanel" class="recipient-email-panel space-y-4">
+                    <div class="row row-2">
+                      <div>
+                        <label for="recipientEmail">Recipient email address</label>
+                        <input id="recipientEmail" type="email" class="input" autocomplete="email"
+                               placeholder="recipient@example.org" />
+                      </div>
+                      <div class="recipient-email-action">
+                        <button id="discoverRecipientButton" class="btn btn-muted" type="button">Find & verify public key</button>
+                      </div>
+                    </div>
+                    <p class="text-[0.8rem] text-slate-500">The address must match an OpenPGP User ID exactly. PasevSU checks the local key store first, then WKD at the recipient domain, then the verified exact-email directory at keys.openpgp.org.</p>
+                    <div id="recipientKeyStatus" class="recipient-key-status" aria-live="polite" data-state="idle">
+                      <strong>No recipient key selected.</strong>
+                      <span>Enter the exact email address and discover its public key before encryption.</span>
+                    </div>
+                    <label id="recipientFingerprintConfirmWrap" class="recipient-fingerprint-confirm hidden">
+                      <input id="recipientFingerprintConfirmed" type="checkbox" />
+                      <span>I independently checked the displayed fingerprint and approve this key for the recipient.</span>
+                    </label>
+                    <div class="flex flex-wrap gap-2">
+                      <button id="saveRecipientKeyButton" class="btn btn-muted hidden" type="button">Save discovered public key locally</button>
+                    </div>
+                  </div>
+
+                  <div id="storedRecipientPanel" class="hidden">
+                      <label for="keySelectEncryptMulti">Recipients' Public Keys (multi-select)</label>
+                      <select id="keySelectEncryptMulti" class="select keySelector"
+                              data-type="public" multiple size="4"
+                              style="height:auto;min-height:6rem;"></select>
+                      <p class="mt-1 text-[0.8rem] text-slate-500">Hold Ctrl/Cmd to select multiple.</p>
+                  </div>
+                  <div class="advanced-inline-options">
+                    <div class="row row-2">
+                      <label class="check-row"><input id="encryptSignEnabled" type="checkbox" /> <span>Sign before encryption</span></label>
+                      <label class="check-row"><input id="encryptHiddenRecipient" type="checkbox" /> <span>Hide recipient Key ID (wildcard)</span></label>
+                    </div>
+                    <div id="encryptSigningPanel" class="row row-2 hidden">
+                      <div>
+                        <label for="encryptSigningKey">Signing private key</label>
+                        <select id="encryptSigningKey" class="select keySelector" data-type="private">
+                          <option selected disabled value="">— Select Private Key —</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="encryptSigningPassphrase">Signing-key passphrase</label>
+                        <input id="encryptSigningPassphrase" type="password" class="input" autocomplete="current-password" />
+                      </div>
+                    </div>
+                    <div id="encryptNotationPanel" class="row row-2 hidden">
+                      <div><label for="encryptCaseId">Signed notation · Case ID (optional)</label><input id="encryptCaseId" class="input" /></div>
+                      <div><label for="encryptEvidenceId">Signed notation · Evidence ID (optional)</label><input id="encryptEvidenceId" class="input" /></div>
+                    </div>
+                    <div class="row row-2">
+                      <div><label for="encryptCompression">OpenPGP compression</label><select id="encryptCompression" class="select"><option value="auto" selected>Automatic / recipient-compatible</option><option value="none">None</option><option value="zip">ZIP (DEFLATE)</option><option value="zlib">ZLIB</option></select></div>
+                      <div><label for="encryptPolicyProfile">Mandatory encryption policy gate</label><select id="encryptPolicyProfile" class="select"><option value="modern-compatible" selected>Modern Compatible</option><option value="rfc9580-strict">RFC 9580 v6 Strict</option><option value="legacy-interop">Legacy Interoperability</option><option value="rfc9980-pqt">RFC 9980 PQ/T — requires verified provider</option></select></div>
+                      <label class="check-row"><input id="encryptStrictPolicy" type="checkbox" checked /> <span>Use strict per-operation OpenPGP configuration</span></label>
+                    </div>
+                  </div>
+                  <div>
+                      <button id="encryptMessageButton" class="btn btn-primary" type="button">Encrypt</button>
+                  </div>
+                  <div id="encryptRecipientAudit" class="text-[0.8rem] text-slate-500"></div>
+                  <div>
+                      <label for="encryptedMessage">Encrypted Message (armored)</label>
+                      <textarea id="encryptedMessage" class="textarea" readonly
+                               ></textarea>
+                  </div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 4. DECRYPT MESSAGE                                           -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="dec-summary">
+                  <div class="summary-title">Decrypt Message</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Decrypt a message using your private key.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="dec-summary">
+                  <div>
+                      <label for="messageToDecrypt">Encrypted Message (armored)</label>
+                      <textarea id="messageToDecrypt" class="textarea"
+                                placeholder="Paste encrypted message"></textarea>
+                  </div>
+                  <div class="row row-2">
+                      <div>
+                        <label for="privateKeySelect">Your Private Key</label>
+                        <select id="privateKeySelect" data-type="private" class="select keySelector">
+                            <option selected disabled value="">— Select Private Key —</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="privateKeyPassword">Passphrase</label>
+                        <input id="privateKeyPassword" type="password" class="input"
+                               placeholder="Enter passphrase if required" autocomplete="current-password" />
+                      </div>
+                  </div>
+                  <div class="advanced-inline-options">
+                    <label class="check-row"><input id="decryptExpectSigned" type="checkbox" /> <span>Require a valid sender signature</span></label>
+                    <div class="row row-2">
+                      <div>
+                        <label for="decryptVerificationKey">Expected sender public key</label>
+                        <select id="decryptVerificationKey" class="select keySelector" data-type="public">
+                          <option selected disabled value="">— Select Public Key —</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="decryptValidationDate">Verify at date/time (optional)</label>
+                        <input id="decryptValidationDate" type="datetime-local" class="input" />
+                      </div>
+                    </div>
+                    <label class="check-row"><input id="decryptStrictPolicy" type="checkbox" checked /> <span>Use PasevSU Strict Security Policy for this operation</span></label>
+                  </div>
+                  <div>
+                      <button id="decryptMessageButton" class="btn btn-primary" type="button">Decrypt</button>
+                  </div>
+                  <div id="decryptSignatureAudit" class="text-[0.8rem] text-slate-500"></div>
+                  <div>
+                      <label for="decryptedMessage">Decrypted Plaintext</label>
+                      <textarea id="decryptedMessage" class="textarea" readonly
+                               ></textarea>
+                  </div>
+                </div>
+            </details>
+
+
+            <!-- ============================================================ -->
+            <!-- PASEVSU FORTRESS MULTI-LAYER ENCRYPTION                     -->
+            <!-- ============================================================ -->
+            <!-- 5. PASEVSU FORTRESS MULTI-LAYER                              -->
+            <details class="card">
+                <summary id="fortress-summary">
+                  <div class="summary-title">PasevSU Fortress Multi-Layer</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Nested high-assurance encryption using every required Universal MAX encryption layer.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="fortress-summary">
+                  <div class="security-profile" data-level="extreme">
+                    <strong>Fortress MAX</strong>
+                    <div>Each layer creates a fresh OpenPGP session key. The output of one layer becomes the plaintext of the next layer.</div>
+                    <div class="security-meta">
+                      <span>Brainpool P-512 ECDH</span><span>NIST P-521 ECDH</span><span>RSA-8192</span><span>RSA-4096</span><span>AES-256 per layer</span>
+                    </div>
+                  </div>
+                  <div class="row row-2">
+                    <div>
+                      <label for="fortressProfile">Fortress profile</label>
+                      <select id="fortressProfile" class="select">
+                        <option value="max4" selected>MAX · 4 nested asymmetric layers</option>
+                        <option value="max4-pass">MAX+ · 4 layers + independent Argon2id passphrase layer</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="fortressPublicKey">Universal MAX public key</label>
+                      <select id="fortressPublicKey" class="select keySelector" data-type="public">
+                        <option selected disabled value="">— Select Public Key —</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row row-2">
+                    <div>
+                      <label for="fortressPrivateKey">Universal MAX private key (for decryption)</label>
+                      <select id="fortressPrivateKey" class="select keySelector" data-type="private">
+                        <option selected disabled value="">— Select Private Key —</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="fortressPrivatePassphrase">Private-key passphrase</label>
+                      <input id="fortressPrivatePassphrase" type="password" class="input" autocomplete="current-password" placeholder="Required only for decryption" />
+                    </div>
+                  </div>
+                  <div id="fortressPassphraseRow" class="row row-2" hidden>
+                    <div>
+                      <label for="fortressPassphrase">Independent Fortress passphrase</label>
+                      <input id="fortressPassphrase" type="password" class="input" autocomplete="new-password" placeholder="Use a different strong passphrase" />
+                    </div>
+                    <div>
+                      <label for="fortressPassphraseConfirm">Confirm Fortress passphrase</label>
+                      <input id="fortressPassphraseConfirm" type="password" class="input" autocomplete="new-password" placeholder="Repeat the independent passphrase" />
+                    </div>
+                  </div>
+                  <div>
+                    <label for="fortressTextInput">Text input / armored Fortress package</label>
+                    <textarea id="fortressTextInput" class="textarea" placeholder="Enter plaintext to encrypt or paste a PasevSU Fortress package to decrypt"></textarea>
+                  </div>
+                  <div>
+                    <label for="fortressFileInput">File input (optional; takes priority over text)</label>
+                    <input id="fortressFileInput" type="file" class="input" />
+                    <p class="mt-1 text-[0.8rem] text-slate-500">For small files/text use the in-memory buttons below. For large files use Fortress Streaming V3: the file is processed as a Web Stream and written directly to disk without building the complete multi-layer ciphertext in RAM.</p>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    <button id="fortressEncryptButton" class="btn btn-primary" type="button">Fortress Encrypt (memory)</button>
+                    <button id="fortressDecryptButton" class="btn btn-primary" type="button">Fortress Decrypt (memory)</button>
+                    <button id="fortressStreamEncryptButton" class="btn btn-primary" type="button">Streaming Encrypt → Disk</button>
+                    <button id="fortressStreamDecryptButton" class="btn btn-primary" type="button">Streaming Decrypt → Disk</button>
+                    <button id="fortressClearButton" class="btn btn-muted" type="button">Clear</button>
+                  </div>
+                  <div class="security-profile" data-level="high">
+                    <strong>Fortress Streaming V3</strong>
+                    <div>Direct-to-disk pipeline for large files. It preserves all four nested OpenPGP layers and optional MAX+ Argon2id protection while keeping memory bounded by the streaming pipeline.</div>
+                    <div class="security-meta"><span>Web Streams</span><span>Direct-to-disk</span><span>SHA-512 chain</span><span>AEAD verified</span><span>No fixed 128 MiB app limit</span></div>
+                    <progress id="fortressStreamProgress" max="100" value="0" style="width:100%;height:.75rem;margin-top:.75rem;"></progress>
+                    <div id="fortressStreamStatus" class="mt-1 text-[0.8rem] text-slate-500" aria-live="polite">Streaming engine ready</div>
+                  </div>
+                  <div>
+                    <label for="fortressOutput">Result / report</label>
+                    <textarea id="fortressOutput" class="textarea" readonly></textarea>
+                    <div id="fortressDownloadHost" class="mt-2"></div>
+                  </div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 6. SIGN MESSAGE                                              -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="sign-summary">
+                  <div class="summary-title">Sign Message</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Sign a message to prove its authenticity.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="sign-summary">
+                  <div>
+                      <label for="messageToSign">Plaintext Message</label>
+                      <textarea id="messageToSign" class="textarea"
+                                placeholder="Enter message to sign"></textarea>
+                  </div>
+                  <div class="row row-2">
+                      <div>
+                        <label for="signPrivateKeySelect">Your Private Key</label>
+                        <select id="signPrivateKeySelect" data-type="private" class="select keySelector">
+                            <option selected disabled value="">— Select Private Key —</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="signPrivateKeyPassword">Passphrase</label>
+                        <input id="signPrivateKeyPassword" type="password" class="input"
+                               placeholder="Enter passphrase if required" />
+                      </div>
+                  </div>
+                  <div>
+                      <button id="signMessageButton" class="btn btn-primary" type="button">Sign</button>
+                  </div>
+                  <div>
+                      <label for="signedMessage">Signed Message (armored)</label>
+                      <textarea id="signedMessage" class="textarea" readonly
+                               ></textarea>
+                  </div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 7. VERIFY SIGNED MESSAGE                                     -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="verify-summary">
+                  <div class="summary-title">Verify Signed Message</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Verify cleartext or detached signatures.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="verify-summary">
+                  <div>
+                      <label for="messageToVerify">Signed Message (armored)</label>
+                      <textarea id="messageToVerify" class="textarea"
+                                placeholder="Paste signed message"></textarea>
+                  </div>
+                  <div class="row row-2">
+                      <div>
+                        <label for="verifyPublicKeySelect">Sender's Public Key</label>
+                        <select id="verifyPublicKeySelect" data-type="public" class="select keySelector">
+                            <option selected disabled value="">— Select Public Key —</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div>
+                      <button id="verifyMessageButton" class="btn btn-primary" type="button">Verify</button>
+                  </div>
+
+                  <hr style="border:0;border-top:1px solid var(--border);margin:1rem 0;" />
+
+                  <div class="row row-2">
+                      <div>
+                        <label for="detachedSigFile">Detached signature (.sig, .asc)</label>
+                        <input type="file" id="detachedSigFile" class="input"
+                               accept=".sig,.asc,.gpg" />
+                      </div>
+                      <div>
+                        <label for="detachedDataFile">Signed data file</label>
+                        <input type="file" id="detachedDataFile" class="input" />
+                      </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                      <button id="verifyDetachedButton" class="btn btn-primary" type="button">
+                        Verify detached signature
+                      </button>
+                  </div>
+                  <div id="detachedResult" class="mt-2 text-[0.9rem]"></div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 8. PUBLISH TO KEYSERVERS                                     -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="pub-summary">
+                  <div class="summary-title">Publish to Keyservers</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Upload your public key to popular PGP keyservers.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="pub-summary">
+                  <div class="row row-2">
+                      <div>
+                        <label for="publishKeySelect">Key to publish</label>
+                        <select id="publishKeySelect" class="select keySelector" data-type="public">
+                            <option selected disabled value="">— Select PGP Key —</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div>
+                      <label>Keyservers</label>
+                      <div id="serverList" class="mt-1"
+                           style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.4rem .75rem;"></div>
+                      <div class="flex flex-wrap gap-2 mt-3">
+                        <button id="selectAllServersButton" class="btn btn-muted" type="button">Select all</button>
+                        <button id="clearServersButton" class="btn btn-muted" type="button">Clear selection</button>
+                      </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                      <button id="publishKeyButton" class="btn btn-primary" type="button">
+                        Publish to selected servers
+                      </button>
+                  </div>
+                  <div id="publishResults" class="space-y-1"></div>
+                  <p class="mt-1 text-[0.8rem] text-slate-500">
+                    Note: <code>keys.openpgp.org</code> is a verifying server — confirm by email.
+                    Others may need a CORS proxy.
+                  </p>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 9. KEY MANIFEST + EXTENDED METADATA                          -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="manifest-summary">
+                  <div class="summary-title">Key Manifest &amp; Extended Metadata</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Store metadata and export/import full PGP manifest.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="manifest-summary">
+                  <div class="row row-2">
+                      <div>
+                        <label for="metaKeySelect">Key</label>
+                        <select id="metaKeySelect" class="select keySelector" data-type="any">
+                            <option selected disabled value="">— Select PGP Key —</option>
+                        </select>
+                      </div>
+                  </div>
+
+                  <div class="row row-2">
+                      <div>
+                        <label for="metaOrganization">Organization</label>
+                        <input id="metaOrganization" type="text" class="input" />
+                      </div>
+                      <div>
+                        <label for="metaWebsite">Website</label>
+                        <input id="metaWebsite" type="url" class="input" />
+                      </div>
+                  </div>
+
+                  <div class="row row-2">
+                      <div>
+                        <label for="metaPhone">Phone</label>
+                        <input id="metaPhone" type="text" class="input" />
+                      </div>
+                      <div>
+                        <label for="metaLocation">Location</label>
+                        <input id="metaLocation" type="text" class="input" />
+                      </div>
+                  </div>
+
+                  <div>
+                      <label for="metaTags">Tags (comma-separated)</label>
+                      <input id="metaTags" type="text" class="input" placeholder="personal, signing" />
+                  </div>
+
+                  <div>
+                      <label for="metaNotes">Notes</label>
+                      <textarea id="metaNotes" class="textarea" style="min-height:5rem;"></textarea>
+                  </div>
+
+                  <div class="flex flex-wrap gap-2">
+                      <button id="saveMetaButton" class="btn btn-primary" type="button">Save metadata</button>
+                      <button id="generateManifestButton" class="btn btn-muted" type="button">Generate manifest</button>
+                      <button id="downloadManifestButton" class="btn btn-muted" type="button">Download JSON</button>
+                      <button id="importManifestButton" class="btn btn-muted" type="button">Import JSON</button>
+                      <input type="file" id="manifestFileInput" accept=".json,application/json" hidden />
+                  </div>
+
+                  <div>
+                      <label for="manifestOutput">Manifest JSON</label>
+                      <textarea id="manifestOutput" class="textarea" spellcheck="false"></textarea>
+                  </div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 10. PASSPHRASE MANAGEMENT                                     -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="pass-summary">
+                  <div class="summary-title">Passphrase Management</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Rotate the passphrase protecting a private key without allowing unprotected storage.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="pass-summary">
+                  <div class="row row-2">
+                      <div>
+                        <label for="passphraseKeySelect">Private key</label>
+                        <select id="passphraseKeySelect" class="select keySelector" data-type="private">
+                            <option selected disabled value="">— Select Private Key —</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="row row-2">
+                      <div>
+                        <label for="oldPassphrase">Current passphrase</label>
+                        <input id="oldPassphrase" type="password" class="input" autocomplete="current-password" />
+                      </div>
+                      <div>
+                        <label for="newPassphrase">New passphrase</label>
+                        <input id="newPassphrase" type="password" class="input" autocomplete="new-password" />
+                      </div>
+                  </div>
+                  <div class="row row-2">
+                      <div>
+                        <label for="confirmPassphrase">Confirm new passphrase</label>
+                        <input id="confirmPassphrase" type="password" class="input" autocomplete="new-password" />
+                      </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                      <button id="changePassphraseButton" class="btn btn-primary" type="button">
+                        Change passphrase
+                      </button>
+                  </div>
+                  <p class="mt-1 text-[0.8rem] text-slate-500">
+                    Private keys remain passphrase-protected; v2.1.1 does not allow persistent unprotected private-key storage.
+                  </p>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 11. REVOCATION CERTIFICATE                                   -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="rev-summary">
+                  <div class="summary-title">Revocation Certificate</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Generate or apply a revocation certificate.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="rev-summary">
+                  <div class="row row-2">
+                      <div>
+                        <label for="revocationKeySelect">Private key</label>
+                        <select id="revocationKeySelect" class="select keySelector" data-type="private">
+                            <option selected disabled value="">— Select Private Key —</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="revocationPassphrase">Passphrase</label>
+                        <input id="revocationPassphrase" type="password" class="input"
+                               autocomplete="current-password" />
+                      </div>
+                  </div>
+                  <div class="row row-2">
+                      <div>
+                        <label for="revocationReason">Reason</label>
+                        <select id="revocationReason" class="select">
+                            <option value="noReason" selected>No reason specified</option>
+                            <option value="keySuperseded">Key superseded</option>
+                            <option value="keyCompromised">Key material compromised</option>
+                            <option value="keyRetired">Key retired / no longer used</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="revocationString">Reason text (optional)</label>
+                        <input id="revocationString" type="text" class="input" />
+                      </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                      <button id="generateRevocationButton" class="btn btn-primary" type="button">
+                        Generate certificate
+                      </button>
+                      <button id="downloadRevocationButton" class="btn btn-muted" type="button" disabled>
+                        Download .asc
+                      </button>
+                      <button id="applyRevocationButton" class="btn btn-danger" type="button">
+                        Apply certificate to key
+                      </button>
+                      <input type="file" id="revocationFileInput" accept=".asc,.pgp,.key" hidden />
+                  </div>
+                  <div>
+                      <label for="revocationOutput">Revocation certificate (armored)</label>
+                      <textarea id="revocationOutput" class="textarea" spellcheck="false"></textarea>
+                  </div>
+                  <p class="mt-1 text-[0.8rem] text-slate-500">
+                    ⚠️ Store the certificate safely. It can revoke the key without a passphrase.
+                  </p>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 12. CERTIFY ANOTHER KEY                                      -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="cert-summary">
+                  <div class="summary-title">Certify Another Key</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Sign someone else's public key to vouch for it.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="cert-summary">
+                  <div>
+                      <label for="certTargetKey">Public key to certify</label>
+                      <textarea id="certTargetKey" class="textarea" style="min-height:7rem;"
+                                placeholder="Paste the ASCII-armored public key..."></textarea>
+                  </div>
+                  <div class="row row-2">
+                      <div>
+                        <label for="certSigningKey">Your signing key</label>
+                        <select id="certSigningKey" class="select keySelector" data-type="private">
+                            <option selected disabled value="">— Select Private Key —</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="certPassphrase">Passphrase</label>
+                        <input id="certPassphrase" type="password" class="input"
+                               autocomplete="current-password" />
+                      </div>
+                  </div>
+                  <div class="security-profile" data-level="high"><strong>Verified generic certification</strong><div>OpenPGP.js 6.3.1 public API creates generic third-party certifications here. Unsupported certification-level, expiration and notation controls were removed rather than simulated. The result is verified against the signing key before export.</div></div>
+                  <div class="flex flex-wrap gap-2">
+                      <button id="certifyKeyButton" class="btn btn-primary" type="button">Sign &amp; certify</button>
+                      <button id="copyCertifiedButton" class="btn btn-muted" type="button" disabled>Copy</button>
+                      <button id="downloadCertifiedButton" class="btn btn-muted" type="button" disabled>Download</button>
+                      <button id="publishCertifiedButton" class="btn btn-muted" type="button" disabled>Publish</button>
+                  </div>
+                  <div>
+                      <label for="certOutput">Certified public key (armored)</label>
+                      <textarea id="certOutput" class="textarea" spellcheck="false" readonly
+                               ></textarea>
+                  </div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 13. ENCRYPTED BACKUP                                         -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="backup-summary">
+                  <div class="summary-title">Encrypted Backup &amp; Restore</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Export a password-protected backup of all keys.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="backup-summary">
+                  <div class="row row-2">
+                      <div>
+                        <label for="backupPassword">Master password (min 16 chars)</label>
+                        <input id="backupPassword" type="password" class="input" autocomplete="new-password" />
+                      </div>
+                      <div>
+                        <label for="backupPasswordConfirm">Confirm</label>
+                        <input id="backupPasswordConfirm" type="password" class="input" autocomplete="new-password" />
+                      </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                      <button id="exportBackupButton" class="btn btn-primary" type="button">
+                        💾 Export encrypted backup
+                      </button>
+                      <button id="importBackupButton" class="btn btn-muted" type="button">
+                        📂 Import encrypted backup
+                      </button>
+                      <input type="file" id="backupFileInput" accept=".pgpbackup,.json" hidden />
+                  </div>
+                  <div>
+                      <label>Options</label>
+                      <div style="display:flex;flex-direction:column;gap:.3rem;margin-top:.3rem;font-size:.9rem;">
+                        <label style="display:flex;gap:.5rem;align-items:center;">
+                          <input type="checkbox" id="backupIncludePrivate" checked />
+                          <span>Include private keys</span>
+                        </label>
+                        <label style="display:flex;gap:.5rem;align-items:center;">
+                          <input type="checkbox" id="backupIncludeMetadata" checked />
+                          <span>Include metadata + history</span>
+                        </label>
+                      </div>
+                  </div>
+                  <div id="backupInfo" class="text-[0.85rem] text-slate-500"></div>
+                  <p class="mt-1 text-[0.8rem] text-slate-500">
+                    🔐 AES-256-GCM · PBKDF2-SHA256 · 600 000 iterations.
+                  </p>
+
+                  <hr style="border:0;border-top:1px solid var(--border);margin:1rem 0;" />
+
+                  <div>
+                      <label>Local snapshots</label>
+                      <div class="flex flex-wrap gap-2 mt-2">
+                        <button id="listSnapshotsButton" class="btn btn-muted" type="button">List snapshots</button>
+                        <button id="createSnapshotButton" class="btn btn-muted" type="button">Create snapshot</button>
+                      </div>
+                      <div id="snapshotsList" style="margin-top:.5rem;font-size:.9rem;"></div>
+                  </div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 14. KEY PROPERTIES INSPECTOR                                 -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="inspect-summary">
+                  <div class="summary-title">Key Properties Inspector</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Deep PGP packet structure, subpackets and preferences.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="inspect-summary">
+                  <div class="row row-2">
+                      <div>
+                        <label for="inspectKeySelect">Key to inspect</label>
+                        <select id="inspectKeySelect" class="select keySelector" data-type="any">
+                            <option selected disabled value="">— Select PGP Key —</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                      <button id="inspectKeyButton" class="btn btn-primary" type="button">Inspect</button>
+                      <button id="exportInspectButton" class="btn btn-muted" type="button" disabled>
+                        Export JSON
+                      </button>
+                  </div>
+                  <div id="inspectOutput" style="font-size:.85rem;"></div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 15. FILE ENCRYPTION                                          -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="file-summary">
+                  <div class="summary-title">File Encryption</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Encrypt, decrypt, or sign files via drag &amp; drop.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="file-summary">
+                  <div id="fileDropZone"
+                       style="border:2px dashed var(--border);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;"
+                       tabindex="0" role="button" aria-label="Drop files here">
+                      <div style="font-size:2rem;margin-bottom:.5rem;">📁</div>
+                      <div><strong>Drop files here</strong> or click to select</div>
+                      <input type="file" id="fileInput" multiple hidden />
+                  </div>
+                  <div class="row row-2">
+                      <div>
+                        <label for="fileOperation">Operation</label>
+                        <select id="fileOperation" class="select">
+                            <option value="encrypt" selected>Encrypt</option>
+                            <option value="sign">Sign (detached)</option>
+                            <option value="encrypt-sign">Encrypt &amp; Sign</option>
+                            <option value="decrypt">Decrypt</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="fileOutputFormat">Output</label>
+                        <select id="fileOutputFormat" class="select">
+                            <option value="armored" selected>ASCII-armored (.asc)</option>
+                            <option value="binary">Binary (.pgp)</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="row row-2">
+                      <div>
+                        <label for="fileRecipientKey">Recipient public key</label>
+                        <select id="fileRecipientKey" class="select keySelector" data-type="public">
+                            <option selected disabled value="">— Select Public Key —</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="fileSigningKey">Your signing key</label>
+                        <select id="fileSigningKey" class="select keySelector" data-type="private">
+                            <option selected disabled value="">— Select Private Key —</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="row row-2">
+                      <div>
+                        <label for="fileSignPassphrase">Passphrase</label>
+                        <input id="fileSignPassphrase" type="password" class="input"
+                               autocomplete="current-password" />
+                      </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                      <button id="processFilesButton" class="btn btn-primary" type="button" disabled>
+                        Process files
+                      </button>
+                      <button id="clearFilesButton" class="btn btn-muted" type="button">Clear</button>
+                  </div>
+                  <div>
+                      <label>Queue</label>
+                      <div id="fileQueue" class="mt-1"
+                           style="display:flex;flex-direction:column;gap:.3rem;font-size:.9rem;"></div>
+                  </div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 16. SESSION KEYS                                             -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="session-summary">
+                  <div class="summary-title">Session Keys</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Generate and reuse PGP session keys.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="session-summary">
+                  <div class="row row-2">
+                      <div>
+                        <label for="sessionRecipientKey">Recipient public key</label>
+                        <select id="sessionRecipientKey" class="select keySelector" data-type="public">
+                            <option selected disabled value="">— Select Public Key —</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="sessionAlgorithm">Session key algorithm</label>
+                        <select id="sessionAlgorithm" class="select">
+                            <option value="aes256" selected>AES-256</option>
+                            <option value="aes192">AES-192</option>
+                            <option value="aes128">AES-128</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                      <button id="generateSessionButton" class="btn btn-primary" type="button">
+                        Generate &amp; encrypt session key
+                      </button>
+                      <button id="testSessionButton" class="btn btn-muted" type="button" disabled>
+                        Test
+                      </button>
+                  </div>
+                  <div>
+                      <label for="sessionKeyOutput">Encrypted session key (armored PKESK)</label>
+                      <textarea id="sessionKeyOutput" class="textarea" spellcheck="false" readonly
+                               ></textarea>
+                  </div>
+                  <div id="sessionMeta" class="text-[0.85rem] text-slate-500"></div>
+                </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 17. WEB OF TRUST                                             -->
+            <!-- ============================================================ -->
+            <details class="card">
+                <summary id="wot-summary">
+                  <div class="summary-title">Web of Trust</div>
+                  <div class="flex items-center gap-2">
+                      <span class="summary-desc">Visualize PGP certifications between keys.</span>
+                      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9l6 6 6-6"></path></svg>
+                  </div>
+                </summary>
+                <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="wot-summary">
+                  <div class="row row-2">
+                      <div>
+                        <label for="wotRootKey">Root key</label>
+                        <select id="wotRootKey" class="select keySelector" data-type="any">
+                            <option selected disabled value="">— Select PGP Key —</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="wotMaxDepth">Maximum depth</label>
+                        <select id="wotMaxDepth" class="select">
+                            <option value="1">1 hop</option>
+                            <option value="2" selected>2 hops</option>
+                            <option value="3">3 hops</option>
+                            <option value="5">5 hops</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                      <button id="buildWotButton" class="btn btn-primary" type="button">Build graph</button>
+                      <button id="exportWotButton" class="btn btn-muted" type="button" disabled>Export JSON</button>
+                  </div>
+                  <div>
+                      <label>Graph</label>
+                      <div id="wotGraphHost"
+                           style="min-height:320px;border:1px solid var(--border);border-radius:8px;padding:.5rem;background:var(--bg);overflow:auto;"></div>
+                  </div>
+                  <div>
+                      <label>Node scores</label>
+                      <div id="wotScores" style="font-size:.9rem;max-height:200px;overflow:auto;"></div>
+                  </div>
+                </div>
+            </details>
+
+
+            <!-- ============================================================ -->
+            <!-- 18. ADVANCED OPENPGP CORE                                   -->
+            <!-- ============================================================ -->
+            <details class="card">
+              <summary id="advanced-summary">
+                <div class="summary-title">Advanced OpenPGP Core</div>
+                <div class="flex items-center gap-2">
+                  <span class="summary-desc">Lifecycle, deep validation, strict policy and session-key inspection.</span>
+                  <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+                </div>
+              </summary>
+              <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="advanced-summary">
+                <div class="security-profile" data-level="very-high">
+                  <strong>PasevSU Advanced OpenPGP Core</strong>
+                  <div>This module maintains a long-lived OpenPGP identity, validates every component and exposes expert session-key inspection without weakening normal operations.</div>
+                </div>
+
+                <details class="inner-tool" open>
+                  <summary><strong>Security Policy Engine</strong></summary>
+                  <div class="inner-tool-body space-y-4">
+                    <p>Creates a local per-operation OpenPGP.js policy. It does not change the global library configuration.</p>
+                    <div class="row row-2">
+                      <div><label for="advMinRsaBits">Minimum RSA bits</label><select id="advMinRsaBits" class="select"><option value="2048">2048 · compatibility</option><option value="3072" selected>3072 · strict default</option><option value="4096">4096 · high assurance</option></select></div>
+                      <div><label for="advMaxDecompressedMB">Maximum decompressed message size (MiB)</label><input id="advMaxDecompressedMB" type="number" min="1" max="16384" value="512" class="input" /></div>
+                    </div>
+                    <div class="row row-2">
+                      <label class="check-row"><input id="advEnforceGrammar" type="checkbox" checked /> <span>Enforce RFC 9580 message grammar</span></label>
+                      <label class="check-row"><input id="advRejectSha1" type="checkbox" checked /> <span>Reject SHA-1/MD5 for strict operations</span></label>
+                    </div>
+                    <label class="check-row"><input id="advConstantTimeRSA" type="checkbox" /> <span>Constant-time RSA/ElGamal session-key decryption (slower; useful for automated services)</span></label>
+                    <p class="field-note">Unauthenticated-message and unauthenticated-stream modes are hard-disabled in Strict Policy. They are not exposed as normal switches.</p>
+                  </div>
+                </details>
+
+                <details class="inner-tool">
+                  <summary><strong>Deep Key Health & Historical Validation</strong></summary>
+                  <div class="inner-tool-body space-y-4">
+                    <p>Cryptographically verifies the primary key, every User ID self-certification and every subkey binding. An optional historical date answers whether the structure was valid at that time rather than only today.</p>
+                    <div class="row row-2">
+                      <div><label for="advValidationKey">Key to validate</label><select id="advValidationKey" class="select keySelector" data-type="any"><option selected disabled value="">— Select PGP Key —</option></select></div>
+                      <div><label for="advValidationDate">Validation date/time (optional)</label><input id="advValidationDate" type="datetime-local" class="input" /></div>
+                    </div>
+                    <div class="row row-2">
+                      <label class="check-row"><input id="advValidationStrict" type="checkbox" checked /> <span>Apply Strict Security Policy</span></label>
+                      <label class="check-row"><input id="advValidatePrivate" type="checkbox" /> <span>Also validate private/public parameters</span></label>
+                    </div>
+                    <div><label for="advValidationPassphrase">Private-key passphrase (only if private validation is enabled)</label><input id="advValidationPassphrase" type="password" class="input" autocomplete="current-password" /></div>
+                    <button id="advValidateButton" class="btn btn-primary" type="button">Run deep validation</button>
+                    <div><label for="advValidationOutput">Health report (JSON)</label><textarea id="advValidationOutput" class="textarea" readonly spellcheck="false"></textarea></div>
+                  </div>
+                </details>
+
+                <details class="inner-tool">
+                  <summary><strong>Identity Lifecycle Manager</strong></summary>
+                  <div class="inner-tool-body space-y-4">
+                    <p>Extends one existing primary identity instead of creating a new fingerprint. Add role-specific subkeys, revoke one compromised subkey, revoke an obsolete email/User ID, or revoke the complete identity.</p>
+                    <div class="row row-2">
+                      <div><label for="advLifecycleKey">Private identity</label><select id="advLifecycleKey" class="select keySelector" data-type="private"><option selected disabled value="">— Select Private Key —</option></select></div>
+                      <div><label for="advLifecyclePassphrase">Private-key passphrase</label><input id="advLifecyclePassphrase" type="password" class="input" autocomplete="current-password" /></div>
+                    </div>
+                    <div class="row row-2">
+                      <div><label for="advNewSubkeyProfile">New subkey role/profile</label><select id="advNewSubkeyProfile" class="select"><option value="brainpool-sign">Brainpool P-512 · SIGN</option><option value="brainpool-encrypt">Brainpool P-512 · ENCRYPT</option><option value="p521-sign">NIST P-521 · SIGN</option><option value="p521-encrypt">NIST P-521 · ENCRYPT</option><option value="rsa8192-sign">RSA-8192 · SIGN</option><option value="rsa8192-encrypt">RSA-8192 · ENCRYPT</option><option value="rsa4096-sign">RSA-4096 · SIGN</option><option value="rsa4096-encrypt">RSA-4096 · ENCRYPT</option><option value="curve25519-encrypt">Curve25519 · ENCRYPT (new-format/compatibility varies)</option></select></div>
+                      <div><label for="advNewSubkeyExpiration">New subkey expiration (optional)</label><input id="advNewSubkeyExpiration" type="date" class="input" /></div>
+                    </div>
+                    <button id="advAddSubkeyButton" class="btn btn-primary" type="button">Add subkey to this identity</button>
+                    <hr class="soft-rule" />
+                    <div class="row row-2">
+                      <div><label for="advLifecycleSubkey">Existing subkey</label><select id="advLifecycleSubkey" class="select"><option value="">— Select subkey —</option></select></div>
+                      <div><label for="advLifecycleUID">Existing User ID / email</label><select id="advLifecycleUID" class="select"><option value="">— Select User ID —</option></select></div>
+                    </div>
+                    <div class="row row-2">
+                      <div><label for="advRevocationReason">Revocation reason</label><select id="advRevocationReason" class="select"><option value="keyCompromised">Key material compromised</option><option value="keySuperseded">Key/subkey superseded</option><option value="keyRetired">Key/subkey retired</option><option value="noReason">No reason specified</option></select></div>
+                      <div><label for="advRevocationText">Revocation explanation</label><input id="advRevocationText" class="input" placeholder="Optional explanation recorded in the revocation signature" /></div>
+                    </div>
+                    <div class="flex flex-wrap gap-2"><button id="advRevokeSubkeyButton" class="btn btn-danger" type="button">Revoke selected subkey only</button><button id="advRevokeUIDButton" class="btn btn-danger" type="button">Revoke selected User ID only</button><button id="advRevokeKeyButton" class="btn btn-danger" type="button">Revoke complete identity</button></div>
+                  </div>
+                </details>
+
+                <details class="inner-tool">
+                  <summary><strong>Session Key & Recipient Inspector</strong></summary>
+                  <div class="inner-tool-body space-y-4">
+                    <p>Parses an encrypted OpenPGP message, lists recipient/signing Key IDs and decrypts only the symmetric session-key packet with the selected private key. Raw session-key bytes stay hidden unless explicitly requested.</p>
+                    <div><label for="advSessionMessage">Encrypted OpenPGP message / encrypted session-key packet</label><textarea id="advSessionMessage" class="textarea" spellcheck="false" placeholder="-----BEGIN PGP MESSAGE-----"></textarea></div>
+                    <div class="row row-2"><div><label for="advSessionPrivateKey">Private key</label><select id="advSessionPrivateKey" class="select keySelector" data-type="private"><option selected disabled value="">— Select Private Key —</option></select></div><div><label for="advSessionPassphrase">Passphrase</label><input id="advSessionPassphrase" type="password" class="input" autocomplete="current-password" /></div></div>
+                    <div class="row row-2"><div><label for="advSessionDate">Key validation date/time (optional)</label><input id="advSessionDate" type="datetime-local" class="input" /></div><label class="check-row"><input id="advSessionStrict" type="checkbox" checked /> <span>Apply Strict Security Policy</span></label></div>
+                    <label class="check-row danger-note"><input id="advRevealSessionKey" type="checkbox" /> <span>Expert: reveal raw symmetric session-key material in the report</span></label>
+                    <button id="advInspectSessionButton" class="btn btn-primary" type="button">Inspect & decrypt session key</button>
+                    <div><label for="advSessionOutput">Session-key report (JSON)</label><textarea id="advSessionOutput" class="textarea" readonly spellcheck="false"></textarea></div>
+                  </div>
+                </details>
+
+                <details class="inner-tool">
+                  <summary><strong>ASCII Armor & Message Inspector</strong></summary>
+                  <div class="inner-tool-body space-y-4">
+                    <p>Dearmors an OpenPGP block, verifies its armor checksum when present, hashes the binary packet block and extracts recipient/signing Key IDs when the content is an OpenPGP message.</p>
+                    <div><label for="advArmorInput">ASCII-armored OpenPGP block</label><textarea id="advArmorInput" class="textarea" spellcheck="false" placeholder="-----BEGIN PGP ...-----"></textarea></div>
+                    <div class="flex flex-wrap gap-2"><button id="advArmorInspectButton" class="btn btn-primary" type="button">Dearmor & inspect</button><button id="advArmorDownloadButton" class="btn btn-muted" type="button" disabled>Download binary packet block</button></div>
+                    <div><label for="advArmorOutput">Armor inspection report (JSON)</label><textarea id="advArmorOutput" class="textarea" readonly spellcheck="false"></textarea></div>
+                  </div>
+                </details>
+
+                <div class="flex flex-wrap gap-2"><button id="advDownloadReportButton" class="btn btn-muted" type="button">Download available advanced reports</button><a class="btn btn-muted" href="tests/runtime_openpgp_v21.html" target="_blank" rel="noopener">Open cryptographic runtime self-test</a></div>
+              </div>
+            </details>
+
+
+            <!-- ============================================================ -->
+            <!-- 19. CRYPTO RUNTIME & _crypto CAPABILITIES                    -->
+            <!-- ============================================================ -->
+            <details class="card">
+              <summary id="runtime-summary">
+                <div class="summary-title">Crypto Runtime &amp; _crypto Capabilities</div>
+                <div class="flex items-center gap-2">
+                  <span class="summary-desc">Detects what is actually installed, exposed and verified before a feature is enabled.</span>
+                  <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+                </div>
+              </summary>
+              <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="runtime-summary">
+                <div class="security-profile" data-level="very-high">
+                  <strong>PasevSU Capability Negotiation Layer</strong>
+                  <div>Separates source-code presence, browser/runtime exposure and verified cryptographic support. Experimental capabilities are never silently treated as production-ready.</div>
+                </div>
+                <p id="runtimeCapabilitySummary" class="field-note">Scanning central _crypto and browser cryptographic capabilities…</p>
+                <div id="runtimeCapabilityMatrix" class="cap-matrix" aria-live="polite"></div>
+                <div class="flex flex-wrap gap-2">
+                  <button id="refreshRuntimeCapabilities" class="btn btn-primary" type="button">Refresh capability scan</button>
+                  <button id="downloadRuntimeCapabilities" class="btn btn-muted" type="button">Download capability report</button>
+                </div>
+                <details class="inner-tool">
+                  <summary><strong>Raw capability report</strong></summary>
+                  <div class="inner-tool-body"><textarea id="runtimeCapabilityJson" class="textarea" readonly spellcheck="false"></textarea></div>
+                </details>
+                <p class="field-note">The local server never serves the _crypto directory to the browser. It reports only a controlled capability summary. Java/CLI processes are not started by this scan.</p>
+              </div>
+            </details>
+
+
+            <!-- ============================================================ -->
+            <!-- 20. PROVIDER / POLICY NEGOTIATION                            -->
+            <!-- ============================================================ -->
+            <details class="card">
+              <summary id="policy-summary">
+                <div class="summary-title">Provider &amp; Policy Negotiation</div>
+                <div class="flex items-center gap-2">
+                  <span class="summary-desc">Evaluates actual recipient certificates against an explicit policy with no silent downgrade.</span>
+                  <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+                </div>
+              </summary>
+              <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="policy-summary">
+                <div class="security-profile" data-level="very-high"><strong>PasevSU No-Silent-Downgrade Policy Gate</strong><div>The gate checks the loaded runtime and the actual selected recipient certificates. A requested RFC 9980 profile remains BLOCKED until a real PQ/T runtime is exposed and the recipient certificate is compatible.</div></div>
+                <div class="row row-2">
+                  <div><label for="policyProfile">Policy profile</label><select id="policyProfile" class="select"><option value="rfc9580-strict">RFC 9580 v6 Strict</option><option value="modern-compatible" selected>Modern Compatible</option><option value="legacy-interop">Legacy Interoperability</option><option value="forensic-readonly">Forensic Read-Only</option><option value="rfc9980-pqt">RFC 9980 PQ/T — requires verified provider</option></select></div>
+                  <div><label for="policyRecipients">Recipient public certificates</label><select id="policyRecipients" class="select" multiple size="6" aria-describedby="policyRecipientHelp"></select><p id="policyRecipientHelp" class="field-note">Select one or more recipients. Forensic Read-Only may be evaluated without recipients.</p></div>
+                </div>
+                <div class="flex flex-wrap gap-2"><button id="policyEvaluateButton" class="btn btn-primary" type="button">Evaluate policy</button><button id="policyDownloadButton" class="btn btn-muted" type="button">Download policy JSON</button></div>
+                <p id="policyStatus" class="field-note" aria-live="polite">No policy evaluation yet.</p>
+                <div><label for="policyOutput">Negotiation report</label><textarea id="policyOutput" class="textarea" readonly spellcheck="false"></textarea></div>
+              </div>
+            </details>
+
+            <!-- ============================================================ -->
+            <!-- 21. TECHNICAL PDF REPORT ENGINE                              -->
+            <!-- ============================================================ -->
+            <details class="card">
+              <summary id="report-summary">
+                <div class="summary-title">Technical PDF Report Engine</div>
+                <div class="flex items-center gap-2">
+                  <span class="summary-desc">Builds A4 OpenPGP technical reports from verified runtime, policy and inspection data.</span>
+                  <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+                </div>
+              </summary>
+              <div class="p-4 md:p-6 space-y-4" role="region" aria-labelledby="report-summary">
+                <div class="security-profile" data-level="very-high"><strong>PasevSU jsPDF Report Provider</strong><div>PDF rendering is presentation only. The report records canonical SHA-256/SHA-512, provider metadata and 128-hex-character derived Page-IDs; it does not claim that jsPDF itself proves authenticity.</div></div>
+                <div class="row row-2">
+                  <div><label for="reportLanguage">Report language</label><select id="reportLanguage" class="select"><option value="de" selected>Deutsch (verified built-in font path)</option></select></div>
+                  <div><label>Report content</label><div class="advanced-inline-options"><label class="check-row"><input id="reportIncludeRuntime" type="checkbox" checked /> <span>Runtime / _crypto capabilities</span></label><label class="check-row"><input id="reportIncludePolicy" type="checkbox" checked /> <span>Latest policy negotiation</span></label><label class="check-row"><input id="reportIncludeAdvanced" type="checkbox" checked /> <span>Available Advanced OpenPGP reports</span></label><label class="check-row"><input id="reportIncludeInventory" type="checkbox" /> <span>Public-key inventory (no private material)</span></label></div></div>
+                </div>
+                <div class="report-spec-grid"><div><strong>A4</strong><span>20 mm left/right · 25 mm top · 15 mm bottom</span></div><div><strong>Integrity</strong><span>Canonical SHA-256 + SHA-512</span></div><div><strong>Derived Page-ID</strong><span>SHA-512(report hash + page ordinal) · 128 hex characters</span></div><div><strong>QR</strong><span>Report-ID + canonical SHA-256</span></div></div>
+                <div class="flex flex-wrap gap-2"><button id="reportGenerateButton" class="btn btn-primary" type="button">Generate PDF report</button><button id="reportJsonButton" class="btn btn-muted" type="button">Download canonical JSON report</button><button id="reportResetSnapshotButton" class="btn btn-muted" type="button">New report snapshot</button><a class="btn btn-muted" href="tests/runtime_report_v21.html" target="_blank" rel="noopener">Open jsPDF runtime self-test</a></div>
+                <p id="reportStatus" class="field-note" aria-live="polite">jsPDF provider status is shown in the Runtime Capability Matrix.</p>
+              </div>
+            </details>
+
+          </main>
+
+          <footer class="app-footer text-center mt-10">
+            <p class="text-[0.95rem] brand-footer"><strong>PasevSU PGP Toolbox</strong> · PasevSU</p>
+            <p class="mt text-[0.8rem] text-slate-500">
+                PasevSU PGP Toolbox uses OpenPGP.js for cryptographic operations. Keys are stored in IndexedDB.
+            </p>
+          </footer>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- MODAL — използва се за QR / Attributes / Notations / Prefs    -->
+      <!-- ============================================================ -->
+      <div id="qrModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+          <div class="card" style="background:var(--elev);max-width:480px;width:100%;padding:1.5rem;max-height:90vh;overflow:auto;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                <h3 id="qrTitle" style="margin:0;font-size:1.1rem;font-weight:600;">Info</h3>
+                <button id="qrCloseButton" class="btn btn-muted" type="button">Close</button>
+            </div>
+            <div id="qrCanvasHost" style="display:flex;justify-content:center;flex-direction:column;background:#fff;padding:1rem;border-radius:8px;"></div>
+            <p id="qrSubtitle" style="margin-top:.75rem;font-size:.85rem;color:var(--muted);text-align:center;"></p>
+          </div>
+      </div>
+    </body>
+</html>

@@ -1,0 +1,200 @@
+{
+  "schema": "chronoseal-master-function-inventory/v3",
+  "policy": "Visible or required functionality must have a real implementation path; runtime-dependent items remain unqualified until runtime E2E passes.",
+  "functions": [
+    {
+      "id": "pgp.generate",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:generateKeys",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.manage",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:key store/list/search/delete",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.encrypt",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:encryptMessage",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.decrypt",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:decryptMessage",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.fortress",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:Fortress V1/V2/V3",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.sign_verify",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:signMessage/verifyMessage",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.keyserver",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:publish/lookup/refresh",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.manifest_metadata",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:manifest/extended metadata",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.passphrase",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:changeKeyPassphrase",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.revocation",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:revocation certificate",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.certification",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:certifyPublicKey",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.backup_restore",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:encrypted backup/restore",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.inspector",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:inspectKey",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.file_crypto",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:processFiles",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.session_keys",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:session key tools",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.web_of_trust",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/app.js:buildWotGraph",
+      "status": "INTEGRATED_SOURCE"
+    },
+    {
+      "id": "pgp.advanced_core",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/advanced-core.js",
+      "status": "STATIC_PASS"
+    },
+    {
+      "id": "pgp.policy",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/policy-engine.js",
+      "status": "STATIC_PASS"
+    },
+    {
+      "id": "pgp.runtime_capabilities",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/runtime-capabilities.js",
+      "status": "STATIC_PASS"
+    },
+    {
+      "id": "reports.technical_pdf",
+      "required": true,
+      "implementation": "app/pgp-toolbox/scripts/report-engine.js + app/vendor/jspdf.umd.min.js",
+      "status": "STATIC_PASS"
+    },
+    {
+      "id": "import.html_preflight",
+      "required": true,
+      "implementation": "app/scripts/admin-integration.js",
+      "status": "SOURCE_PASS"
+    },
+    {
+      "id": "import.temporary_keys",
+      "required": true,
+      "implementation": "app/scripts/admin-integration.js",
+      "status": "SOURCE_PASS"
+    },
+    {
+      "id": "import.pgp",
+      "required": true,
+      "implementation": "app/scripts/admin-integration.js",
+      "status": "RUNTIME_DEPENDENT"
+    },
+    {
+      "id": "import.json",
+      "required": true,
+      "implementation": "app/scripts/admin-integration.js",
+      "status": "SOURCE_PASS"
+    },
+    {
+      "id": "identity.multiple",
+      "required": true,
+      "implementation": "app/scripts/admin-integration.js",
+      "status": "SOURCE_PASS"
+    },
+    {
+      "id": "admin.script_runner",
+      "required": true,
+      "implementation": "server.js + Admin UI",
+      "status": "RUNTIME_PASS"
+    },
+    {
+      "id": "git.updater",
+      "required": true,
+      "implementation": "updater.js + launchers",
+      "status": "SOURCE_PASS"
+    },
+    {
+      "id": "ha.runtime",
+      "required": true,
+      "implementation": "Dockerfile/runtime_selftest.js",
+      "status": "NOT_TESTED_IN_CURRENT_ENV"
+    },
+    {
+      "id": "ha.ingress_static_isolation",
+      "required": true,
+      "implementation": "server.js:STATIC_ASSET_ALLOWLIST + qualification/runtime_security_gate.js",
+      "status": "RUNTIME_PASS_LOCAL"
+    },
+    {
+      "id": "ots.primary_pinned",
+      "required": true,
+      "implementation": "server.js:PINNED_JS_OTS + tools/runtime_selftest.js",
+      "status": "BUILD_RUNTIME_DEPENDENT"
+    },
+    {
+      "id": "ots.java_independent",
+      "required": false,
+      "implementation": "external SHA-256-pinned OtsCli.jar via /share or /data",
+      "status": "NOT_SUPPLIED"
+    },
+    {
+      "id": "crypto.source_archive",
+      "required": false,
+      "implementation": "SOURCE_ARCHIVE_AUDIT.json outside HA runtime",
+      "status": "EXTERNALIZED_NON_RUNTIME"
+    }
+  ],
+  "releaseEligible": false,
+  "releaseBlocker": "Home Assistant image runtime qualification has not yet passed; source/static integration does not count as runtime verification."
+}

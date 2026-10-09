@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict'; import fs from 'node:fs'; import os from 'node:os'; import path from 'node:path'; import {spawnSync} from 'node:child_process';
+const srcRoot=path.resolve(new URL('..',import.meta.url).pathname); const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'pasevsu-vendor-')); const proj=path.join(tmp,'_WEB_pgp'), crypto=path.join(tmp,'_crypto'); fs.mkdirSync(path.join(proj,'scripts'),{recursive:true}); fs.mkdirSync(path.join(proj,'logs'),{recursive:true});
+for(const f of ['setup_vendor.sh']) fs.copyFileSync(path.join(srcRoot,f),path.join(proj,f));
+fs.mkdirSync(path.join(crypto,'openpgpjs','dist'),{recursive:true}); fs.writeFileSync(path.join(crypto,'openpgpjs','package.json'),JSON.stringify({version:'6.3.1'})); fs.writeFileSync(path.join(crypto,'openpgpjs','dist','openpgp.min.js'),'O'.repeat(210000));
+fs.mkdirSync(path.join(crypto,'qrcodejs'),{recursive:true}); fs.writeFileSync(path.join(crypto,'qrcodejs','qrcode.js'),'Q'.repeat(12000));
+fs.mkdirSync(path.join(crypto,'jsPDF','dist'),{recursive:true}); fs.writeFileSync(path.join(crypto,'jsPDF','package.json'),JSON.stringify({version:'4.2.1'})); fs.writeFileSync(path.join(crypto,'jsPDF','dist','jspdf.umd.min.js'),'J'.repeat(110000));
+function run(){return spawnSync('bash',[path.join(proj,'setup_vendor.sh')],{env:{...process.env,PASEVSU_CRYPTO_HOME:crypto},encoding:'utf8'});}
+let r=run(); assert.equal(r.status,0,r.stderr+r.stdout); for(const f of ['openpgp.min.js','qrcode.min.js','jspdf.umd.min.js']) assert.ok(fs.existsSync(path.join(proj,'scripts',f+'.sha256')),f+' hash stamp');
+fs.writeFileSync(path.join(proj,'scripts','openpgp.min.js'),'X'.repeat(210000)); r=run(); assert.equal(r.status,0,r.stderr+r.stdout); assert.equal(fs.readFileSync(path.join(proj,'scripts','openpgp.min.js'),'utf8')[0],'O');
+fs.writeFileSync(path.join(crypto,'openpgpjs','package.json'),JSON.stringify({version:'6.3.2'})); fs.writeFileSync(path.join(proj,'scripts','openpgp.min.js'),'X'.repeat(210000)); fs.writeFileSync(path.join(proj,'scripts','openpgp.min.js.sha256'),'deadbeef\n'); r=run(); assert.notEqual(r.status,0,'network-disabled mismatch must fail closed');
+fs.rmSync(tmp,{recursive:true,force:true}); console.log('[PASS] local _crypto vendor sync + tamper repair + fail-closed mismatch');

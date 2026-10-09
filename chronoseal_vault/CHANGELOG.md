@@ -85,3 +85,23 @@
 - Added resumable fail-closed sequential Chain Orchestrator with hash-linked records.
 - Added Cryptographic Identity Card UI/module: signed canonical manifest, embedded public key, primary and subkey identifiers, verification and JSON/HTML/public-key export.
 - Preserved existing ChronoSeal visual design and navigation.
+
+## 3.3.0-alpha4
+- Reworked runtime qualification around a versioned `RUNTIME_CONTRACT.json`.
+- Bundled a pinned known-good OTS fixture and verify its SHA-256 before OTS execution.
+- Removed the obsolete assumption that OTS must live under `_crypto/javascript-opentimestamps`; runtime discovery now tests the pinned npm CLI and recursively discovers allowed bundled OTS CLI/JAR candidates.
+- Docker build now emits the complete runtime self-test JSON before failing closed.
+- Runtime self-test now verifies Java execution in addition to OpenSSL/OpenPGP/OTS/crypto-manifest checks.
+- Fixed forensic chain canonical JSON hashing for nested objects.
+- Git provenance now hashes exact staged Git blobs and verifies staged blob OIDs against the resulting commit.
+- Strengthened release validation for runtime contract, fixture integrity and Docker diagnostic wiring.
+
+## 3.4.0-alpha6 — HA slim runtime / fail-closed OTS authority
+- Removed the 49.7 MiB `_crypto.7z` development/source archive from the deployable Home Assistant app; the archive contained 686 source/VCS files and no `OtsCli.jar`.
+- Corrected an OTS version-authority defect: bundled source checkout was OpenTimestamps 0.4.9 while the runtime contract pins npm `opentimestamps` 0.4.6. The contract-pinned npm engine is now authoritative and source checkout is fallback-only.
+- Runtime self-test now verifies the exact installed OpenTimestamps package version and requires the pinned primary CLI to parse the known `.ots` fixture.
+- Added optional external Java OTS verifier at `/share/chronoseal/runtime/OtsCli.jar`; it is never executed unless `java_ots_sha256` exactly matches the file.
+- Removed `p7zip` and full source extraction from the HA image build while retaining Java runtime for the explicitly pinned independent verifier.
+- Added an explicit Ingress static-asset allowlist: donor source/server/docs/log files remain available for qualification but are no longer HTTP-readable.
+- Repaired `qualification_donor_assets.sha256` to use portable relative paths and made donor PDF/font hash verification a release-gate requirement.
+- Added `runtime-security-gate` to the Admin allowlist; it verifies unpinned/corrupt Java rejection, arbitrary-script rejection, streaming hash integrity and static-source non-exposure.

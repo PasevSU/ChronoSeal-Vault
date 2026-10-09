@@ -1,0 +1,15 @@
+{
+  "name": "pasevsu-pgp-local-server",
+  "version": "2.1.1",
+  "type": "module",
+  "private": true,
+  "description": "Dependency-free PasevSU loopback server with WKD/VKS discovery and _crypto capability bridge",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js",
+    "test:stream-chain": "node ../tests/test_stream_chain.mjs"
+  }
+}

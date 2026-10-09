@@ -1,63 +1,160 @@
 {
-  "schema": "pasevsu-runtime-selftest/v2",
+  "schema": "pasevsu-runtime-selftest/v3",
+  "generatedAt": "2026-09-30T19:11:18.215Z",
+  "root": "/mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault",
+  "platform": "linux",
+  "arch": "x64",
   "ok": false,
   "checks": [
     {
-      "name": "openssl.binary",
-      "ok": true
+      "name": "runtime.contract",
+      "ok": true,
+      "path": "/mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault/tools/RUNTIME_CONTRACT.json",
+      "schema": "pasevsu-runtime-contract/v1"
     },
     {
       "name": "openssl.exec",
-      "ok": true
+      "ok": true,
+      "binary": "/usr/bin/openssl"
+    },
+    {
+      "name": "java.exec",
+      "ok": true,
+      "binary": "/usr/bin/java"
     },
     {
       "name": "openpgp.browser.bundle",
       "ok": false,
-      "path": "app/vendor/openpgp.min.js",
+      "path": "/mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault/app/vendor/openpgp.min.js",
       "bytes": 0
     },
     {
       "name": "openpgp.node.package",
       "ok": false,
-      "error": "Cannot find module 'openpgp/package.json'\nRequire stack:\n- /mnt/data/chronoseal10/chronoseal_vault/tools/runtime_selftest.js"
+      "error": "Cannot find module 'openpgp/package.json'\nRequire stack:\n- /mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault/tools/runtime_selftest.js"
     },
     {
       "name": "openpgp.crypto.roundtrip",
       "ok": false,
-      "error": "Cannot find module 'openpgp/package.json'\nRequire stack:\n- /mnt/data/chronoseal10/chronoseal_vault/tools/runtime_selftest.js"
+      "error": "Cannot find module 'openpgp/package.json'\nRequire stack:\n- /mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault/tools/runtime_selftest.js"
+    },
+    {
+      "name": "ots.fixture.integrity",
+      "ok": true,
+      "proof": "/mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault/tools/fixtures/hello-world.txt.ots",
+      "exists": true,
+      "sha256": "be61ecb940db2e4a6f89fbed59c8d4f7f74fa756cbc1fad1ad7aabcb2bf59c30",
+      "expected": "be61ecb940db2e4a6f89fbed59c8d4f7f74fa756cbc1fad1ad7aabcb2bf59c30"
+    },
+    {
+      "name": "opentimestamps.node.package",
+      "ok": false,
+      "error": "Cannot find module 'opentimestamps/package.json'\nRequire stack:\n- /mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault/tools/runtime_selftest.js"
+    },
+    {
+      "name": "ots.primary.pinned",
+      "ok": false,
+      "path": "/mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault/node_modules/opentimestamps/ots-cli.js",
+      "packageVersionOk": false
     },
     {
       "name": "ots.executable.engine",
       "ok": false,
       "candidates": [
         {
-          "path": "_crypto/javascript-opentimestamps/ots-cli.js",
+          "type": "node",
+          "path": "/mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault/node_modules/opentimestamps/ots-cli.js",
           "exists": false
         },
         {
-          "path": "node_modules/opentimestamps/ots-cli.js",
-          "exists": false
+          "type": "java",
+          "path": "/share/chronoseal/runtime/OtsCli.jar",
+          "exists": false,
+          "trusted": false,
+          "reason": "MISSING"
         }
       ]
     },
     {
       "name": "ots.local.proof.info",
       "ok": false,
-      "proof": "_crypto/javascript-opentimestamps/examples/hello-world.txt.ots",
-      "exists": false
+      "proof": "/mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault/tools/fixtures/hello-world.txt.ots",
+      "candidates": [
+        {
+          "type": "node",
+          "path": "/mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault/node_modules/opentimestamps/ots-cli.js",
+          "exists": false
+        },
+        {
+          "type": "java",
+          "path": "/share/chronoseal/runtime/OtsCli.jar",
+          "exists": false,
+          "trusted": false,
+          "reason": "MISSING"
+        }
+      ]
     },
     {
       "name": "crypto.manifest",
+      "ok": true,
+      "path": "/mnt/data/ChronoSeal-Vault_HA_SLIM_ALPHA6/chronoseal_vault/_crypto/CRYPTO_MANIFEST.json"
+    },
+    {
+      "name": "crypto.manifest.hashes",
+      "ok": true,
+      "files": 2,
+      "bad": 0
+    },
+    {
+      "name": "contract.required:openpgp.browser.bundle",
       "ok": false,
-      "path": "_crypto/CRYPTO_MANIFEST.json"
+      "reason": "required capability did not PASS"
+    },
+    {
+      "name": "contract.required:openpgp.node.package",
+      "ok": false,
+      "reason": "required capability did not PASS"
+    },
+    {
+      "name": "contract.required:openpgp.crypto.roundtrip",
+      "ok": false,
+      "reason": "required capability did not PASS"
+    },
+    {
+      "name": "contract.required:opentimestamps.node.package",
+      "ok": false,
+      "reason": "required capability did not PASS"
+    },
+    {
+      "name": "contract.required:ots.primary.pinned",
+      "ok": false,
+      "reason": "required capability did not PASS"
+    },
+    {
+      "name": "contract.required:ots.executable.engine",
+      "ok": false,
+      "reason": "required capability did not PASS"
+    },
+    {
+      "name": "contract.required:ots.local.proof.info",
+      "ok": false,
+      "reason": "required capability did not PASS"
     }
   ],
   "failures": [
     "openpgp.browser.bundle",
     "openpgp.node.package",
     "openpgp.crypto.roundtrip",
+    "opentimestamps.node.package",
+    "ots.primary.pinned",
     "ots.executable.engine",
     "ots.local.proof.info",
-    "crypto.manifest"
+    "contract.required:openpgp.browser.bundle",
+    "contract.required:openpgp.node.package",
+    "contract.required:openpgp.crypto.roundtrip",
+    "contract.required:opentimestamps.node.package",
+    "contract.required:ots.primary.pinned",
+    "contract.required:ots.executable.engine",
+    "contract.required:ots.local.proof.info"
   ]
 }

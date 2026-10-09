@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('fs'),path=require('path'),crypto=require('crypto');
-const canon=o=>JSON.stringify(o,Object.keys(o||{}).sort());
+const canon=o=>{if(Array.isArray(o))return '['+o.map(canon).join(',')+']';if(o&&typeof o==='object')return '{'+Object.keys(o).sort().map(k=>JSON.stringify(k)+':'+canon(o[k])).join(',')+'}';return JSON.stringify(o)};
 class ChainOrchestrator{
  constructor(dir){this.dir=dir;fs.mkdirSync(dir,{recursive:true});this.stateFile=path.join(dir,'CHAIN_STATE.json');this.state=this.load()||{schema:'pasevsu-full-forensic-chain/v1',createdAt:new Date().toISOString(),status:'NEW',records:[]}}
  load(){try{return JSON.parse(fs.readFileSync(this.stateFile,'utf8'))}catch{return null}}

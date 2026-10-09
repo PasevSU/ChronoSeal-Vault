@@ -1,0 +1,16 @@
+node_modules/
+server/node_modules/
+*.log
+.env
+.DS_Store
+# Runtime-synchronized browser providers
+scripts/openpgp.min.js
+scripts/openpgp.min.js.sha256
+scripts/openpgp.version
+scripts/qrcode.min.js
+scripts/qrcode.min.js.sha256
+scripts/qrcode.provider
+scripts/jspdf.umd.min.js
+scripts/jspdf.umd.min.js.sha256
+scripts/jspdf.provider
+scripts/jspdf.version

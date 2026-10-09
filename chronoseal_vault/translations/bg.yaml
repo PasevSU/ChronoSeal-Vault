@@ -1,7 +1,7 @@
 configuration:
   evidence_root:
     name: Папка за доказателствени кейсове
-    description: Основна папка за forensic evidence кейсовете. Трябва да е под /config или /share.
+    description: Основна папка за forensic evidence кейсовете. Трябва да е под /data или /share.
   import_root:
     name: Папка за вход/импорт
     description: Папка за файлове, подготвени за импорт в ChronoSeal Vault.
@@ -10,7 +10,7 @@ configuration:
     description: Дестинация за независимо хеш-проверени копия на запечатаните кейсове.
   staging_root:
     name: Временна staging папка
-    description: Временна папка за streaming и атомарно приемане на файлове.
+    description: Временна папка за streaming и атомарно приемане на файлове. Препоръчително /data/staging.
   auto_export_copy:
     name: Автоматично копиране след запечатване
     description: След успешна физическа проверка на seal-а създава проверено копие в export папката.
@@ -23,3 +23,9 @@ configuration:
   max_upload_mib:
     name: Максимален размер на доказателство (MiB)
     description: Отказва качвания и импорти над зададения лимит.
+  java_ots_jar:
+    name: Външен Java OpenTimestamps verifier
+    description: Незадължителен OtsCli.jar под /share или /data за независима OTS проверка.
+  java_ots_sha256:
+    name: SHA-256 на Java OTS verifier
+    description: Задължителен 64-символен SHA-256, ако OtsCli.jar ще се изпълнява. Без pin JAR файлът не се стартира.

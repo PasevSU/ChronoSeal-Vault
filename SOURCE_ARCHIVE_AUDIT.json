@@ -1,0 +1,82 @@
+{
+  "schema": "chronoseal-source-archive-audit/v1",
+  "archive": "_crypto.7z",
+  "archiveBytes": 52146174,
+  "archiveSha256": "d200d6369db93acbf9334f9b6f5869538aaef713b3062c6b53b2aada8908eb13",
+  "extractedFiles": 686,
+  "extractedBytes": 62863680,
+  "gitMetadataBytes": 53251781,
+  "jarFiles": [],
+  "containsJavaOtsCliJar": false,
+  "components": [
+    {
+      "name": "javascript-opentimestamps",
+      "files": 97,
+      "uncompressedBytes": 2081478,
+      "package": {
+        "name": "opentimestamps",
+        "version": "0.4.9",
+        "packageJsonSha256": "3b6063345e9ec5771e7f4db68518870264ee921f2de9e2dbb61fe9269dcbc96e"
+      }
+    },
+    {
+      "name": "jsencrypt",
+      "files": 135,
+      "uncompressedBytes": 6324606,
+      "package": {
+        "name": "jsencrypt",
+        "version": "3.5.4",
+        "packageJsonSha256": "c60dde08f498bde84ff973ef1668d8cf5b93d529e2d54906f944dce4b2282761"
+      }
+    },
+    {
+      "name": "openpgpjs",
+      "files": 269,
+      "uncompressedBytes": 52674180,
+      "package": {
+        "name": "openpgp",
+        "version": "6.3.1",
+        "packageJsonSha256": "ac336e2b6921a797c37d163c24b3bc0b7e269ffb1825fb50a18e6c09a66ec29d"
+      }
+    },
+    {
+      "name": "opentimestamps",
+      "files": 0,
+      "uncompressedBytes": 0,
+      "package": null
+    },
+    {
+      "name": "otsgo",
+      "files": 46,
+      "uncompressedBytes": 238497,
+      "package": null
+    },
+    {
+      "name": "qrcodejs",
+      "files": 38,
+      "uncompressedBytes": 322121,
+      "package": null
+    },
+    {
+      "name": "trust",
+      "files": 1,
+      "uncompressedBytes": 439,
+      "package": null
+    },
+    {
+      "name": "typescript-opentimestamps",
+      "files": 99,
+      "uncompressedBytes": 1222122,
+      "package": {
+        "name": "@opentimestamps/typescript-opentimestamps",
+        "version": "0.1.0",
+        "packageJsonSha256": "96d525cb5d747371e9c1fe669aa565fa626429c73d6fb0cc5faa9544ad011899"
+      }
+    }
+  ],
+  "runtimeConclusion": {
+    "haRuntimeRequired": false,
+    "reason": "The archive is a development/source inventory. Production OpenPGP.js and OpenTimestamps are exact-version npm runtimes; QR and jsPDF browser assets are already bundled. No OtsCli.jar exists in this archive.",
+    "notableMismatch": "javascript-opentimestamps source checkout is 0.4.9 while the release contract pins npm opentimestamps 0.4.6; source must not override the pinned production engine."
+  }
+}

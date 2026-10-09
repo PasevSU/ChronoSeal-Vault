@@ -6,7 +6,7 @@ except Exception as e:
     print('[FAIL] PyYAML required for release validation:', e); sys.exit(2)
 root=Path(__file__).resolve().parents[1]
 repo=root.parent
-required=['config.yaml','Dockerfile','server.js','tsa-engine.js','pki-engine.js','package.json','app/index.html','app/scripts/app.js','app/scripts/identity-max.js','app/style/app.css','rootfs/etc/services.d/pasevsu/run','_crypto.7z','tools/generate_crypto_manifest.js','tools/verify_crypto_manifest.js','tools/runtime_selftest.js','tools/package_completeness.js']
+required=['config.yaml','Dockerfile','server.js','pgp-network-api.js','tsa-engine.js','pki-engine.js','package.json','app/index.html','app/scripts/app.js','app/scripts/identity-max.js','app/style/app.css','rootfs/etc/services.d/pasevsu/run','_crypto/README.md','_crypto/trust/README.md','tools/generate_crypto_manifest.js','tools/verify_crypto_manifest.js','tools/runtime_selftest.js','tools/RUNTIME_CONTRACT.json','tools/fixtures/hello-world.txt.ots','tools/package_completeness.js','qualification/runtime_security_gate.js']
 errors=[]
 for rel in required:
     p=root/rel
@@ -21,12 +21,27 @@ for k in ['name','version','slug','description','arch']:
     if k not in config: errors.append(f'CONFIG missing {k}')
 if config.get('url')!='https://github.com/PasevSU/ChronoSeal-Vault': errors.append('CONFIG url mismatch')
 if config.get('ingress_port')!=8099: errors.append('CONFIG ingress_port must be 8099')
+if config.get('ingress_stream') is not True: errors.append('CONFIG ingress_stream must be true for large evidence uploads')
+if config.get('panel_admin') is not True: errors.append('CONFIG panel_admin must be true')
+if config.get('backup')!='cold': errors.append('CONFIG backup must be cold for evidence consistency')
 if config.get('ports') not in ({},None): errors.append('CONFIG ports must remain empty for ingress-only operation')
 package=json.loads((root/'package.json').read_text(encoding='utf-8'))
 if package.get('version')!=config.get('version'): errors.append('VERSION config.yaml != package.json')
 docker=(root/'Dockerfile').read_text(encoding='utf-8')
 if f'ARG BUILD_VERSION={config.get("version")}' not in docker: errors.append('VERSION Dockerfile != config.yaml')
-for rel in ['server.js','tsa-engine.js','pki-engine.js','app/scripts/app.js','app/scripts/identity-max.js']:
+# Runtime contract is a release-critical source of truth.
+try:
+    contract=json.loads((root/'tools/RUNTIME_CONTRACT.json').read_text(encoding='utf-8'))
+    if contract.get('openpgpVersion')!=package.get('dependencies',{}).get('openpgp'): errors.append('CONTRACT openpgp version mismatch')
+    if contract.get('opentimestampsVersion')!=package.get('dependencies',{}).get('opentimestamps'): errors.append('CONTRACT opentimestamps version mismatch')
+    fixture=root/contract.get('otsFixture',{}).get('path','')
+    if not fixture.is_file(): errors.append('CONTRACT OTS fixture missing')
+    elif hashlib.sha256(fixture.read_bytes()).hexdigest()!=contract.get('otsFixture',{}).get('sha256'): errors.append('CONTRACT OTS fixture SHA-256 mismatch')
+    if contract.get('sourceTreePolicy')!='optional-development-evidence-not-ha-runtime': errors.append('CONTRACT sourceTreePolicy mismatch')
+except Exception as e: errors.append(f'RUNTIME CONTRACT: {e}')
+for token,msg in [('RUNTIME_CONTRACT.json','Dockerfile does not copy runtime contract'),('tools/fixtures','Dockerfile does not copy runtime fixtures'),('cat /opt/pasevsu/RUNTIME_SELFTEST.json','Dockerfile hides runtime self-test diagnostics'),('test "$rc" -eq 0','Dockerfile runtime self-test is not fail-closed')]:
+    if token not in docker: errors.append(msg)
+for rel in ['server.js','pgp-network-api.js','tsa-engine.js','pki-engine.js','app/scripts/app.js','app/scripts/identity-max.js']:
     r=subprocess.run(['node','--check',str(root/rel)],capture_output=True,text=True)
     if r.returncode: errors.append(f'JS {rel}: {r.stderr.strip()}')
 html=(root/'app/index.html').read_text(encoding='utf-8')
@@ -41,8 +56,13 @@ server=(root/'server.js').read_text(encoding='utf-8')
 for ep in ['/api/ots/upgrade','/api/ots/verify','/api/ots/confirm-now','/api/case/audit-verify','/api/case/finalize','/api/case/seal-verify','/api/case/export']:
     if ep not in server: errors.append(f'MISSING ENDPOINT {ep}')
 if "ingressOnly:true" in server: errors.append('HARDCODED ingressOnly runtime claim forbidden')
+if '172.30.32.2' not in server or 'INGRESS_ONLY' not in server: errors.append('INGRESS source-IP guard missing')
+pgpapi=(root/'pgp-network-api.js').read_text(encoding='utf-8')
+for ep in ['/api/health','/api/crypto-capabilities','/api/discover-email']:
+    if ep not in pgpapi: errors.append(f'MISSING PGP ENDPOINT {ep}')
+if 'api\\/publish' not in pgpapi or 'api\\/lookup' not in pgpapi: errors.append('MISSING PGP publish/lookup routes')
 
-for opt in ['evidence_root','import_root','export_root','staging_root','auto_export_copy','copy_original_to_export']:
+for opt in ['evidence_root','import_root','export_root','staging_root','auto_export_copy','copy_original_to_export','java_ots_jar','java_ots_sha256']:
     if opt not in config.get('options',{}): errors.append(f'CONFIG missing storage option {opt}')
 for token,msg in [('CHRONOSEAL_EVIDENCE_ROOT','evidence path not wired'),('CHRONOSEAL_IMPORT_ROOT','import path not wired'),('CHRONOSEAL_EXPORT_ROOT','export path not wired'),('CHRONOSEAL_STAGING_ROOT','staging path not wired'),('exportSealedCase','verified export implementation missing')]:
     if token not in server: errors.append(msg)
@@ -59,8 +79,19 @@ if 'runtime_selftest.js /opt/pasevsu' not in docker: errors.append('Docker build
 if 'opentimestamps": "^' in (root/'package.json').read_text(encoding='utf-8'): errors.append('NON-PINNED opentimestamps dependency')
 if "probeCommand(process.execPath,[entry,'--help'])" not in server: errors.append('OTS READY is not based on executable runtime probe')
 
-archive_hash=hashlib.sha256((root/'_crypto.7z').read_bytes()).hexdigest()
-if archive_hash not in docker: errors.append('CRYPTO ARCHIVE SHA-256 is not pinned in Dockerfile')
+if (root/'_crypto.7z').exists(): errors.append('FULL _crypto.7z must not be shipped in the HA runtime package')
+if 'p7zip' in docker or 'pasevsu_crypto.7z' in docker: errors.append('Dockerfile still carries source-archive extraction tooling')
+if "const JS_OTS_CANDIDATES=[PINNED_JS_OTS,SOURCE_JS_OTS]" not in server: errors.append('PINNED npm OTS is not primary')
+if 'JAVA_OTS_EXPECTED_SHA256' not in server or 'SHA256_PIN_REQUIRED' not in server: errors.append('External Java OTS is not SHA-256 fail-closed')
+run=(root/'rootfs/etc/services.d/pasevsu/run').read_text(encoding='utf-8')
+if 'CHRONOSEAL_JAVA_OTS_SHA256' not in run: errors.append('Java OTS SHA-256 option not wired')
+if "'runtime-security-gate'" not in server: errors.append('Runtime security gate not exposed through Admin allowlist')
+if 'STATIC_ASSET_ALLOWLIST' not in server: errors.append('Static web asset allowlist missing')
+donor_hashes=root/'qualification_donor_assets.sha256'
+if not donor_hashes.is_file(): errors.append('Donor asset hash manifest missing')
+else:
+    vr=subprocess.run(['sha256sum','-c',donor_hashes.name],cwd=root,capture_output=True,text=True)
+    if vr.returncode: errors.append('Donor asset hash verification failed: '+(vr.stdout+vr.stderr).strip())
 if (root/'BUILD_MANIFEST.json').exists(): errors.append('STALE BUILD_MANIFEST.json forbidden; RELEASE_MANIFEST is authoritative')
 if errors:
     print('\n'.join('[FAIL] '+e for e in errors)); sys.exit(2)

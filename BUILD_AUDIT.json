@@ -1,24 +1,56 @@
 {
-  "schema": "chronoseal-build-audit/v2",
+  "schema": "chronoseal-build-audit/v4",
   "product": "PasevSU ChronoSeal Vault",
-  "version": "3.2.0-alpha10",
-  "result": "RC_READY_FOR_HOME_ASSISTANT_BUILD",
-  "checks": {
-    "repositoryGate": "PASS",
-    "releaseManifest": "PASS",
-    "javascriptSyntax": "PASS",
-    "yamlJsonParse": "PASS",
-    "packageCompleteness": "PASS",
-    "configuredStorageWiring": "PASS",
-    "configuredStagingActuallyUsed": "PASS",
-    "verifiedImportPipeline": "PASS",
-    "importTraversalRejected": "PASS",
-    "importSymlinkEscapeRejected": "PASS",
-    "sourceRuntimeSelftest": "FAIL_EXPECTED_PRE_BUILD"
+  "version": "3.4.0-alpha6",
+  "result": "SLIM_CANDIDATE_STATIC_AND_LOCAL_RUNTIME_PASS_HA_IMAGE_RUNTIME_BLOCKED",
+  "architecture": {
+    "deployment": "Home Assistant App",
+    "webServers": 1,
+    "ingressPort": 8099,
+    "customIntegrationRequired": false,
+    "fullCryptoSourceArchiveInHaRuntime": false
   },
-  "limitations": [
-    "Docker/Home Assistant Supervisor build not executable in this environment",
-    "Live OpenPGP browser bundle, OTS runtime and external TSA/Bitcoin verification remain build/runtime gates and are not marked PASS here"
+  "size": {
+    "candidateFiles": 133,
+    "candidateBytes": 1767712,
+    "previousAlpha5Bytes": 53897504,
+    "reductionPercentVsAlpha5": 96.72,
+    "removedSourceArchiveBytes": 52146174,
+    "removedSourceArchiveExtractedBytes": 62863680,
+    "sourceArchiveGitMetadataBytes": 53251781
+  },
+  "sourceArchiveFacts": {
+    "files": 686,
+    "containsJavaOtsCliJar": false,
+    "javascriptOpenTimestampsSourceVersion": "0.4.9",
+    "productionPinnedOpenTimestampsVersion": "0.4.6",
+    "versionAuthorityDefectCorrected": true
+  },
+  "checks": {
+    "packageCompleteness": "PASS",
+    "integrationGate": "PASS",
+    "sourceReleaseGate": "PASS",
+    "runtimeSecurityGate": "PASS",
+    "donorAssetHashes": "PASS",
+    "donorMjsTests": "PASS_15_OF_15",
+    "javascriptSyntax": "PASS_49_OF_49",
+    "streamingHash20MiB": "PASS",
+    "adminAllowlistReject": "PASS",
+    "staticSourceExposureBlocked": "PASS",
+    "javaOtsUnpinnedReject": "PASS",
+    "javaOtsCorruptPinnedReject": "PASS",
+    "sourceCryptoManifest": "PASS_2_FILES",
+    "sourceRuntimeSelftest": "FAIL_EXPECTED_PRE_BUILD",
+    "shippedReleaseManifest": "PASS_132_FILES_NO_EXTRA_NO_MISSING",
+    "cleanExtractQualification": "PASS"
+  },
+  "releaseBlockers": [
+    "Home Assistant/Supervisor Docker image build is unavailable in the current execution environment",
+    "Build-produced OpenPGP.js browser bundle and exact npm OpenPGP 6.3.1 runtime have not executed in the HA image",
+    "Exact npm OpenTimestamps 0.4.6 CLI has not executed the known .ots fixture in the HA image"
   ],
-  "principle": "Any required runtime component that cannot execute and verify its result is FAIL, never assumed PASS."
+  "optionalNotSupplied": [
+    "Independent Java OtsCli.jar. If supplied, it must be placed under /share or /data and SHA-256 pinned before execution."
+  ],
+  "principle": "This archive is a candidate, not FINAL. No required runtime capability may be promoted from source/static PASS to runtime PASS without execution in the built Home Assistant image."
 }

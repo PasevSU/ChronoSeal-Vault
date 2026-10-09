@@ -1,7 +1,7 @@
 configuration:
   evidence_root:
     name: Evidence directory
-    description: Primary directory for forensic evidence cases. Must be under /config or /share.
+    description: Primary directory for forensic evidence cases. Must be under /data or /share.
   import_root:
     name: Import directory
     description: Directory for files prepared for import into ChronoSeal Vault.
@@ -10,7 +10,7 @@ configuration:
     description: Destination for independently hash-verified copies of sealed cases.
   staging_root:
     name: Staging directory
-    description: Temporary directory used during streaming and atomic file ingestion.
+    description: Temporary directory used during streaming and atomic file ingestion. /data/staging is recommended.
   auto_export_copy:
     name: Automatically export sealed cases
     description: After a seal passes physical verification, create a verified copy in the export directory.
@@ -23,3 +23,9 @@ configuration:
   max_upload_mib:
     name: Maximum evidence size (MiB)
     description: Reject uploads and configured imports larger than this limit.
+  java_ots_jar:
+    name: External Java OpenTimestamps verifier
+    description: Optional OtsCli.jar under /share or /data for independent OTS verification.
+  java_ots_sha256:
+    name: Java OTS verifier SHA-256
+    description: Required 64-character SHA-256 pin when OtsCli.jar is used. An unpinned JAR is never executed.

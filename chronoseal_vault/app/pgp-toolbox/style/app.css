@@ -1,0 +1,454 @@
+:root {
+    --bg: #ffffff;
+    --elev: #f9fafb;
+    --text: #0f172a;
+    --muted: #334155;
+    --border: #e5e7eb;
+    --ring: #2563eb;
+    --accent: #2563eb;
+    --accent-contrast: #ffffff;
+    --danger: #dc2626;
+    --danger-contrast: #ffffff;
+    --success: #16a34a;
+    --success-contrast: #ffffff;
+
+    --radius: 12px;
+    --shadow: 0 0.5px 0.8px rgba(0, 0, 0, 0.05),
+        0 4px 16px rgba(0, 0, 0, 0.06);
+    --focus-ring: 0 0 0 3px color-mix(in oklab, var(--ring) 40%, transparent);
+
+    --pad-1: 0.5rem;
+    --pad-2: 0.75rem;
+    --pad-3: 1rem;
+    --gap: 1rem;
+
+    --fs-xs: 0.8125rem;
+    --fs-sm: 0.9375rem;
+    --fs-md: 1rem;
+    --fs-lg: 1.125rem;
+    --fs-xl: 1.25rem;
+    --lh: 1.45;
+}
+
+.dark,
+.theme--dark {
+    --bg: #0b0b0c;
+    --elev: #131316;
+    --text: #f3f4f6;
+    --muted: #cbd5e1;
+    --border: #27272a;
+    --ring: #60a5fa;
+    --accent: #60a5fa;
+    --accent-contrast: #0b0b0c;
+    --danger: #ef4444;
+    --danger-contrast: #0b0b0c;
+    --success: #22c55e;
+    --success-contrast: #0b0b0c;
+    --shadow: 0 0.5px 0.8px rgba(0, 0, 0, 0.35),
+        0 12px 28px rgba(0, 0, 0, 0.45);
+    --focus-ring: 0 0 0 3px color-mix(in oklab, var(--ring) 45%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+    .theme--auto {
+        --bg: #0b0b0c;
+        --elev: #131316;
+        --text: #f3f4f6;
+        --muted: #cbd5e1;
+        --border: #27272a;
+        --ring: #60a5fa;
+        --accent: #60a5fa;
+        --accent-contrast: #0b0b0c;
+        --danger: #ef4444;
+        --danger-contrast: #0b0b0c;
+        --success: #22c55e;
+        --success-contrast: #0b0b0c;
+        --shadow: 0 0.5px 0.8px rgba(0, 0, 0, 0.35),
+            0 12px 28px rgba(0, 0, 0, 0.45);
+        --focus-ring: 0 0 0 3px color-mix(in oklab, var(--ring) 45%, transparent);
+    }
+}
+
+html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI,
+        Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    line-height: var(--lh);
+    text-rendering: optimizeLegibility;
+}
+
+a { color: var(--accent); }
+a:hover { text-decoration: underline; }
+
+.card {
+    background: var(--elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+details { border-radius: var(--radius); overflow: clip; }
+
+summary {
+    list-style: none;
+    cursor: pointer;
+    padding: var(--pad-3);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+}
+summary::-webkit-details-marker { display: none; }
+
+.summary-title { font-size: var(--fs-lg); font-weight: 600; }
+.summary-desc { font-size: var(--fs-xs); color: var(--muted); }
+
+.chev {
+    width: 1.1rem;
+    height: 1.1rem;
+    transition: transform 200ms ease;
+    color: var(--muted);
+}
+details[open] .chev { transform: rotate(180deg); }
+details:focus-within summary { outline: none; box-shadow: var(--focus-ring); }
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid transparent;
+    transition: background-color 150ms ease, transform 80ms ease, box-shadow 150ms ease;
+}
+.btn-primary { background: var(--accent); color: var(--accent-contrast); }
+.btn-primary:hover { background: color-mix(in srgb, var(--accent) 85%, black 15%); }
+.btn-primary:active { background: color-mix(in srgb, var(--accent) 70%, black 30%); }
+
+.btn-danger { background: var(--danger); color: var(--danger-contrast); }
+.btn-danger:hover { background: color-mix(in srgb, var(--danger) 85%, black 15%); }
+.btn-danger:active { background: color-mix(in srgb, var(--danger) 70%, black 30%); }
+
+.btn-muted {
+    background: var(--elev);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+.btn-muted:hover { background: color-mix(in srgb, var(--elev) 92%, var(--text) 8%); }
+
+.input, .select, .textarea {
+    width: 100%;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.55rem 0.7rem;
+    font-size: var(--fs-sm);
+    transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+.textarea { min-height: 10rem; resize: vertical; }
+
+.input::placeholder, .textarea::placeholder {
+    color: color-mix(in srgb, var(--muted) 70%, transparent);
+}
+
+.input:focus, .select:focus, .textarea:focus {
+    outline: none;
+    border-color: var(--ring);
+    box-shadow: var(--focus-ring);
+}
+
+label {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--muted);
+    display: inline-block;
+    margin-bottom: 0.35rem;
+}
+
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 0.65rem 0.75rem; font-size: var(--fs-sm); }
+thead th {
+    text-align: left;
+    color: var(--muted);
+    background: color-mix(in srgb, var(--elev) 92%, var(--text) 8%);
+}
+tbody tr+tr td { border-top: 1px solid var(--border); }
+
+.row { display: grid; gap: var(--gap); }
+.row-2 { grid-template-columns: 1fr; }
+@media (min-width: 768px) { .row-2 { grid-template-columns: 1fr 1fr; } }
+
+.sr-status {
+    position: fixed;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+}
+
+
+/* ------------------------------------------------------------------
+ * Local utility subset replacing the Tailwind Play CDN dependency.
+ * Keeps PasevSU PGP Toolbox fully local once OpenPGP.js and a supported QR provider are vendored.
+ * ------------------------------------------------------------------ */
+.min-h-screen{min-height:100vh}.mx-auto{margin-left:auto;margin-right:auto}.max-w-5xl{max-width:64rem}
+.px-4{padding-left:1rem;padding-right:1rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.p-4{padding:1rem}
+.mb-8{margin-bottom:2rem}.mt-1{margin-top:.25rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-10{margin-top:2.5rem}
+.flex{display:flex}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.justify-between{justify-content:space-between}.self-center{align-self:center}
+.gap-2{gap:.5rem}.gap-3{gap:.75rem}.w-full{width:100%}.hidden{display:none!important}.overflow-x-auto{overflow-x:auto}.whitespace-nowrap{white-space:nowrap}
+.font-semibold{font-weight:600}.tracking-tight{letter-spacing:-.025em}.text-center{text-align:center}.text-slate-500{color:#64748b}
+.text-\[0\.8rem\]{font-size:.8rem}.text-\[0\.85rem\]{font-size:.85rem}.text-\[0\.9rem\]{font-size:.9rem}.text-\[0\.95rem\]{font-size:.95rem}.text-\[1\.375rem\]{font-size:1.375rem}
+.space-y-1>*+*{margin-top:.25rem}.space-y-4>*+*{margin-top:1rem}.space-y-5>*+*{margin-top:1.25rem}
+@media (min-width:640px){.sm\:inline{display:inline}}
+@media (min-width:768px){.md\:px-6{padding-left:1.5rem;padding-right:1.5rem}.md\:p-6{padding:1.5rem}.md\:w-auto{width:auto}.md\:col-span-2{grid-column:span 2 / span 2}}
+
+/* ==================================================================
+ * PasevSU PGP Toolbox — responsive UI hardening v1.2
+ * All form controls and grid tracks are fluid. minmax(0, 1fr) is used
+ * intentionally so long PGP values cannot force a column beyond 100%.
+ * ================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow-x: hidden; scroll-padding-top: 1rem; }
+body { margin: 0; min-width: 0; overflow-x: hidden; }
+
+/* Every potentially shrinking flex/grid child must be allowed to shrink. */
+main, main > details, details > [role="region"],
+.row, .row > *, .flex > *, summary > *, .card,
+.input, .select, .textarea, fieldset, table, td, th {
+    min-width: 0;
+}
+
+.input, .select, .textarea,
+input[type="file"], input[type="date"], input[type="search"],
+input[type="email"], input[type="password"], input[type="text"],
+input[type="url"], input[type="number"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.textarea {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.row { width: 100%; grid-template-columns: minmax(0, 1fr); }
+.row-2 { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 860px) {
+    .row-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Prevent long localized labels, fingerprints and URLs from expanding cards. */
+label, p, span, td, th, .summary-title, .summary-desc, .guide-item span,
+#inspectOutput, #wotScores, #fileQueue, #fileDownloads, #publishResults {
+    overflow-wrap: anywhere;
+}
+
+/* Top-level accordion cards */
+main > details.card { width: 100%; scroll-margin-top: 1rem; }
+main > details.card > summary {
+    width: 100%;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    padding: clamp(.85rem, 2vw, 1rem) clamp(.9rem, 2.4vw, 1.25rem);
+}
+main > details.card > summary > .flex { min-width: 0; justify-content: flex-end; }
+.summary-desc { text-align: right; line-height: 1.35; }
+@media (max-width: 720px) {
+    main > details.card > summary { grid-template-columns: minmax(0, 1fr) auto; }
+    main > details.card > summary > .flex { justify-content: flex-end; }
+    .summary-desc { display: none; }
+}
+
+/* Header and PasevSU branding */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    padding: .25rem 0;
+}
+.brand-block { display: flex; align-items: center; gap: .8rem; min-width: 0; }
+.brand-mark {
+    flex: 0 0 auto;
+    width: 2.85rem;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: .8rem;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+    box-shadow: var(--shadow);
+}
+.brand-copy { min-width: 0; }
+.app-title { margin: 0; font-size: clamp(1.15rem, 2.7vw, 1.55rem); font-weight: 700; letter-spacing: -.025em; }
+.app-subtitle { margin: .15rem 0 0; color: var(--muted); font-size: clamp(.76rem, 1.8vw, .88rem); }
+.header-controls { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; }
+.language-switch {
+    display: inline-grid;
+    grid-template-columns: repeat(2, minmax(2.5rem, 1fr));
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--elev);
+}
+.lang-btn {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    padding: .48rem .7rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+.lang-btn + .lang-btn { border-left: 1px solid var(--border); }
+.lang-btn.is-active { background: var(--accent); color: var(--accent-contrast); }
+.lang-btn:focus-visible { outline: none; box-shadow: inset var(--focus-ring); }
+.theme-btn { white-space: nowrap; }
+
+/* Guidance shown first inside every opened tool. */
+.section-guide {
+    grid-column: 1 / -1;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .65rem;
+    padding: .85rem;
+    border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border));
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--accent) 6%, var(--elev));
+}
+.guide-item { display: grid; grid-template-columns: minmax(6.5rem, 28%) minmax(0, 1fr); gap: .55rem; align-items: start; }
+.guide-item strong { color: var(--accent); font-size: var(--fs-xs); }
+.guide-item span { color: var(--muted); font-size: var(--fs-xs); line-height: 1.45; }
+@media (max-width: 760px) {
+    .section-guide { grid-template-columns: minmax(0, 1fr); }
+    .guide-item { grid-template-columns: minmax(5.8rem, 30%) minmax(0, 1fr); }
+}
+@media (max-width: 480px) {
+    .guide-item { grid-template-columns: minmax(0, 1fr); gap: .15rem; }
+    .app-header { align-items: flex-start; }
+    .header-controls { width: 100%; justify-content: space-between; }
+}
+
+/* Inline legacy layouts hardened against narrow containers. */
+#serverList { grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)) !important; width: 100%; }
+#fileDropZone, #mimeDropZone, #wotGraphHost, #qrCanvasHost { max-width: 100%; overflow-wrap: anywhere; }
+#qrModal > .card { max-width: min(30rem, 100%) !important; }
+
+/* Buttons may wrap localized labels instead of overlapping neighboring fields. */
+.btn { max-width: 100%; white-space: normal; text-align: center; line-height: 1.25; }
+.flex.flex-wrap { max-width: 100%; }
+
+.app-footer { border-top: 1px solid var(--border); padding-top: 1.25rem; }
+.brand-footer { margin-bottom: .25rem; }
+
+.brand-title-row { display:flex; align-items:center; flex-wrap:wrap; gap:.45rem; min-width:0; }
+.version-badge { flex:0 0 auto; font-size:.68rem; font-weight:700; color:var(--accent); border:1px solid color-mix(in srgb,var(--accent) 35%,var(--border)); border-radius:999px; padding:.12rem .4rem; background:color-mix(in srgb,var(--accent) 7%,var(--elev)); }
+
+/* v1.3.0 — key-generation security profile */
+.security-profile{
+  margin-top:.65rem;
+  padding:.75rem .85rem;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:color-mix(in srgb,var(--elev) 86%,var(--accent) 14%);
+  font-size:.84rem;
+  line-height:1.45;
+  overflow-wrap:anywhere;
+  min-width:0;
+}
+.security-profile strong{display:block;margin-bottom:.2rem;}
+.security-profile .security-meta{display:flex;flex-wrap:wrap;gap:.35rem .6rem;margin-top:.35rem;color:var(--muted);}
+.security-profile[data-level="extreme"]{border-width:2px;}
+
+
+/* v1.7.0 — exact-email recipient discovery and verification */
+.recipient-email-panel{min-width:0;width:100%;padding:.85rem;border:1px solid var(--border);border-radius:10px;background:color-mix(in srgb,var(--elev) 92%,var(--accent) 8%);}
+.recipient-email-action{display:flex;align-items:end;min-width:0;}
+.recipient-email-action .btn{width:100%;}
+.recipient-key-status{display:grid;gap:.25rem;min-width:0;padding:.75rem .85rem;border:1px solid var(--border);border-radius:10px;background:var(--bg);overflow-wrap:anywhere;}
+.recipient-key-status strong{font-size:.88rem;}
+.recipient-key-status span{font-size:.8rem;color:var(--muted);white-space:pre-wrap;}
+.recipient-key-status[data-state="verified"]{border-color:color-mix(in srgb,var(--success) 55%,var(--border));}
+.recipient-key-status[data-state="error"]{border-color:color-mix(in srgb,var(--danger) 55%,var(--border));}
+.recipient-fingerprint-confirm{display:flex;align-items:flex-start;gap:.55rem;margin:0;color:var(--text);font-weight:500;line-height:1.4;}
+.recipient-fingerprint-confirm input{flex:0 0 auto;margin-top:.18rem;}
+@media(max-width:767px){.recipient-email-action{align-items:stretch}.recipient-email-action .btn{width:100%;}}
+
+/* v1.8.0 — Advanced OpenPGP Core */
+.advanced-inline-options,
+.inner-tool-body {
+  display: grid;
+  gap: .85rem;
+}
+.advanced-inline-options {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .9rem;
+  background: color-mix(in srgb, var(--elev) 94%, transparent);
+}
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: .55rem;
+  min-width: 0;
+  line-height: 1.35;
+}
+.check-row input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  margin-top: .15rem;
+}
+.inner-tool {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--elev);
+}
+.inner-tool > summary {
+  cursor: pointer;
+  padding: .9rem 1rem;
+  user-select: none;
+  background: color-mix(in srgb, var(--elev) 92%, var(--border));
+}
+.inner-tool-body { padding: 1rem; }
+.field-note { font-size: .82rem; color: var(--muted); margin: 0; }
+.danger-note { color: #b45309; }
+.soft-rule { border: 0; border-top: 1px solid var(--border); margin: .35rem 0; }
+@media (max-width: 700px) {
+  .advanced-inline-options { padding: .75rem; }
+  .inner-tool-body { padding: .8rem; }
+}
+
+/* v1.9 — runtime/_crypto capability matrix */
+.cap-matrix{display:grid;gap:.55rem}
+.cap-row{display:grid;grid-template-columns:minmax(11rem,1.15fr) minmax(8rem,.75fr) minmax(0,2fr);gap:.75rem;align-items:center;padding:.72rem .8rem;border:1px solid var(--border);border-radius:10px;background:var(--bg)}
+.cap-name{font-weight:650;min-width:0}.cap-status{min-width:0}.cap-detail{min-width:0;overflow-wrap:anywhere;color:var(--muted);font-size:.84rem;white-space:pre-wrap}
+.cap-badge{display:inline-flex;align-items:center;max-width:100%;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:750;letter-spacing:.02em;overflow-wrap:anywhere}
+.cap-ok{background:rgba(34,197,94,.13);border:1px solid rgba(34,197,94,.35)}
+.cap-off{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35)}
+@media (max-width:760px){.cap-row{grid-template-columns:minmax(0,1fr)}.cap-status,.cap-detail{width:100%}}
+
+/* v2.0 — Provider/Policy + Technical Report Engine */
+.report-spec-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.65rem}
+.report-spec-grid>div{display:grid;gap:.2rem;padding:.72rem .8rem;border:1px solid var(--border);border-radius:10px;background:var(--bg);min-width:0}
+.report-spec-grid strong{font-size:.78rem;color:var(--accent)}
+.report-spec-grid span{font-size:.78rem;color:var(--muted);overflow-wrap:anywhere;line-height:1.35}
+#policyRecipients{min-height:9.5rem}
+#policyOutput{min-height:18rem}
+@media(max-width:900px){.report-spec-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.report-spec-grid{grid-template-columns:minmax(0,1fr)}}

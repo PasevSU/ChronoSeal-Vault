@@ -9,7 +9,7 @@ Ingress-only OpenPGP + forensic evidence add-on. No host TCP port is published (
 
 `Create OTS` first writes `/config/ots_generator/<filename>/original/<filename>`, fsyncs it, recalculates SHA-256/SHA-512 from the stored copy, and refuses further processing on mismatch. The original is made read-only and is never used as an OTS mutation target. Filename collisions with different content are isolated using a SHA-256 suffix.
 
-The persistent OTS worker uses `_crypto/javascript-opentimestamps/ots-cli.js` when present (Java OtsCli fallback), preserves every pre-upgrade proof, and repeatedly performs upgrade -> info -> verify with exponential backoff until an explicit Bitcoin block attestation is present and verification succeeds. Restarting the add-on does not lose pending state.
+The persistent OTS worker uses the release-contract-pinned npm OpenTimestamps runtime as the authoritative engine, preserves every pre-upgrade proof, and repeatedly performs upgrade -> info -> verify with exponential backoff until an explicit Bitcoin block attestation is present and verification succeeds. An optional external Java `OtsCli.jar` can provide independent verification only when its SHA-256 is explicitly pinned in the Home Assistant options. Restarting the app does not lose pending state.
 
 Generated PGP/XAdES/PAdES/report artifacts can be attached to the same evidence case and are re-hashed into the evidence manifest.
 
@@ -29,7 +29,7 @@ Controlled additional root certificates may be placed in `_crypto/trust/` before
 
 ## Crypto runtime
 
-The image installs OpenSSL and the CA store directly. `_crypto/jsencrypt` is detected as an optional RSA helper source checkout; it does not replace OpenPGP.js, OpenTimestamps or OpenSSL. `_crypto/javascript-opentimestamps` remains the preferred OTS engine.
+The image installs OpenSSL and the CA store directly. The full `_crypto` development/source tree is intentionally not shipped in the Home Assistant runtime. OpenPGP.js and OpenTimestamps are exact-version runtime dependencies; source checkouts such as `jsencrypt`, `openpgpjs`, TypeScript OTS and QRCode.js are development evidence only and do not determine runtime readiness.
 
 The browser OpenPGP runtime is pinned to OpenPGP.js 6.3.1 during image build. Private OpenPGP key material remains browser-side/IndexedDB; the evidence backend does not store browser private keys in Home Assistant state.
 

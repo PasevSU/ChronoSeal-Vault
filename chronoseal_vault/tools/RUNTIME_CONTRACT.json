@@ -1,0 +1,27 @@
+{
+  "schema": "pasevsu-runtime-contract/v1",
+  "openpgpVersion": "6.3.1",
+  "opentimestampsVersion": "0.4.6",
+  "otsFixture": {
+    "path": "tools/fixtures/hello-world.txt.ots",
+    "sha256": "be61ecb940db2e4a6f89fbed59c8d4f7f74fa756cbc1fad1ad7aabcb2bf59c30"
+  },
+  "requiredCapabilities": [
+    "openssl.exec",
+    "java.exec",
+    "openpgp.browser.bundle",
+    "openpgp.node.package",
+    "openpgp.crypto.roundtrip",
+    "opentimestamps.node.package",
+    "ots.primary.pinned",
+    "ots.executable.engine",
+    "ots.local.proof.info",
+    "crypto.manifest",
+    "crypto.manifest.hashes"
+  ],
+  "sourceTreePolicy": "optional-development-evidence-not-ha-runtime",
+  "javaOtsPolicy": {
+    "mode": "optional-external-sha256-pinned",
+    "defaultPath": "/share/chronoseal/runtime/OtsCli.jar"
+  }
+}
