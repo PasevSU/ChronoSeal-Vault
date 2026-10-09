@@ -43,16 +43,24 @@ switch ($Command) {
             return
         }
         Remove-Item $stopFile -ErrorAction SilentlyContinue
+
+        # ⬇️ Подаваме ЕДИН низ с вградени кавички — оцеляват интервали и скоби
+        $argLine = "-NoProfile -ExecutionPolicy Bypass -File `"$ps1`" -RepoPath `"$RepoPath`""
+
         $proc = Start-Process -FilePath "powershell.exe" `
-            -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File",$ps1,"-RepoPath",$RepoPath) `
+            -ArgumentList $argLine `
             -WindowStyle Hidden -PassThru
+
         Write-Host "Стартиран watcher (PID=$($proc.Id))." -ForegroundColor Green
         Start-Sleep -Seconds 3
+
         if (-not (Test-Alive $proc.Id)) {
             Write-Host "⚠ Watcher-ът гръмна веднага!" -ForegroundColor Red
-            Write-Host "Провери: Get-Content '$logFile'" -ForegroundColor Yellow
+            Write-Host "Провери лог: $logFile" -ForegroundColor Yellow
             Write-Host "Стартирай ръчно за дебъг:" -ForegroundColor Yellow
             Write-Host "  powershell -NoProfile -ExecutionPolicy Bypass -File `"$ps1`"" -ForegroundColor Cyan
+        } else {
+            Write-Host "Watcher работи." -ForegroundColor Green
         }
     }
     "stop" {
