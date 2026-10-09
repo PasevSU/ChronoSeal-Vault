@@ -1,44 +1,37 @@
-# ChronoSeal Vault - source repository only
-# Never commit runtime evidence, secrets or local build state.
-
-# Git/editor/OS
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-*.swp
-*.tmp
-*.temp
-*.log
-
-# Node/build
-node_modules/
-chronoseal_vault/app/vendor/openpgp.min.js
-chronoseal_vault/CRYPTO_MANIFEST.json
-
-# Runtime evidence/storage - must never be source controlled
-evidence/
-staging/
-import/
-export/
-ots_generator/
-chronoseal/
-*.ots
-*.tsr
-*.tsq
-*.p12
-*.pfx
+# ===== Тайни / чувствителни файлове =====
+secrets.yaml
+*.secret.yaml
+.env
+.env.*
 *.key
 *.pem
-*.asc
-*.gpg
-*.pgp
+*.p12
+*.pfx
+*secret*.yml
+*secret*.yaml
+secrets.json
+credentials.json
 
-# Local sync state
-tools/git-sync/.watcher-state/
-*.pid
+# ===== База данни и архивни файлове =====
+*.db
+*.sqlite
+*.sqlite3
+*.db-wal
+*.db-shm
+home-assistant_v2.db*
+.backup/
+*.tar.gz
 
-# Local release drop zone - archives must never be committed
-_release_inbox/*
-!_release_inbox/README.txt
-*.release-backup.zip
+# ===== Системни и кеш файлове =====
+.storage/
+home-assistant.log*
+*.log
+custom_components/*/.git/
+__pycache__/
+*.pyc
+
+# ===== Файлове, генерирани от IDE / OS =====
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
