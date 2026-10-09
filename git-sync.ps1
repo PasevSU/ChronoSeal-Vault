@@ -1,6 +1,6 @@
 param(
     [Parameter(Position=0)]
-    [ValidateSet("start","stop","status","logs","restart","help")]
+    [ValidateSet("start","stop","status","logs","restart","clearlogs","help")]
     [string]$Command = "help",
 
     [Parameter(Position=1)]
@@ -46,13 +46,17 @@ switch ($Command) {
 
         $argLine = "-NoProfile -ExecutionPolicy Bypass -File `"$ps1`" -RepoPath `"$RepoPath`""
         $proc = Start-Process -FilePath "powershell.exe" `
-            -ArgumentList $argLine -WindowStyle Hidden -PassThru
+            -ArgumentList $argLine `
+            -WindowStyle Hidden -PassThru
 
         Write-Host "Started watcher (PID=$($proc.Id))." -ForegroundColor Green
         Start-Sleep -Seconds 3
+
         if (-not (Test-Alive $proc.Id)) {
-            Write-Host "Watcher died immediately!" -ForegroundColor Red
+            Write-Host "Watcher crashed immediately!" -ForegroundColor Red
             Write-Host "Check log: $logFile" -ForegroundColor Yellow
+            Write-Host "Debug manually:" -ForegroundColor Yellow
+            Write-Host "  powershell -NoProfile -ExecutionPolicy Bypass -File `"$ps1`"" -ForegroundColor Cyan
         } else {
             Write-Host "Watcher is running." -ForegroundColor Green
         }
@@ -64,7 +68,7 @@ switch ($Command) {
             return
         }
         "stop" | Out-File -Encoding utf8 $stopFile
-        Write-Host "Stop marker sent. Waiting..."
+        Write-Host "Stop marker sent, waiting..."
         for ($i=0; $i -lt 15; $i++) {
             Start-Sleep -Seconds 1
             if (-not (Test-Alive $st.pid)) { Write-Host "Stopped." -ForegroundColor Green; return }
@@ -74,21 +78,25 @@ switch ($Command) {
     }
     "status" {
         $st = Get-State
-        if (-not $st) { Write-Host "No state. Watcher never started."; return }
+        if (-not $st) { Write-Host "No state. Watcher never started (or crashed at boot)."; return }
         $alive = Test-Alive $st.pid
         Write-Host "=== Status ==="
-        Write-Host "PID:             $($st.pid)  (alive: $alive)"
-        Write-Host "State:           $($st.status)"
-        Write-Host "Started:         $($st.started)"
-        Write-Host "Last change:     $($st.lastChange)"
-        Write-Host "Last commit:     $($st.lastCommit)"
-        Write-Host "Repo:            $($st.repoPath)"
-        Write-Host "Branch:          $($st.branch)"
+        Write-Host "PID:              $($st.pid)  (alive: $alive)"
+        Write-Host "State:            $($st.status)"
+        Write-Host "Started:          $($st.started)"
+        Write-Host "Last change:      $($st.lastChange)"
+        Write-Host "Last commit:      $($st.lastCommit)"
+        Write-Host "Repo:             $($st.repoPath)"
+        Write-Host "Branch:           $($st.branch)"
+        Write-Host "Platform:         $($st.platform)"
     }
     "logs" {
         if ($Arg1 -match '^\d+$') { $Tail = [int]$Arg1 }
         if (-not (Test-Path $logFile)) { Write-Host "No log."; return }
         Get-Content $logFile -Tail $Tail
+    }
+    "clearlogs" {
+        if (Test-Path $logFile) { Clear-Content $logFile; Write-Host "Log cleared." }
     }
     "restart" {
         & $PSCommandPath stop
@@ -96,7 +104,7 @@ switch ($Command) {
         & $PSCommandPath start
     }
     default {
-        Write-Host "Usage: git-sync.ps1 <start|stop|status|logs|restart> [N]"
+        Write-Host "Usage: git-sync.ps1 <start|stop|status|logs|restart|clearlogs> [N]"
         Write-Host "Example: .\git-sync.ps1 logs 50"
     }
 }
